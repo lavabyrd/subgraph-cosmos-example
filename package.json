@@ -1,0 +1,23 @@
+{
+    "name": "cosmos-example",
+    "version": "0.1.0",
+    "repository": "https://github.com/figment-networks/subgraph-cosmos-example",
+    "license": "MIT",
+    "scripts": {
+      "build-contract": "solc contracts/Gravity.sol --abi -o abis --overwrite && solc contracts/Gravity.sol --bin -o bin --overwrite",
+      "create": "graph create cosmos-example --node https://api.thegraph.com/deploy/",
+      "create-local": "graph create cosmos-example --node http://127.0.0.1:8020",
+      "codegen": "graph codegen --help",
+      "build": "graph build",
+      "deploy": "graph deploy cosmos-example --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
+      "deploy-local": "graph deploy cosmos-example --ipfs http://localhost:5001 --node http://127.0.0.1:8020"
+    },
+    "devDependencies": {
+      "@graphprotocol/graph-cli": "^0.22.1",
+      "@graphprotocol/graph-ts": "^0.22.1"
+    },
+    "dependencies": {
+      "babel-polyfill": "^6.26.0",
+      "babel-register": "^6.26.0"
+    }
+  }
