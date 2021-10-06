@@ -1,4 +1,4 @@
-import { Bytes, Address } from '@graphprotocol/graph-ts/common'
+import { Bytes, BigInt} from '@graphprotocol/graph-ts'
 
 
 export class Block {

@@ -1,25 +1,28 @@
 type Block @entity {
   id: ID!
   height: BigInt!
-  beginEvents: [BlockBeginEvent] @derivedFrom(field: “block”)
-  endEvents: [BlockEndEvent] @derivedFrom(field: “block”)
+  beginEvents: [BlockBeginEvent!] @derivedFrom(field: "block")
+  endEvents: [BlockEndEvent!] @derivedFrom(field: "block")
 }
 
 type BlockBeginEvent @entity {
+  id: ID!
   block: Block!
   order: Int!
   type: String!
-  attributes: [BlockEventAttributes]
+  attributes: [BlockEventAttributes!]
 }
 
 type BlockEndEvent @entity {
+  id: ID!
   block: Block!
   order: Int!
   type: String!
-  attributes: [BlockEventAttributes]
+  attributes: [BlockEventAttributes!]
 }
 
 type BlockEventAttributes @entity {
+    id: ID!
     key: String!
     value: String!
 }

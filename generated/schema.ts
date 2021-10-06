@@ -14,8 +14,8 @@ export class Block extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-    this.set("hash", Value.fromBytes(new Bytes()));
-    this.set("height", Value.fromBigInt(new BigInt()));
+    this.set("hash", Value.fromBytes(Bytes.empty()));
+    this.set("height", Value.fromBigInt(BigInt.zero()));
 
 
   }
