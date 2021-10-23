@@ -1,12 +1,11 @@
-import { Block as TBlock} from "../types/tendermint"
-import { Block } from "../generated/schema"
-import { BigInt } from "@graphprotocol/graph-ts"
+import  {tendermint} from "../types/tendermint"
+import { Header } from "../generated/schema"
+import { BigInt,Bytes } from "@graphprotocol/graph-ts"
 
-export function handleBlock(block: TBlock): void {
-  let id = block.hash.toHex()
-
-  let entity = new Block(id)
-  entity.header = BigInt.fromString(block.height.toString());
-  //entity.hash = block.hash;
+export function handleBlock(el: tendermint.EventList ): void {
+  let h = el.newblock.block.header
+  let entity = new Header(h.data_hash.toString())
+  entity.height = BigInt.fromString(h.height.toString());
+  entity.chain_id = h.chain_id;
   entity.save()
 }
