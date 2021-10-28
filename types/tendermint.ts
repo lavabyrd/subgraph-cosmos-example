@@ -1,4 +1,4 @@
-import { Bytes } from '@graphprotocol/graph-ts'
+import { Bytes, BigInt } from '@graphprotocol/graph-ts'
 
 export namespace tendermint {
 	export type Hash = Bytes
@@ -207,7 +207,7 @@ export namespace tendermint {
 	export class Header {
 		public version: Consensus
  		public chain_id: string
- 		public height: u64
+ 		public height: BigInt
  		public time: Timestamp
  		public last_block_id: BlockID
  		public last_commit_hash: Hash
@@ -223,7 +223,7 @@ export namespace tendermint {
 		constructor(
 			version: Consensus,
 			chain_id: string,
-			height: u64,
+			height: BigInt,
 			time: Timestamp,
 			last_block_id: BlockID,
 			last_commit_hash: Hash,
@@ -488,13 +488,13 @@ export namespace tendermint {
 	}
 
 	export class TxResult {
-		public height: u64
+		public height: BigInt
  		public index: u32
  		public tx: Bytes
  		public result: ResponseDeliverTx
 
 		constructor(
-			height: u64,
+			height: BigInt,
 			index: u32,
 			tx: Bytes,
 			result: ResponseDeliverTx,
@@ -511,8 +511,8 @@ export namespace tendermint {
  		public data: Bytes
  		public log: string
  		public info: string
- 		public gas_wanted: i64
- 		public gas_used: i64
+ 		public gas_wanted: BigInt
+ 		public gas_used: BigInt
  		public events: Array<Event>
  		public codespace: string
 
@@ -521,8 +521,8 @@ export namespace tendermint {
 			data: Bytes,
 			log: string,
 			info: string,
-			gas_wanted: i64,
-			gas_used: i64,
+			gas_wanted: BigInt,
+			gas_used: BigInt,
 			events: Array<Event>,
 			codespace: string,
 		) {
