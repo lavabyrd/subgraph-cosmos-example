@@ -4,7 +4,7 @@ repository: https://github.com/figment-networks/subgraph-cosmos-example
 schema:
   file: ./schema.graphql
 dataSources:
-  - kind: tendermint
+  - kind: tendermint/data
     name: cosmoshub-4
     network: cosmoshub-4
     source:
@@ -17,6 +17,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Header
+        - ResponseDeliverTx
       abis: []
       blockHandlers:
         - handler: handleBlock
