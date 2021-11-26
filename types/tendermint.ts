@@ -1,4 +1,14 @@
-import { Bytes, BigInt } from '@graphprotocol/graph-ts'
+import {
+	TypedMap,
+	Entity,
+	Value,
+	ValueKind,
+	store,
+	Address,
+	Bytes,
+	BigInt,
+	BigDecimal
+  } from "@graphprotocol/graph-ts";
 
 export namespace tendermint {
 	export type Hash = Bytes
@@ -168,13 +178,13 @@ export namespace tendermint {
 
 	export class CommitSig {
 		public block_id_flag: BlockIDFlag
- 		public validator_address: Address
+ 		public validator_address: HexAddress
  		public timestamp: Timestamp
  		public signature: Bytes
 
 		constructor(
 			block_id_flag: BlockIDFlag,
-			validator_address: Address,
+			validator_address: HexAddress,
 			timestamp: Timestamp,
 			signature: Bytes,
 		) {
@@ -218,7 +228,7 @@ export namespace tendermint {
  		public app_hash: Hash
  		public last_results_hash: Hash
  		public evidence_hash: Hash
- 		public proposer_address: Address
+ 		public proposer_address: HexAddress
 
 		constructor(
 			version: Consensus,
@@ -234,7 +244,7 @@ export namespace tendermint {
 			app_hash: Hash,
 			last_results_hash: Hash,
 			evidence_hash: Hash,
-			proposer_address: Address,
+			proposer_address: HexAddress,
 		) {
 			this.version = version;
 			this.chain_id = chain_id;
@@ -353,7 +363,7 @@ export namespace tendermint {
  		public round: i32
  		public block_id: BlockID
  		public timestamp: Timestamp
- 		public validator_address: Address
+ 		public validator_address: HexAddress
  		public validator_index: i32
  		public signature: Bytes
 
@@ -363,7 +373,7 @@ export namespace tendermint {
 			round: i32,
 			block_id: BlockID,
 			timestamp: Timestamp,
-			validator_address: Address,
+			validator_address: HexAddress,
 			validator_index: i32,
 			signature: Bytes,
 		) {
@@ -453,18 +463,18 @@ export namespace tendermint {
 	}
 
 	export class Validator {
-		public address: Bytes
+		public validator_address: Bytes
  		public pub_key: PublicKey
  		public voting_power: i64
  		public proposer_priority: i64
 
 		constructor(
-			address: Bytes,
+			validator_address: Bytes,
 			pub_key: PublicKey,
 			voting_power: i64,
 			proposer_priority: i64,
 		) {
-			this.address = address;
+			this.validator_address = validator_address;
 			this.pub_key = pub_key;
 			this.voting_power = voting_power;
 			this.proposer_priority = proposer_priority;
@@ -602,28 +612,28 @@ export namespace tendermint {
 	}
 
 	export class ValidatorInfo {
-		public address: Address
+		public validator_address: HexAddress
  		public index: i32
 
 		constructor(
-			address: Address,
+			validator_address: HexAddress,
 			index: i32,
 		) {
-			this.address = address;
+			this.validator_address = validator_address;
 			this.index = index;
 		}
 	}
 
-	export class Address {
-		public address: Bytes
+	export class HexAddress {
+		public hex_address: Bytes
 
 		constructor(
-			address: Bytes,
+			hex_address: Bytes,
 		) {
-			this.address = address;
+			this.hex_address = hex_address;
 		}
-	}
-
+	}	
+	
 	export class EventDataCompleteProposal {
 		public height: u64
  		public round: i32

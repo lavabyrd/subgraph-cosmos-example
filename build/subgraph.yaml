@@ -2,13 +2,13 @@ specVersion: 0.0.2
 description: Cosmos Example
 repository: https://github.com/figment-networks/subgraph-cosmos-example
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: tendermint
     name: Gravity
     network: mainnet
     source:
-      address: '0x0000000000000000000000000000000000000000'
+      address: "0x0000000000000000000000000000000000000000"
       abi: Gravity
       startBlock: 5202701
     mapping:
@@ -18,9 +18,9 @@ dataSources:
       entities:
         - Header
         - ResponseDeliverTx
-      abis: 
+      abis:
         - name: Gravity
-          file: ./abis/Gravity.sol/Gravity.json
+          file: Gravity/abis/Gravity.sol/Gravity.json
       blockHandlers:
         - handler: handleBlock
-      file: ./src/mapping.ts
+      file: Gravity/Gravity.wasm
