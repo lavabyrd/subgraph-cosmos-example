@@ -13,8 +13,8 @@
     "deploy-local": "graph deploy cosmos-example --ipfs http://localhost:5001 --node http://127.0.0.1:8020"
   },
   "devDependencies": {
+    "@graphprotocol/graph-cli": "latest",
     "@graphprotocol/graph-ts": "latest",
-    "@openzeppelin/contracts": "",
     "solc": "0.7.4"
   },
   "dependencies": {
