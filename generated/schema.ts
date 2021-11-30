@@ -162,8 +162,8 @@ export class EventList extends Entity {
     }
   }
 
-  get eventdatastring(): string | null {
-    let value = this.get("eventdatastring");
+  get Eventstring(): string | null {
+    let value = this.get("Eventstring");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -171,11 +171,11 @@ export class EventList extends Entity {
     }
   }
 
-  set eventdatastring(value: string | null) {
+  set Eventstring(value: string | null) {
     if (!value) {
-      this.unset("eventdatastring");
+      this.unset("Eventstring");
     } else {
-      this.set("eventdatastring", Value.fromString(<string>value));
+      this.set("Eventstring", Value.fromString(<string>value));
     }
   }
 
@@ -214,7 +214,7 @@ export class EventList extends Entity {
   }
 }
 
-export class EventDataNewBlock extends Entity {
+export class EventBlock extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -222,20 +222,20 @@ export class EventDataNewBlock extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save EventDataNewBlock entity without an ID");
+    assert(id != null, "Cannot save EventBlock entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save EventDataNewBlock entity with non-string ID. " +
+        "Cannot save EventBlock entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("EventDataNewBlock", id.toString(), this);
+      store.set("EventBlock", id.toString(), this);
     }
   }
 
-  static load(id: string): EventDataNewBlock | null {
-    return changetype<EventDataNewBlock | null>(
-      store.get("EventDataNewBlock", id)
+  static load(id: string): EventBlock | null {
+    return changetype<EventBlock | null>(
+      store.get("EventBlock", id)
     );
   }
 
@@ -906,7 +906,7 @@ export class CommitSig extends Entity {
   }
 }
 
-export class EventDataNewBlockHeader extends Entity {
+export class EventBlockHeader extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -916,21 +916,21 @@ export class EventDataNewBlockHeader extends Entity {
     let id = this.get("id");
     assert(
       id != null,
-      "Cannot save EventDataNewBlockHeader entity without an ID"
+      "Cannot save EventBlockHeader entity without an ID"
     );
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save EventDataNewBlockHeader entity with non-string ID. " +
+        "Cannot save EventBlockHeader entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("EventDataNewBlockHeader", id.toString(), this);
+      store.set("EventBlockHeader", id.toString(), this);
     }
   }
 
-  static load(id: string): EventDataNewBlockHeader | null {
-    return changetype<EventDataNewBlockHeader | null>(
-      store.get("EventDataNewBlockHeader", id)
+  static load(id: string): EventBlockHeader | null {
+    return changetype<EventBlockHeader | null>(
+      store.get("EventBlockHeader", id)
     );
   }
 
@@ -1724,7 +1724,7 @@ export class DuplicateVoteEvidence extends Entity {
   }
 }
 
-export class EventDataTx extends Entity {
+export class EventTx extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -1732,19 +1732,19 @@ export class EventDataTx extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save EventDataTx entity without an ID");
+    assert(id != null, "Cannot save EventTx entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save EventDataTx entity with non-string ID. " +
+        "Cannot save EventTx entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("EventDataTx", id.toString(), this);
+      store.set("EventTx", id.toString(), this);
     }
   }
 
-  static load(id: string): EventDataTx | null {
-    return changetype<EventDataTx | null>(store.get("EventDataTx", id));
+  static load(id: string): EventTx | null {
+    return changetype<EventTx | null>(store.get("EventTx", id));
   }
 
   get id(): string {
@@ -1774,7 +1774,7 @@ export class EventDataTx extends Entity {
   }
 }
 
-export class EventDataVote extends Entity {
+export class EventVote extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -1785,19 +1785,19 @@ export class EventDataVote extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save EventDataVote entity without an ID");
+    assert(id != null, "Cannot save EventVote entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save EventDataVote entity with non-string ID. " +
+        "Cannot save EventVote entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("EventDataVote", id.toString(), this);
+      store.set("EventVote", id.toString(), this);
     }
   }
 
-  static load(id: string): EventDataVote | null {
-    return changetype<EventDataVote | null>(store.get("EventDataVote", id));
+  static load(id: string): EventVote | null {
+    return changetype<EventVote | null>(store.get("EventVote", id));
   }
 
   get id(): string {
@@ -2926,7 +2926,7 @@ export class EventAttribute extends Entity {
   }
 }
 
-export class EventDataRoundState extends Entity {
+export class EventRoundState extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -2936,20 +2936,20 @@ export class EventDataRoundState extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save EventDataRoundState entity without an ID");
+    assert(id != null, "Cannot save EventRoundState entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save EventDataRoundState entity with non-string ID. " +
+        "Cannot save EventRoundState entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("EventDataRoundState", id.toString(), this);
+      store.set("EventRoundState", id.toString(), this);
     }
   }
 
-  static load(id: string): EventDataRoundState | null {
-    return changetype<EventDataRoundState | null>(
-      store.get("EventDataRoundState", id)
+  static load(id: string): EventRoundState | null {
+    return changetype<EventRoundState | null>(
+      store.get("EventRoundState", id)
     );
   }
 
@@ -3006,7 +3006,7 @@ export class EventDataRoundState extends Entity {
   }
 }
 
-export class EventDataNewRound extends Entity {
+export class EventRound extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -3016,20 +3016,20 @@ export class EventDataNewRound extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save EventDataNewRound entity without an ID");
+    assert(id != null, "Cannot save EventRound entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save EventDataNewRound entity with non-string ID. " +
+        "Cannot save EventRound entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("EventDataNewRound", id.toString(), this);
+      store.set("EventRound", id.toString(), this);
     }
   }
 
-  static load(id: string): EventDataNewRound | null {
-    return changetype<EventDataNewRound | null>(
-      store.get("EventDataNewRound", id)
+  static load(id: string): EventRound | null {
+    return changetype<EventRound | null>(
+      store.get("EventRound", id)
     );
   }
 
@@ -3214,7 +3214,7 @@ export class Address extends Entity {
   }
 }
 
-export class EventDataCompleteProposal extends Entity {
+export class EventCompleteProposal extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -3226,21 +3226,21 @@ export class EventDataCompleteProposal extends Entity {
     let id = this.get("id");
     assert(
       id != null,
-      "Cannot save EventDataCompleteProposal entity without an ID"
+      "Cannot save EventCompleteProposal entity without an ID"
     );
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save EventDataCompleteProposal entity with non-string ID. " +
+        "Cannot save EventCompleteProposal entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("EventDataCompleteProposal", id.toString(), this);
+      store.set("EventCompleteProposal", id.toString(), this);
     }
   }
 
-  static load(id: string): EventDataCompleteProposal | null {
-    return changetype<EventDataCompleteProposal | null>(
-      store.get("EventDataCompleteProposal", id)
+  static load(id: string): EventCompleteProposal | null {
+    return changetype<EventCompleteProposal | null>(
+      store.get("EventCompleteProposal", id)
     );
   }
 
@@ -3314,7 +3314,7 @@ export class EventDataCompleteProposal extends Entity {
   }
 }
 
-export class EventDataValidatorSetUpdates extends Entity {
+export class EventValidatorSetUpdates extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -3324,21 +3324,21 @@ export class EventDataValidatorSetUpdates extends Entity {
     let id = this.get("id");
     assert(
       id != null,
-      "Cannot save EventDataValidatorSetUpdates entity without an ID"
+      "Cannot save EventValidatorSetUpdates entity without an ID"
     );
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save EventDataValidatorSetUpdates entity with non-string ID. " +
+        "Cannot save EventValidatorSetUpdates entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("EventDataValidatorSetUpdates", id.toString(), this);
+      store.set("EventValidatorSetUpdates", id.toString(), this);
     }
   }
 
-  static load(id: string): EventDataValidatorSetUpdates | null {
-    return changetype<EventDataValidatorSetUpdates | null>(
-      store.get("EventDataValidatorSetUpdates", id)
+  static load(id: string): EventValidatorSetUpdates | null {
+    return changetype<EventValidatorSetUpdates | null>(
+      store.get("EventValidatorSetUpdates", id)
     );
   }
 
@@ -3372,7 +3372,7 @@ export class EventDataValidatorSetUpdates extends Entity {
   }
 }
 
-export class EventDataString extends Entity {
+export class EventString extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -3380,19 +3380,19 @@ export class EventDataString extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save EventDataString entity without an ID");
+    assert(id != null, "Cannot save EventString entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save EventDataString entity with non-string ID. " +
+        "Cannot save EventString entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("EventDataString", id.toString(), this);
+      store.set("EventString", id.toString(), this);
     }
   }
 
-  static load(id: string): EventDataString | null {
-    return changetype<EventDataString | null>(store.get("EventDataString", id));
+  static load(id: string): EventString | null {
+    return changetype<EventString | null>(store.get("EventString", id));
   }
 
   get id(): string {
@@ -3404,8 +3404,8 @@ export class EventDataString extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get eventdatastring(): string | null {
-    let value = this.get("eventdatastring");
+  get Eventstring(): string | null {
+    let value = this.get("Eventstring");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -3413,16 +3413,16 @@ export class EventDataString extends Entity {
     }
   }
 
-  set eventdatastring(value: string | null) {
+  set Eventstring(value: string | null) {
     if (!value) {
-      this.unset("eventdatastring");
+      this.unset("Eventstring");
     } else {
-      this.set("eventdatastring", Value.fromString(<string>value));
+      this.set("Eventstring", Value.fromString(<string>value));
     }
   }
 }
 
-export class EventDataBlockSyncStatus extends Entity {
+export class EventBlockSyncStatus extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -3434,21 +3434,21 @@ export class EventDataBlockSyncStatus extends Entity {
     let id = this.get("id");
     assert(
       id != null,
-      "Cannot save EventDataBlockSyncStatus entity without an ID"
+      "Cannot save EventBlockSyncStatus entity without an ID"
     );
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save EventDataBlockSyncStatus entity with non-string ID. " +
+        "Cannot save EventBlockSyncStatus entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("EventDataBlockSyncStatus", id.toString(), this);
+      store.set("EventBlockSyncStatus", id.toString(), this);
     }
   }
 
-  static load(id: string): EventDataBlockSyncStatus | null {
-    return changetype<EventDataBlockSyncStatus | null>(
-      store.get("EventDataBlockSyncStatus", id)
+  static load(id: string): EventBlockSyncStatus | null {
+    return changetype<EventBlockSyncStatus | null>(
+      store.get("EventBlockSyncStatus", id)
     );
   }
 
@@ -3488,7 +3488,7 @@ export class EventDataBlockSyncStatus extends Entity {
   }
 }
 
-export class EventDataStateSyncStatus extends Entity {
+export class EventStateSyncStatus extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -3500,21 +3500,21 @@ export class EventDataStateSyncStatus extends Entity {
     let id = this.get("id");
     assert(
       id != null,
-      "Cannot save EventDataStateSyncStatus entity without an ID"
+      "Cannot save EventStateSyncStatus entity without an ID"
     );
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save EventDataStateSyncStatus entity with non-string ID. " +
+        "Cannot save EventStateSyncStatus entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("EventDataStateSyncStatus", id.toString(), this);
+      store.set("EventStateSyncStatus", id.toString(), this);
     }
   }
 
-  static load(id: string): EventDataStateSyncStatus | null {
-    return changetype<EventDataStateSyncStatus | null>(
-      store.get("EventDataStateSyncStatus", id)
+  static load(id: string): EventStateSyncStatus | null {
+    return changetype<EventStateSyncStatus | null>(
+      store.get("EventStateSyncStatus", id)
     );
   }
 
