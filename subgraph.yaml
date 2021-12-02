@@ -9,8 +9,13 @@ dataSources:
     network: cosmoshub-4
     source:
       address: '0x0000000000000000000000000000000000000000'
+<<<<<<< HEAD
       abi: Gravity
       startBlock: 5202701
+=======
+      abi: ''
+      startBlock: 8461600
+>>>>>>> 8801ad2d6db749578579488c0eb37c1d149cb904
     mapping:
       kind: tendermint/data
       apiVersion: 0.0.5
