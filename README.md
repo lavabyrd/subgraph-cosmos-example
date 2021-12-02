@@ -1,17 +1,14 @@
 # subgraph-cosmos-example
 
-First you need to run graph-node and ipfs:
-`git clone git@github.com:figment-networks/graph-node.git`
+First you need to run:
 
-`docker-compose up`
-or manually:
+1. Firehose, ingestor, merger and relayer
+github.com/figment-networks/ingestor-tendermint
 
-1. Install IPFS and run `ipfs init` followed by `ipfs daemon`.
-2. Install PostgreSQL and run `initdb -D .postgres` followed by `pg_ctl -D .postgres -l logfile start` and `createdb graph-node`.
-3. If using Ubuntu, you may need to install additional packages:
-   - `sudo apt-get install -y clang libpq-dev libssl-dev pkg-config`
+2. Graph node:
+github.com/figment-networks/graph-node
 
-Then create & deploy subgraph:
+Then you can create & deploy subgraph:
 `yarn`
 `yarn codegen`
 `yarn build`
