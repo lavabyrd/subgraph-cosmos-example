@@ -10,7 +10,7 @@ dataSources:
     source:
       address: '0x0000000000000000000000000000000000000000'
       abi: ''
-      startBlock: 8461600
+      startBlock: 8552100
     mapping:
       kind: tendermint
       apiVersion: 0.0.5
@@ -18,7 +18,11 @@ dataSources:
       entities:
         - Header
         - ResponseDeliverTx
+        - Reward
       abis: []
       blockHandlers:
         - handler: handleBlock
+      eventHandlers:
+        - event: rewards
+          handler: handleReward
       file: ./src/mapping.ts

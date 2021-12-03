@@ -1,11 +1,10 @@
 import { t } from "../types/tendermint";
+import { BigInt, log } from "@graphprotocol/graph-ts";
 import {
-  EventList,
   Header,
   ResponseDeliverTx,
-  TxResult,
+  Reward
 } from "../generated/schema";
-import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 
 export function handleBlock(el: t.EventList): void {
   const h = el.newblock.block.header;
@@ -29,4 +28,18 @@ export function handleBlock(el: t.EventList): void {
   }
 
   entity.save();
+}
+
+export function handleReward(eventData: t.EventData): void {
+  const amount = eventData.event.attributes[0].value
+  const validator = eventData.event.attributes[1].value
+
+  log.info("REWARD amount = {}, validator = {}", [amount, validator])
+
+  let reward = new Reward(amount)
+
+  reward.amount = amount
+  reward.validator = validator
+
+  reward.save()
 }

@@ -533,4 +533,11 @@ export namespace t {
   export class fig {
     constructor() {}
   }
+
+  export class EventData {
+    constructor(
+      public event: Event,
+      public block: EventList,
+    ) {}
+  }
 }
