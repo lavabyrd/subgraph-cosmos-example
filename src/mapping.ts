@@ -9,7 +9,7 @@ import {
 export function handleBlock(el: t.EventList): void {
   const h = el.newblock.block.header;
   const entity = new Header(el.newblock.block_id.hash.toHex());
-  entity.height = new BigInt(i32(h.height));
+  entity.height = BigInt.fromString(h.height.toString());
   entity.chain_id = h.chain_id;
 
   for (let index = 0; index < el.transaction.length; index++) {
@@ -19,8 +19,8 @@ export function handleBlock(el: t.EventList): void {
     );
     txR.code = new BigInt(j.TxResult.result.code);
     txR.codespace = j.TxResult.result.codespace;
-    txR.gas_used = new BigInt(i32(j.TxResult.result.gas_used));
-    txR.gas_wanted = new BigInt(i32(j.TxResult.result.gas_wanted));
+    txR.gas_used = BigInt.fromString(j.TxResult.result.gas_used.toString());
+    txR.gas_wanted = BigInt.fromString(j.TxResult.result.gas_wanted.toString());
     txR.info = j.TxResult.result.info;
     txR.log = j.TxResult.result.log;
 
