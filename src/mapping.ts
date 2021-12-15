@@ -31,15 +31,15 @@ export function handleBlock(el: t.EventList): void {
 }
 
 export function handleReward(eventData: t.EventData): void {
-  const amount = eventData.event.attributes[0].value
-  const validator = eventData.event.attributes[1].value
+  const amount = eventData.event.attributes[0].value;
+  const validator = eventData.event.attributes[1].value;
 
-  log.info("REWARD amount = {}, validator = {}", [amount, validator])
+  log.info("REWARD amount = {}, validator = {}", [amount, validator]);
 
-  let reward = new Reward(amount)
+  let reward = new Reward(amount);
 
-  reward.amount = amount
-  reward.validator = validator
+  reward.amount = amount;
+  reward.validator = validator;
 
-  reward.save()
+  reward.save();
 }
