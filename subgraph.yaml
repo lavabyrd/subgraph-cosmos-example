@@ -1,5 +1,5 @@
 specVersion: 0.0.2
-description: Cosmos Example
+description: Cosmos Example 2
 repository: https://github.com/figment-networks/subgraph-cosmos-example
 schema:
   file: ./schema.graphql
@@ -16,8 +16,44 @@ dataSources:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
+        - EventList
+        - EventBlock
+        - ResponseBeginBlock
+        - ResponseEndBlock
+        - ConsensusParams
+        - Version
+        - Block
+        - Commit
+        - CommitSig
+        - EventBlockHeader
         - Header
+        - Consensus
+        - BlockID
+        - PartSetHeader
+        - Data
+        - Evidence
+        - DuplicateVoteEvidence
+        - EventTx
+        - EventVote
+        - LightClientAttackEvidence
+        - LightBlock
+        - ValidatorSet
+        - SignedHeader
+        - EvidenceList
+        - Validator
+        - PublicKey
+        - TxResult
         - ResponseDeliverTx
+        - Event
+        - EventRoundState
+        - EventNewRound
+        - ValidatorInfo
+        - Address
+        - EventCompleteProposal
+        - EventValidatorSetUpdates
+        - EventString
+        - EventBlockSyncStatus
+        - EventStateSyncStatus
       abis:
         - name: Gravity
           file: ./abis/Gravity.json

@@ -1,6 +1,18 @@
 # subgraph-cosmos-example
 
-First you need to run:
+## Setup
+
+```bash
+git clone ssh:github.com:figment-networks/ingestor-tendermint.git
+```
+
+github.com/figment-networks/ingestor-tendermint
+
+### Firehose
+
+### Ingestor
+
+### Relayer
 
 1. Firehose, ingestor, merger and relayer
 github.com/figment-networks/ingestor-tendermint

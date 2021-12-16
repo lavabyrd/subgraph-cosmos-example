@@ -1,6 +1,6 @@
 import { Bytes } from "@graphprotocol/graph-ts";
 
-export namespace t {
+export namespace tendermint {
   export type Hash = Bytes;
 
   export enum SignedMsgType {
@@ -144,13 +144,13 @@ export namespace t {
   export class CommitSig {
     public block_id_flag: BlockIDFlag;
     public validator_address: Address;
-    public timestamp: Timestamp;
+    public timestamp: Date;
     public signature: Bytes;
 
     constructor(
       block_id_flag: BlockIDFlag,
       validator_address: Address,
-      timestamp: Timestamp,
+      timestamp: Date,
       signature: Bytes
     ) {
       this.block_id_flag = block_id_flag;
@@ -183,7 +183,7 @@ export namespace t {
     public version: Consensus;
     public chain_id: string;
     public height: u64;
-    public time: Timestamp;
+    public time: Date;
     public last_block_id: BlockID;
     public last_commit_hash: Hash;
     public data_hash: Hash;
@@ -199,7 +199,7 @@ export namespace t {
       version: Consensus,
       chain_id: string,
       height: u64,
-      time: Timestamp,
+      time: Date,
       last_block_id: BlockID,
       last_commit_hash: Hash,
       data_hash: Hash,
@@ -284,14 +284,14 @@ export namespace t {
     public vote_b: EventVote;
     public total_voting_power: i64;
     public validator_power: i64;
-    public timestamp: Timestamp;
+    public timestamp: Date;
 
     constructor(
       vote_a: EventVote,
       vote_b: EventVote,
       total_voting_power: i64,
       validator_power: i64,
-      timestamp: Timestamp
+      timestamp: Date
     ) {
       this.vote_a = vote_a;
       this.vote_b = vote_b;
@@ -314,7 +314,7 @@ export namespace t {
     public height: u64;
     public round: i32;
     public block_id: BlockID;
-    public timestamp: Timestamp;
+    public timestamp: Date;
     public validator_address: Address;
     public validator_index: i32;
     public signature: Bytes;
@@ -324,7 +324,7 @@ export namespace t {
       height: u64,
       round: i32,
       block_id: BlockID,
-      timestamp: Timestamp,
+      timestamp: Date,
       validator_address: Address,
       validator_index: i32,
       signature: Bytes
@@ -345,14 +345,14 @@ export namespace t {
     public common_height: i64;
     public byzantine_validators: Array<Validator>;
     public total_voting_power: i64;
-    public timestamp: Timestamp;
+    public timestamp: Date;
 
     constructor(
       conflicting_block: LightBlock,
       common_height: i64,
       byzantine_validators: Array<Validator>,
       total_voting_power: i64,
-      timestamp: Timestamp
+      timestamp: Date
     ) {
       this.conflicting_block = conflicting_block;
       this.common_height = common_height;
@@ -520,15 +520,15 @@ export namespace t {
     }
   }
 
-  export class Timestamp {
-    public seconds: i64;
-    public nanos: i32;
+  // export class Timestamp {
+  //   public seconds: i64;
+  //   public nanos: i32;
 
-    constructor(seconds: i64, nanos: i32) {
-      this.seconds = seconds;
-      this.nanos = nanos;
-    }
-  }
+  //   constructor(seconds: i64, nanos: i32) {
+  //     this.seconds = seconds;
+  //     this.nanos = nanos;
+  //   }
+  // }
 
   export class fig {
     constructor() {}
