@@ -2999,7 +2999,7 @@ export class fig extends Entity {
     return value!.toString();
   }
 
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
+  set validator(value: string) {
+    this.set("validator", Value.fromString(value));
   }
 }

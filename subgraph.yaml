@@ -10,6 +10,7 @@ dataSources:
     source:
       address: '0x0000000000000000000000000000000000000000'
       abi: Gravity
+      # 8552100
       startBlock: 5201272
     mapping:
       kind: tendermint/data
@@ -59,4 +60,7 @@ dataSources:
           file: ./abis/Gravity.json
       blockHandlers:
         - handler: handleBlock
+      eventHandlers:
+        - event: rewards
+          handler: handleReward
       file: ./src/mapping.ts

@@ -290,3 +290,9 @@ type Timestamp @entity {
 type fig @entity {
   id: ID!
 }
+
+type Reward @entity {
+  id: ID!
+  amount: String!
+  validator: String!
+}
