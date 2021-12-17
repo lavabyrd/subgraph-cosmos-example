@@ -5,11 +5,11 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: tendermint/data
-    name: Gravity
+    name: GetBlockAndRewards
     network: cosmoshub-4
     source:
       address: '0x0000000000000000000000000000000000000000'
-      abi: Gravity
+      abi: ''
       # 8552100
       startBlock: 5201272
     mapping:
@@ -55,9 +55,7 @@ dataSources:
         - EventString
         - EventBlockSyncStatus
         - EventStateSyncStatus
-      abis:
-        - name: Gravity
-          file: ./abis/Gravity.json
+      abis: []
       blockHandlers:
         - handler: handleBlock
       eventHandlers:

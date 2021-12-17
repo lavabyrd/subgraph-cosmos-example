@@ -1,4 +1,4 @@
-import { tendermint } from "../types/tendermint";
+import { tendermint } from "@graphprotocol/graph-ts/chain/tendermint";
 import { BigInt, log } from "@graphprotocol/graph-ts";
 import {
   Header,
@@ -8,43 +8,16 @@ import {
 } from "../generated/schema";
 
 export function handleBlock(el: tendermint.EventList): void {
-  // const h = el.newblock.block.header;
-  // const entity = new Header(el.newblock.block_id.hash.toHex());
-  // entity.height = new BigInt(i32(h.height));
-  // entity.chain_id = h.chain_id;
-
-  // for (let index = 0; index < el.transaction.length; index++) {
-  //   const j = el.transaction[index];
-  //   const txR = new ResponseDeliverTx(
-  //     h.data_hash.toHexString() + index.toString()
-  //   );
-  //   txR.code = new BigInt(j.TxResult.result.code);
-  //   txR.codespace = j.TxResult.result.codespace;
-  //   txR.gas_used = new BigInt(i32(j.TxResult.result.gas_used));
-  //   txR.gas_wanted = new BigInt(i32(j.TxResult.result.gas_wanted));
-  //   txR.info = j.TxResult.result.info;
-  //   txR.log = j.TxResult.result.log;
-
-  //   txR.save();
-  // }
-  // entity.save();
-  
-  // old is above
-  // my changes:
-  
-
-  // const eventList = new EventList(el.newblock.block_id.hash.toHex());
-  // // eventList.newblock = new EventBlock(el.newblock.block_id.hash.toHex())
-  // eventList.newblock = 
-
   const blockHash = el.newblock.block_id.hash.toHex();
 
   const h = el.newblock.block.header;
   const header = new Header(blockHash);
   // header.version = h.version.;
   header.chain_id = h.chain_id;
-  header.height = new BigInt(i32(h.height));
-  header.time = h.time.toISOString();
+  header.height =  BigInt.fromString(h.height.toString());
+  // let date = Date.s;
+  // date.setSeconds(h.time.seconds,h.time.nanos)
+  // header.time = toISOString(date);
   header.save();
 
   // const b = el.newblock.block;
@@ -83,8 +56,8 @@ export function handleBlock(el: tendermint.EventList): void {
     responseDeliverTx.data = txResult.tx;
     responseDeliverTx.log = txResult.result.log;
     responseDeliverTx.info = txResult.result.info;
-    responseDeliverTx.gas_wanted = new BigInt(i32(txResult.result.gas_wanted));
-    responseDeliverTx.gas_used = new BigInt(i32(txResult.result.gas_used));
+    responseDeliverTx.gas_wanted = BigInt.fromString(txResult.result.gas_wanted.toString());
+    responseDeliverTx.gas_used = BigInt.fromString(txResult.result.gas_used.toString());
     // responseDeliverTx.events = events
     responseDeliverTx.codespace = txResult.result.codespace;
     responseDeliverTx.save();
@@ -106,3 +79,8 @@ export function handleReward(eventData: tendermint.EventData): void {
 
   reward.save();
 }
+
+
+function toISOString(date: Date): string {
+  return (date.getFullYear() + '-' + ((date.getMonth() + 1)) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds());
+} 
