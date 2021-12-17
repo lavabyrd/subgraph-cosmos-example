@@ -93,7 +93,7 @@ export function handleBlock(el: tendermint.EventList): void {
   
 }
 
-export function handleReward(eventData: t.EventData): void {
+export function handleReward(eventData: tendermint.EventData): void {
   const amount = eventData.event.attributes[0].value;
   const validator = eventData.event.attributes[1].value;
 
