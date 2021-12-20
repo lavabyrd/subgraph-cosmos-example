@@ -1,8 +1,13 @@
 import { tendermint } from "@graphprotocol/graph-ts/chain/tendermint";
 import { BigInt, log } from "@graphprotocol/graph-ts";
+import { Bytes } from "@graphprotocol/graph-ts/common/collections";
+import { json } from "@graphprotocol/graph-ts/common/json";
+import { Value, ValueKind, ValuePayload } from "@graphprotocol/graph-ts/common/value";
 import {
+  Block,
+  Evidence,
   Header,
-  ResponseBeginBlock,
+
   ResponseDeliverTx,
   Reward
 } from "../generated/schema";
@@ -12,45 +17,24 @@ export function handleBlock(el: tendermint.EventList): void {
 
   const h = el.newblock.block.header;
   const header = new Header(blockHash);
-  // header.version = h.version.;
+  header.version = BigInt.fromString(h.version.app.toString()).toString() + BigInt.fromString(h.version.block.toString()).toString();
   header.chain_id = h.chain_id;
   header.height =  BigInt.fromString(h.height.toString());
-  // let date = Date.s;
-  // date.setSeconds(h.time.seconds,h.time.nanos)
-  // header.time = toISOString(date);
+  header.time = new Date(h.time.seconds).toISOString();
   header.save();
 
-  // const b = el.newblock.block;
-  // const block = new Block(blockHash);
-  // // block.header = b.header.;
-  // // block.data = b.data;
-  // // block.evidence = b.evidence;
-  // // block.last_commit = b.last_commit;
-  // block.save()
-
-
-  // const eventBlock = new EventBlock(blockHash)
-  // // eventBlock.block = el.newblock.block.toString();
-  // // eventBlock.block = el.newblock.block.get_s
-  // eventBlock.block_id = el.newblock.block_id.hash.toHex();
-  // // eventBlock.result_begin_block = el.newblock.result_begin_block.toString();
-  // // eventBlock.result_end_block = el.newblock.result_end_block.toString();
-  // eventBlock.save();
   
- 
-  // const responseBeginBlock = new ResponseBeginBlock(blockHash);
-  // responseBeginBlock.events = null;
-  // responseBeginBlock.save();
+  const b = el.newblock.block;
+  const block = new Block(blockHash);
+  block.data = json.fromBytes(new Value(ValueKind.BYTES, changetype<u32>(b.data.txs)).toBytes()).toString();
+  block.save()
 
-
-  
 
   for (let index = 0; index < el.transaction.length; index++) {
     const txResult = el.transaction[index].TxResult;
     const responseDeliverTx = new ResponseDeliverTx(
       h.data_hash.toHexString() + index.toString()
     );
-    // const events = new Array<string>();
 
     responseDeliverTx.code = new BigInt(txResult.result.code);
     responseDeliverTx.data = txResult.tx;
@@ -58,12 +42,11 @@ export function handleBlock(el: tendermint.EventList): void {
     responseDeliverTx.info = txResult.result.info;
     responseDeliverTx.gas_wanted = BigInt.fromString(txResult.result.gas_wanted.toString());
     responseDeliverTx.gas_used = BigInt.fromString(txResult.result.gas_used.toString());
-    // responseDeliverTx.events = events
     responseDeliverTx.codespace = txResult.result.codespace;
     responseDeliverTx.save();
-  }
 
-  
+    // const transaction = new Transac
+  }
 }
 
 export function handleReward(eventData: tendermint.EventData): void {
@@ -80,7 +63,16 @@ export function handleReward(eventData: tendermint.EventData): void {
   reward.save();
 }
 
+function bytesToString(bytes: Array<Bytes>): string {
+  // var result = "";
+  // for (var i = 0; i < bytes.length; i++) {
+  //   // let cast = parseFloat(bytes.at(i).toString()) as i32;
+  //   // let cast = 1;
+  //   result += String.fromCharCode(changetype<u32>(bytes.at(i)))
+  //   // result += String.fromCharCode(parseInt(bytes[i].toString(), 2));
+  // }
+  // return result;
 
-function toISOString(date: Date): string {
-  return (date.getFullYear() + '-' + ((date.getMonth() + 1)) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds());
-} 
+  return bytes.toString()
+  // return changetype<string>(bytes.to() as u32)
+}

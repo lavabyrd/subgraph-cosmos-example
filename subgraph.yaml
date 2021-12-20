@@ -10,51 +10,51 @@ dataSources:
     source:
       address: '0x0000000000000000000000000000000000000000'
       abi: ''
-      # 8552100
-      startBlock: 5201272
+      startBlock: 5201351
     mapping:
       kind: tendermint/data
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - EventList
-        - EventBlock
-        - ResponseBeginBlock
-        - ResponseEndBlock
-        - ConsensusParams
-        - Version
-        - Block
-        - Commit
-        - CommitSig
-        - EventBlockHeader
-        - Header
-        - Consensus
-        - BlockID
-        - PartSetHeader
-        - Data
-        - Evidence
-        - DuplicateVoteEvidence
-        - EventTx
-        - EventVote
-        - LightClientAttackEvidence
-        - LightBlock
-        - ValidatorSet
-        - SignedHeader
-        - EvidenceList
-        - Validator
-        - PublicKey
-        - TxResult
-        - ResponseDeliverTx
-        - Event
-        - EventRoundState
-        - EventNewRound
-        - ValidatorInfo
-        - Address
-        - EventCompleteProposal
-        - EventValidatorSetUpdates
-        - EventString
-        - EventBlockSyncStatus
-        - EventStateSyncStatus
+        - EventList #
+        # - EventBlock
+        # - ResponseBeginBlock
+        # - ResponseEndBlock
+        # - ConsensusParams
+        # - Version
+        # - Block
+        # - Commit
+        # - CommitSig
+        # - EventBlockHeader
+        - Header #
+        # - Consensus
+        # - BlockID
+        # - PartSetHeader
+        # - Data
+        # - Evidence
+        # - DuplicateVoteEvidence
+        # - EventTx
+        # - EventVote
+        # - LightClientAttackEvidence
+        # - LightBlock
+        # - ValidatorSet
+        # - SignedHeader
+        # - EvidenceList
+        # - Validator
+        # - PublicKey
+        # - TxResult
+        - ResponseDeliverTx #
+        # - Event
+        # - EventRoundState
+        # - EventNewRound
+        # - ValidatorInfo
+        # - Address
+        # - EventCompleteProposal
+        # - EventValidatorSetUpdates
+        # - EventString
+        # - EventBlockSyncStatus
+        # - EventStateSyncStatus
+        - Reward #
       abis: []
       blockHandlers:
         - handler: handleBlock
