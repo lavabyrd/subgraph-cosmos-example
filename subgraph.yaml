@@ -22,15 +22,15 @@ dataSources:
         # - ResponseEndBlock
         # - ConsensusParams
         # - Version
-        # - Block
+        - Block
         # - Commit
         # - CommitSig
         # - EventBlockHeader
         - Header #
         # - Consensus
-        # - BlockID
+        - BlockID
         # - PartSetHeader
-        # - Data
+        - Data
         # - Evidence
         # - DuplicateVoteEvidence
         # - EventTx
