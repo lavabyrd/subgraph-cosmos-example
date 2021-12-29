@@ -1,3 +1,10 @@
+enum SignModeType {
+  SIGN_MODE_UNSPECIFIED
+  SIGN_MODE_DIRECT
+  SIGN_MODE_TEXTUAL
+  SIGN_MODE_LEGACY_AMINO_JSON
+}
+
 "used in Vote"
 enum SignedMsgType {
   SIGNED_MSG_TYPE_UNKNOWN
@@ -295,4 +302,80 @@ type Reward @entity {
   id: ID!
   amount: String!
   validator: String!
+}
+
+type Tx @entity {
+  id: ID!
+  body: TxBody!
+  auth_info: AuthInfo!
+  signatures: Bytes
+}
+
+type TxBody @entity {
+  id: ID!
+  messages: [Any!]
+  memo: String!
+  timeout_height: BigInt!
+  extension_options: [Any!]
+  non_critical_extension_options: [Any!]
+}
+
+type AuthInfo @entity {
+  id: ID!
+  signer_infos: [SignerInfo!]
+  fee: Fee!
+  tip: Tip
+}
+
+type SignerInfo @entity {
+  id: ID!
+  public_key: Any!
+  mode_info: ModeInfo!
+  sequence: BigInt!
+}
+
+type ModeInfo @entity {
+  id: ID!
+  """
+  Multi or Single or 
+  """ 
+  single: Single
+  multi: Multi
+}
+
+type Single @entity {
+  id: ID!
+  mode: SignModeType!
+}
+
+type Multi @entity {
+  id: ID!
+  bitarray: CompactBitArray
+  mode_infos: [ModeInfo!]
+}
+
+type Fee @entity {
+  id: ID!
+  amount: BigInt!
+  gas_limit: BigInt!
+  payer: Address! 
+  granter: Address!
+}
+
+type Tip @entity {
+  id: ID!
+  amount: BigInt!
+  tipper: Address!
+}
+
+type Any @entity {
+  id: ID!
+  type_url: String!
+  value: Bytes
+}
+
+type CompactBitArray @entity {
+  id: ID!
+  extra_bits_stored: BigInt!
+  elems: Bytes
 }

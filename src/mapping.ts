@@ -1,13 +1,25 @@
-import { BigInt, log, tendermint } from "@graphprotocol/graph-ts";
+import { Address as tAddress, BigInt, Bytes, log, tendermint, cosmos, ByteArray } from "@graphprotocol/graph-ts";
 import {
+  Address,
+  AuthInfo,
   Block,
   BlockID,
+  Consensus,
   Data,
+  Fee,
   Header,
+  ModeInfo,
   ResponseDeliverTx,
   Reward,
-  TxResult
+  SignerInfo,
+  Timestamp,
+  Tip,
+  Tx,
+  TxBody,
+  TxResult,
+  Version
 } from "../generated/schema";
+// import message from "@cosmostation/cosmosjs/src/messages/proto";
 
 export function handleBlock(el: tendermint.EventList): void {
   const b = el.newblock.block;
@@ -30,54 +42,183 @@ export function handleBlock(el: tendermint.EventList): void {
 }
 
 function saveHeader(id: string, h: tendermint.Header, height: BigInt): void {
-  const header = new Header(id);
+  if (h === null) {
+    return
+  }
 
-  header.version = BigInt.fromString(h.version.app.toString()).toString() + BigInt.fromString(h.version.block.toString()).toString();
-  header.chain_id = h.chain_id;
-  header.height =  height;
-  header.time = new Date(h.time.seconds).toISOString();
-  header.last_block_id = h.last_block_id.hash.toHex();
-  header.last_commit_hash = h.last_commit_hash;
-  header.data_hash = h.data_hash;
-  header.validators_hash = h.validators_hash;
-  header.next_validators_hash = h.next_validators_hash;
-  header.consensus_hash = h.consensus_hash;
-  header.app_hash = h.app_hash;
-  header.last_results_hash = h.last_results_hash;
-  header.evidence_hash = h.evidence_hash;
-  header.proposer_address = h.proposer_address.toHex();
+  // message.P
 
-  header.save();
+  // saveAddress(h.proposer_address);
+  // saveTimestamp(id, h.time);
+  // saveVersion(id, h.version);
+
+  // const header = new Header(id);
+  // header.version = id;
+  // header.chain_id = h.chain_id;
+  // header.height =  height;
+  // header.time = id;
+  // header.last_block_id = h.last_block_id.hash.toHex();
+  // header.last_commit_hash = h.last_commit_hash;
+  // header.data_hash = h.data_hash;
+  // header.validators_hash = h.validators_hash;
+  // header.next_validators_hash = h.next_validators_hash;
+  // header.consensus_hash = h.consensus_hash;
+  // header.app_hash = h.app_hash;
+  // header.last_results_hash = h.last_results_hash;
+  // header.evidence_hash = h.evidence_hash;
+  // header.proposer_address = h.proposer_address.toHex();
+  // header.save();
+}
+
+function saveVersion(id: string, v: tendermint.Consensus): void {
+  const version = new Consensus(id);
+  version.block = BigInt.fromString(v.block.toString());
+  version.app = BigInt.fromString(v.app.toString());
+  version.save();
+}
+
+function saveTimestamp(id: string, ts: tendermint.Timestamp): void {
+  const timestamp = new Timestamp(id);
+  timestamp.seconds = BigInt.fromString(ts.seconds.toString());
+  timestamp.nanos = ts.nanos;
+  timestamp.save();
+}
+
+function saveAddress(addr: tAddress): void {
+  const hex = addr.toHex();
+  let a = Address.load(hex);
+  if (a !== null) {
+    return 
+  }
+  a = new Address(hex)
+  a.address = addr;
+  a.save()
 }
 
 function saveBlockID(id: string, bID: tendermint.BlockID): void {
   const blockID = new BlockID(id);
-
   blockID.hash = bID.hash;
-
   blockID.save();
 }
 
 function saveData(id: string, d: tendermint.Data): void {
   const data = new Data(id);
-
   data.txs = d.txs;
 
+  for(let i = 0; i < d.txs.length; i++){
+    saveTx(`${id}${i}`, d.txs[i])
+  }
+  
   data.save();
+}
+
+function saveTx(id: string, txBytes: Bytes): void {
+  const tx = new Tx(id);
+  
+
+  // cosmos
+  saveTxBody(id);
+  saveAuthInfo(id);
+
+  tx.body = id;
+  tx.auth_info = id;
+  tx.signatures = null;
+  tx.save()
+}
+
+function saveCosmosTx(id: string, body: cosmos.TxBody, authInfo: cosmos.AuthInfo, signatures: ByteArray): void {
+  const tx = new Tx(id);
+  tx.body = body;
+  tx.auth_info = id;
+  tx.signatures = signatures;
+  tx.save();
+}
+
+function saveAuthInfo(id: string, signerInfos: Array<string>): void {
+  saveFee(id);
+  saveTip(id);
+  
+  const authInfo = new AuthInfo(id);
+  authInfo.signer_infos = signerInfos;
+  authInfo.fee = id;
+  authInfo.tip = id;
+  authInfo.save();
+}
+
+function saveFee(id: string): void {
+  const fee = new Fee(id);
+  fee.amount = B
+  fee.save();
+}
+
+function saveTip(id: string): void {
+  
+}
+
+function saveTxBody(id: string): void {
+  const body = new TxBody(id);
+  body.messages = [];
+  body.memo = "";
+  body.timeout_height = BigInt.fromString("");
+  body.extension_options = [];
+  body.non_critical_extension_options = [];
+  body.save();
+}
+
+function saveAuthInfo(id: string): void {
+  saveFee(id);
+  saveTip(id);
+  // forr saveSignerInfo(id);
+
+  const authInfo = new AuthInfo(id);
+  authInfo.signer_infos = [];
+  authInfo.fee = id;
+  authInfo.tip = id;
+  authInfo.save();
+}
+
+function saveFee(id: string): void {
+  const fee = new Fee(id);
+  fee.amount = BigInt.fromString("");
+  fee.gas_limit = BigInt.fromString("");
+  fee.payer = "";
+  fee.granter = "";
+  fee.save();
+}
+
+function saveTip(id: string): void {
+  const tip = new Tip(id);
+  tip.amount = BigInt.fromString("");
+  tip.tipper = "";
+  tip.save();
+}
+
+function saveSignerInfo(id: string): void {
+  saveModeInfo(id);
+
+  const signerInfo = new SignerInfo(id);
+  signerInfo.public_key = "";
+  signerInfo.mode_info = id;
+  signerInfo.sequence = BigInt.fromString("");
+  signerInfo.save();
+}
+
+function saveModeInfo(id: string): void {
+  const modeInfo = new ModeInfo(id);
+  // modeInfo.single = ""
+  // modeInfo.multi = ""
+  modeInfo.save();
 }
 
 function saveBlock(id: string): void {
   const block = new Block(id);
-
   block.data = id;
   block.header = id;
-
   block.save()
 }
 
 function saveResponseDeliverTx(id: string, txResult: tendermint.TxResult): void {
   const responseDeliverTx = new ResponseDeliverTx(id);
-
   responseDeliverTx.code = new BigInt(txResult.result.code);
   responseDeliverTx.data = txResult.tx;
   responseDeliverTx.log = txResult.result.log;
@@ -85,7 +226,6 @@ function saveResponseDeliverTx(id: string, txResult: tendermint.TxResult): void 
   responseDeliverTx.gas_wanted = BigInt.fromString(txResult.result.gas_wanted.toString());
   responseDeliverTx.gas_used = BigInt.fromString(txResult.result.gas_used.toString());
   responseDeliverTx.codespace = txResult.result.codespace;
-
   responseDeliverTx.save();
 }
 
@@ -99,12 +239,13 @@ function saveTxResult(id: string, height: BigInt, index: BigInt, txRes: tendermi
 }
 
 export function handleReward(eventData: tendermint.EventData): void {
+  const height = eventData.block.newblock.block.header.height
   const amount = eventData.event.attributes[0].value;
   const validator = eventData.event.attributes[1].value;
 
   log.info("REWARD amount = {}, validator = {}", [amount, validator]);
 
-  let reward = new Reward(amount);
+  let reward = new Reward(`${height}${validator}`);
 
   reward.amount = amount;
   reward.validator = validator;
