@@ -1,4 +1,4 @@
-import { Address as tAddress, BigInt, Bytes, log, tendermint, cosmos, ByteArray } from "@graphprotocol/graph-ts";
+import { Address as tAddress, BigInt, Bytes, log, tendermint, ByteArray } from "@graphprotocol/graph-ts";
 import {
   Address,
   AuthInfo,
@@ -19,6 +19,7 @@ import {
   TxResult,
   Version
 } from "../generated/schema";
+import { cosmos } from "./cosmos/mapping";
 // import message from "@cosmostation/cosmosjs/src/messages/proto";
 
 export function handleBlock(el: tendermint.EventList): void {
@@ -106,108 +107,13 @@ function saveData(id: string, d: tendermint.Data): void {
   data.txs = d.txs;
 
   for(let i = 0; i < d.txs.length; i++){
-    saveTx(`${id}${i}`, d.txs[i])
+    const bytes = d.txs[i];
+    // bytes()
+    // const t = new 
+    cosmos.saveTx(`${id}${i}`, body, authInfo, signatures)
   }
   
   data.save();
-}
-
-function saveTx(id: string, txBytes: Bytes): void {
-  const tx = new Tx(id);
-  
-
-  // cosmos
-  saveTxBody(id);
-  saveAuthInfo(id);
-
-  tx.body = id;
-  tx.auth_info = id;
-  tx.signatures = null;
-  tx.save()
-}
-
-function saveCosmosTx(id: string, body: cosmos.TxBody, authInfo: cosmos.AuthInfo, signatures: ByteArray): void {
-  const tx = new Tx(id);
-  tx.body = body;
-  tx.auth_info = id;
-  tx.signatures = signatures;
-  tx.save();
-}
-
-function saveAuthInfo(id: string, signerInfos: Array<string>): void {
-  saveFee(id);
-  saveTip(id);
-  
-  const authInfo = new AuthInfo(id);
-  authInfo.signer_infos = signerInfos;
-  authInfo.fee = id;
-  authInfo.tip = id;
-  authInfo.save();
-}
-
-function saveFee(id: string): void {
-  const fee = new Fee(id);
-  fee.amount = B
-  fee.save();
-}
-
-function saveTip(id: string): void {
-  
-}
-
-function saveTxBody(id: string): void {
-  const body = new TxBody(id);
-  body.messages = [];
-  body.memo = "";
-  body.timeout_height = BigInt.fromString("");
-  body.extension_options = [];
-  body.non_critical_extension_options = [];
-  body.save();
-}
-
-function saveAuthInfo(id: string): void {
-  saveFee(id);
-  saveTip(id);
-  // forr saveSignerInfo(id);
-
-  const authInfo = new AuthInfo(id);
-  authInfo.signer_infos = [];
-  authInfo.fee = id;
-  authInfo.tip = id;
-  authInfo.save();
-}
-
-function saveFee(id: string): void {
-  const fee = new Fee(id);
-  fee.amount = BigInt.fromString("");
-  fee.gas_limit = BigInt.fromString("");
-  fee.payer = "";
-  fee.granter = "";
-  fee.save();
-}
-
-function saveTip(id: string): void {
-  const tip = new Tip(id);
-  tip.amount = BigInt.fromString("");
-  tip.tipper = "";
-  tip.save();
-}
-
-function saveSignerInfo(id: string): void {
-  saveModeInfo(id);
-
-  const signerInfo = new SignerInfo(id);
-  signerInfo.public_key = "";
-  signerInfo.mode_info = id;
-  signerInfo.sequence = BigInt.fromString("");
-  signerInfo.save();
-}
-
-function saveModeInfo(id: string): void {
-  const modeInfo = new ModeInfo(id);
-  // modeInfo.single = ""
-  // modeInfo.multi = ""
-  modeInfo.save();
 }
 
 function saveBlock(id: string): void {

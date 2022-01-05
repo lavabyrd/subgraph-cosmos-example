@@ -3449,7 +3449,7 @@ export class ModeInfo extends Entity {
   }
 }
 
-export class Single extends Entity {
+export class ModeInfoSingle extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -3459,19 +3459,19 @@ export class Single extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save Single entity without an ID");
+    assert(id != null, "Cannot save ModeInfoSingle entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Single entity with non-string ID. " +
+        "Cannot save ModeInfoSingle entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("Single", id.toString(), this);
+      store.set("ModeInfoSingle", id.toString(), this);
     }
   }
 
-  static load(id: string): Single | null {
-    return changetype<Single | null>(store.get("Single", id));
+  static load(id: string): ModeInfoSingle | null {
+    return changetype<ModeInfoSingle | null>(store.get("ModeInfoSingle", id));
   }
 
   get id(): string {
@@ -3493,7 +3493,7 @@ export class Single extends Entity {
   }
 }
 
-export class Multi extends Entity {
+export class ModeInfoMulti extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -3501,19 +3501,19 @@ export class Multi extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save Multi entity without an ID");
+    assert(id != null, "Cannot save ModeInfoMulti entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Multi entity with non-string ID. " +
+        "Cannot save ModeInfoMulti entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("Multi", id.toString(), this);
+      store.set("ModeInfoMulti", id.toString(), this);
     }
   }
 
-  static load(id: string): Multi | null {
-    return changetype<Multi | null>(store.get("Multi", id));
+  static load(id: string): ModeInfoMulti | null {
+    return changetype<ModeInfoMulti | null>(store.get("ModeInfoMulti", id));
   }
 
   get id(): string {
@@ -3565,7 +3565,6 @@ export class Fee extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("amount", Value.fromBigInt(BigInt.zero()));
     this.set("gas_limit", Value.fromBigInt(BigInt.zero()));
     this.set("payer", Value.fromString(""));
     this.set("granter", Value.fromString(""));
@@ -3597,13 +3596,21 @@ export class Fee extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get amount(): BigInt {
+  get amount(): Array<string> | null {
     let value = this.get("amount");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
   }
 
-  set amount(value: BigInt) {
-    this.set("amount", Value.fromBigInt(value));
+  set amount(value: Array<string> | null) {
+    if (!value) {
+      this.unset("amount");
+    } else {
+      this.set("amount", Value.fromStringArray(<Array<string>>value));
+    }
   }
 
   get gas_limit(): BigInt {
@@ -3639,7 +3646,6 @@ export class Tip extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("amount", Value.fromBigInt(BigInt.zero()));
     this.set("tipper", Value.fromString(""));
   }
 
@@ -3669,13 +3675,21 @@ export class Tip extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get amount(): BigInt {
+  get amount(): Array<string> | null {
     let value = this.get("amount");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
   }
 
-  set amount(value: BigInt) {
-    this.set("amount", Value.fromBigInt(value));
+  set amount(value: Array<string> | null) {
+    if (!value) {
+      this.unset("amount");
+    } else {
+      this.set("amount", Value.fromStringArray(<Array<string>>value));
+    }
   }
 
   get tipper(): string {
@@ -3807,5 +3821,59 @@ export class CompactBitArray extends Entity {
     } else {
       this.set("elems", Value.fromBytes(<Bytes>value));
     }
+  }
+}
+
+export class Coin extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("denom", Value.fromString(""));
+    this.set("amount", Value.fromString(""));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Coin entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Coin entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Coin", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Coin | null {
+    return changetype<Coin | null>(store.get("Coin", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get denom(): string {
+    let value = this.get("denom");
+    return value!.toString();
+  }
+
+  set denom(value: string) {
+    this.set("denom", Value.fromString(value));
+  }
+
+  get amount(): string {
+    let value = this.get("amount");
+    return value!.toString();
+  }
+
+  set amount(value: string) {
+    this.set("amount", Value.fromString(value));
   }
 }

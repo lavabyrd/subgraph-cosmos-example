@@ -339,16 +339,16 @@ type ModeInfo @entity {
   """
   Multi or Single or 
   """ 
-  single: Single
-  multi: Multi
+  single: ModeInfoSingle
+  multi: ModeInfoMulti
 }
 
-type Single @entity {
+type ModeInfoSingle @entity {
   id: ID!
   mode: SignModeType!
 }
 
-type Multi @entity {
+type ModeInfoMulti @entity {
   id: ID!
   bitarray: CompactBitArray
   mode_infos: [ModeInfo!]
@@ -356,7 +356,7 @@ type Multi @entity {
 
 type Fee @entity {
   id: ID!
-  amount: BigInt!
+  amount: [Coin!]
   gas_limit: BigInt!
   payer: Address! 
   granter: Address!
@@ -364,7 +364,7 @@ type Fee @entity {
 
 type Tip @entity {
   id: ID!
-  amount: BigInt!
+  amount: [Coin!]
   tipper: Address!
 }
 
@@ -378,4 +378,10 @@ type CompactBitArray @entity {
   id: ID!
   extra_bits_stored: BigInt!
   elems: Bytes
+}
+
+type Coin @entity {
+  id: ID!
+  denom: String!
+  amount: String!
 }
