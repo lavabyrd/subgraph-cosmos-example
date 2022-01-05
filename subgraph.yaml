@@ -16,45 +16,17 @@ dataSources:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - EventList #
-        # - EventBlock
-        # - ResponseBeginBlock
-        # - ResponseEndBlock
-        # - ConsensusParams
-        # - Version
+        - EventList
+        - Version
         - Block
-        # - Commit
-        # - CommitSig
-        # - EventBlockHeader
-        - Header #
-        # - Consensus
+        - Header
         - BlockID
-        # - PartSetHeader
         - Data
-        # - Evidence
-        # - DuplicateVoteEvidence
-        # - EventTx
-        # - EventVote
-        # - LightClientAttackEvidence
-        # - LightBlock
-        # - ValidatorSet
-        # - SignedHeader
-        # - EvidenceList
-        # - Validator
-        # - PublicKey
-        # - TxResult
-        - ResponseDeliverTx #
-        # - Event
-        # - EventRoundState
-        # - EventNewRound
-        # - ValidatorInfo
-        # - Address
-        # - EventCompleteProposal
-        # - EventValidatorSetUpdates
-        # - EventString
-        # - EventBlockSyncStatus
-        # - EventStateSyncStatus
-        - Reward #
+        - TxResult
+        - ResponseDeliverTx
+        - Address
+        - Timestamp
+        - Reward
       abis: []
       blockHandlers:
         - handler: handleBlock
