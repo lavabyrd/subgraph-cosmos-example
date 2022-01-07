@@ -4,7 +4,7 @@ repository: https://github.com/figment-networks/subgraph-cosmos-example
 schema:
   file: ./schema.graphql
 dataSources:
-  - kind: tendermint/data
+  - kind: tendermint
     name: GetBlockAndRewards
     network: cosmoshub-4
     source:

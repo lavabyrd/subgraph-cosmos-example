@@ -2,27 +2,40 @@
 
 ## Setup
 
+1. Run ingestor
+
 ```bash
 git clone ssh:github.com:figment-networks/ingestor-tendermint.git
 ```
 
-github.com/figment-networks/ingestor-tendermint
+2. Run graph-node
 
-### Firehose
+```bash
+git clone ssh:github.com:figment-networks/graph-node.git
+```
 
-### Ingestor
+3. Run gaia
 
-### Relayer
+```bash
+git clone ssh:github.com:figment-networks/gaia.git
+```
 
-1. Firehose, ingestor, merger and relayer
-github.com/figment-networks/ingestor-tendermint
+## Build
 
-2. Graph node:
-github.com/figment-networks/graph-node
+```bash
+yarn
+yarn codegen
+yarn build
+```
 
-Then you can create & deploy subgraph:
-`yarn`
-`yarn codegen`
-`yarn build`
-`yarn create` (or `yarn create-local`)
-`yarn deploy` (or `yarn deploy-local`)
+## Create subgraph
+
+```bash
+yarn create
+```
+
+## Deploy subgraph
+
+```bash
+yarn deploy
+```

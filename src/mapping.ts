@@ -1,23 +1,15 @@
-import { Address as tAddress, BigInt, Bytes, log, tendermint, ByteArray } from "@graphprotocol/graph-ts";
+import { Address as tAddress, BigInt, log, tendermint } from "@graphprotocol/graph-ts";
 import {
   Address,
-  AuthInfo,
   Block,
   BlockID,
   Consensus,
   Data,
-  Fee,
   Header,
-  ModeInfo,
   ResponseDeliverTx,
   Reward,
-  SignerInfo,
   Timestamp,
-  Tip,
-  Tx,
-  TxBody,
-  TxResult,
-  Version
+  TxResult
 } from "../generated/schema";
 
 export function handleBlock(el: tendermint.EventList): void {
