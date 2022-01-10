@@ -6,16 +6,14 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "create": "graph create cosmos-example --node https://api.thegraph.com/deploy/",
-    "deploy": "graph deploy cosmos-example --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
-    "remove": "graph remove cosmos-example --node https://api.thegraph.com/deploy/"
+    "create-local": "graph create cosmos-example --node http://localhost:8020",
+    "deploy-local": "graph deploy cosmos-example --ipfs http://localhost:5001 --node http://localhost:8020",
+    "remove-local": "graph remove cosmos-example --node http://localhost:8020"
   },
-  "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.22.1",
-    "@graphprotocol/graph-ts": "^0.22.1"
-  },
+  "devDependencies": {},
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "babel-register": "^6.26.0"
+    "babel-register": "^6.26.0",
+    "pretty-error": "^4.0.0"
   }
 }

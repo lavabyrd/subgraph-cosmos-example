@@ -593,8 +593,6 @@ export class Commit extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("round", Value.fromI32(0));
   }
 
   save(): void {
@@ -733,20 +731,20 @@ export class CommitSig extends Entity {
     }
   }
 
-  get validator_address(): string | null {
+  get validator_address(): Bytes | null {
     let value = this.get("validator_address");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
-      return value.toString();
+      return value.toBytes();
     }
   }
 
-  set validator_address(value: string | null) {
+  set validator_address(value: Bytes | null) {
     if (!value) {
       this.unset("validator_address");
     } else {
-      this.set("validator_address", Value.fromString(<string>value));
+      this.set("validator_address", Value.fromBytes(<Bytes>value));
     }
   }
 
@@ -1141,20 +1139,20 @@ export class Header extends Entity {
     }
   }
 
-  get proposer_address(): string | null {
+  get proposer_address(): Bytes | null {
     let value = this.get("proposer_address");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
-      return value.toString();
+      return value.toBytes();
     }
   }
 
-  set proposer_address(value: string | null) {
+  set proposer_address(value: Bytes | null) {
     if (!value) {
       this.unset("proposer_address");
     } else {
-      this.set("proposer_address", Value.fromString(<string>value));
+      this.set("proposer_address", Value.fromBytes(<Bytes>value));
     }
   }
 }
@@ -1654,9 +1652,6 @@ export class EventVote extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("round", Value.fromI32(0));
-    this.set("validator_index", Value.fromI32(0));
   }
 
   save(): void {
@@ -1762,20 +1757,20 @@ export class EventVote extends Entity {
     }
   }
 
-  get validator_address(): string | null {
+  get validator_address(): Bytes | null {
     let value = this.get("validator_address");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
-      return value.toString();
+      return value.toBytes();
     }
   }
 
-  set validator_address(value: string | null) {
+  set validator_address(value: Bytes | null) {
     if (!value) {
       this.unset("validator_address");
     } else {
-      this.set("validator_address", Value.fromString(<string>value));
+      this.set("validator_address", Value.fromBytes(<Bytes>value));
     }
   }
 
@@ -2366,23 +2361,6 @@ export class PublicKey extends Entity {
       this.set("secp256k1", Value.fromBytes(<Bytes>value));
     }
   }
-
-  get sr25519(): Bytes | null {
-    let value = this.get("sr25519");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBytes();
-    }
-  }
-
-  set sr25519(value: Bytes | null) {
-    if (!value) {
-      this.unset("sr25519");
-    } else {
-      this.set("sr25519", Value.fromBytes(<Bytes>value));
-    }
-  }
 }
 
 export class TxResult extends Entity {
@@ -2728,8 +2706,6 @@ export class EventAttribute extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("index", Value.fromBoolean(false));
   }
 
   save(): void {
@@ -2802,56 +2778,6 @@ export class EventAttribute extends Entity {
   }
 }
 
-export class Address extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save Address entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save Address entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("Address", id.toString(), this);
-    }
-  }
-
-  static load(id: string): Address | null {
-    return changetype<Address | null>(store.get("Address", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get address(): Bytes | null {
-    let value = this.get("address");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBytes();
-    }
-  }
-
-  set address(value: Bytes | null) {
-    if (!value) {
-      this.unset("address");
-    } else {
-      this.set("address", Value.fromBytes(<Bytes>value));
-    }
-  }
-}
-
 export class EventValidatorSetUpdates extends Entity {
   constructor(id: string) {
     super();
@@ -2914,8 +2840,6 @@ export class Timestamp extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("nanos", Value.fromI32(0));
   }
 
   save(): void {
@@ -3008,9 +2932,6 @@ export class Reward extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("amount", Value.fromString(""));
-    this.set("validator", Value.fromString(""));
   }
 
   save(): void {
@@ -3039,21 +2960,104 @@ export class Reward extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get amount(): string {
+  get amount(): string | null {
     let value = this.get("amount");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set amount(value: string) {
-    this.set("amount", Value.fromString(value));
+  set amount(value: string | null) {
+    if (!value) {
+      this.unset("amount");
+    } else {
+      this.set("amount", Value.fromString(<string>value));
+    }
   }
 
-  get validator(): string {
+  get validator(): string | null {
     let value = this.get("validator");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set validator(value: string | null) {
+    if (!value) {
+      this.unset("validator");
+    } else {
+      this.set("validator", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class EventData extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save EventData entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save EventData entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("EventData", id.toString(), this);
+    }
+  }
+
+  static load(id: string): EventData | null {
+    return changetype<EventData | null>(store.get("EventData", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
     return value!.toString();
   }
 
-  set validator(value: string) {
-    this.set("validator", Value.fromString(value));
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get event(): string | null {
+    let value = this.get("event");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set event(value: string | null) {
+    if (!value) {
+      this.unset("event");
+    } else {
+      this.set("event", Value.fromString(<string>value));
+    }
+  }
+
+  get block(): string | null {
+    let value = this.get("block");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set block(value: string | null) {
+    if (!value) {
+      this.unset("block");
+    } else {
+      this.set("block", Value.fromString(<string>value));
+    }
   }
 }

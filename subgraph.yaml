@@ -1,5 +1,5 @@
 specVersion: 0.0.2
-description: Cosmos Example 2
+description: Cosmos Example
 repository: https://github.com/figment-networks/subgraph-cosmos-example
 schema:
   file: ./schema.graphql
@@ -8,11 +8,12 @@ dataSources:
     name: GetBlockAndRewards
     network: cosmoshub-4
     source:
+      # Address and abi is required only for manifest validation at this moment
       address: '0x0000000000000000000000000000000000000000'
       abi: ''
       startBlock: 5201351
     mapping:
-      kind: tendermint/data
+      kind: tendermint
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
