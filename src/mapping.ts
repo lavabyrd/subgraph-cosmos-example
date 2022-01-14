@@ -12,7 +12,8 @@ import {
   Reward,
   Timestamp,
   TxResult,
-  Validator
+  Validator,
+  ValidatorUpdate
 } from "../generated/schema";
 
 export function handleBlock(el: tendermint.EventList): void {
@@ -29,7 +30,7 @@ export function handleBlock(el: tendermint.EventList): void {
 
   for (let index = 0; index < el.transaction.length; index++) {
     const txResult = el.transaction[index].TxResult;
-    const txID = header.data_hash.toHexString() + index.toString();
+    const txID = `${header.data_hash.toHexString()}-${index.toString()}`;
 
     saveResponseDeliverTx(txID, txResult);
     saveTxResult(txID, height, BigInt.fromI32(index), txResult)
@@ -126,19 +127,34 @@ function saveTxResult(id: string, height: BigInt, index: BigInt, txRes: tendermi
 
 function saveEndBlock(id: string, endBlock: tendermint.ResponseEndBlock): void {
   const responseEndBlock = new ResponseEndBlock(id);
-  responseEndBlock.validator_updates = saveValidatorUpdates(endBlock.validator_updates);
+  if (endBlock.validator_updates.length == 0) {
+    // responseEndBlock.validator_updates = saveValidatorUpdates(id, endBlock.validator_updates);
+  }
   responseEndBlock.save();
 }
 
-function saveValidatorUpdates(validators: Array<tendermint.Validator>): Array<string> {
-  let validatorIDs = new Array<string>(validators.length);
-  for (let i = 0; i < validators.length; i++) {
-    const v = validators[i];
-    const validatorID = v.address.toHexString();
-    saveValidator(validatorID, v);
-    validatorIDs.push(validatorID);
-  }
-  return validatorIDs;
+// function saveValidatorUpdates(id: string, validators: Array<tendermint.ValidatorUpdate>): Array<string> {
+//   const len = validators.length;
+//   let validatorIDs = new Array<string>(len);
+//   for (let i = 0; i < len; i++) {
+//     const v = validators[i];
+//     // const address = v.pub_key.slice(0,20).toHexString();
+//     const validatorID = `${id}-${address}`;
+//     log.info("address = {} validator_id = {}", [address, validatorID])
+//     saveValidatorUpdate(validatorID, address, v);
+//     validatorIDs.push(validatorID);
+//   }
+//   return validatorIDs;
+// }
+
+function saveValidatorUpdate(id: string, address: string,  v: tendermint.ValidatorUpdate): void {
+  savePublicKey(address, v.pub_key);
+  
+
+  const validatorUpdate = new ValidatorUpdate(id);
+  // validatorUpdate.pub_key = v.pub_key;
+  validatorUpdate.power = BigInt.fromString(v.power.toString());
+  validatorUpdate.save();
 }
 
 function saveValidator(id: string, v: tendermint.Validator): void {
@@ -147,25 +163,31 @@ function saveValidator(id: string, v: tendermint.Validator): void {
     return
   }
 
-  savePublicKey(id, v.pub_key);
+  // savePublicKey(v.address, v.pub_key);
 
   validator = new Validator(id);
   validator.address = v.address;
-  validator.pub_key = id;
+  // validator.pub_key = v.address;
   validator.voting_power = BigInt.fromString(v.voting_power.toString());
   validator.proposer_priority = BigInt.fromString(v.proposer_priority.toString());
   validator.save();
 }
 
-function savePublicKey(id: string, pk: tendermint.PublicKey): void {
-  const publicKey = new PublicKey(id);
-  publicKey.ed25519 = pk.ed25519;
-  publicKey.secp256k1 = pk.secp256k1;
-  publicKey.save();
+function savePublicKey(id: string, publicKey: tendermint.PublicKey): void {
+  let pk = PublicKey.load(id);
+  if (pk !== null) {
+    log.debug("Validator with {} already exists", [id])
+    return
+  }
+
+  pk = new PublicKey(id);
+  pk.ed25519 = publicKey.ed25519;
+  pk.secp256k1 = publicKey.secp256k1;
+  pk.save();
 }
 
 export function handleReward(eventData: tendermint.EventData): void {
-  const height = eventData.block.newblock.block.header.height
+  const height = eventData.block.new_block.block.header.height
   const amount = eventData.event.attributes[0].value;
   const validator = eventData.event.attributes[1].value;
 
