@@ -40,11 +40,12 @@ export function handleBlock(el: tendermint.EventList): void {
   const header = block.header;
   const blockHash = blockID.hash.toHex();
   const height = BigInt.fromString(header.height.toString());
+  const txLen = el.transaction.length;
 
   saveBlockID(blockHash, blockID);
   saveBlock(blockHash, block);
 
-  for (let index = 0; index < el.transaction.length; index++) {
+  for (let index = 0; index < txLen; index++) {
     const txResult = el.transaction[index].tx_result;
     const txID = `${header.data_hash.toHexString()}-${index.toString()}`;
 
@@ -54,6 +55,8 @@ export function handleBlock(el: tendermint.EventList): void {
 
   saveBeginBlock(blockHash, el.new_block.result_begin_block);
   saveEndBlock(blockHash, el.new_block.result_end_block);
+
+  log.info("BLOCK {} txs: {}", [height.toString(), txLen.toString()])
 }
 
 function saveBlockID(id: string, bID: tendermint.BlockID): void {
@@ -137,7 +140,7 @@ function saveEvidenceList(id: string, el: tendermint.EvidenceList): Array<string
     const evidence = el.evidence[i];
     const evidenceID = `${id}-${i}`;
     saveEvidence(evidenceID, evidence);
-    evidenceIDs.push(evidenceID);
+    evidenceIDs[i] = evidenceID;
   }
   return evidenceIDs;
 }
@@ -231,7 +234,7 @@ function saveValidators(id: string, v: Array<tendermint.Validator>): Array<strin
     const validator = v[i];
     const validatorID = `${id}-${i}`;
     saveValidator(validatorID, validator);
-    validatorIDs.push(validatorID);
+    validatorIDs[i] = validatorID;
   }
   return validatorIDs;
 }
@@ -241,14 +244,13 @@ function saveValidator(id: string, v: tendermint.Validator): void {
 
   const validator = new Validator(id);
   validator.address = v.address;
-  // validator.pub_key = v.address;
   validator.voting_power = BigInt.fromString(v.voting_power.toString());
   validator.proposer_priority = BigInt.fromString(v.proposer_priority.toString());
   validator.save();
 }
 
 function saveCommit(id: string, c: tendermint.Commit): void {
-  // saveBlockID(id, c.block_id)
+  saveBlockID(id, c.block_id);
 
   const commit = new Commit(id);
   commit.height = BigInt.fromString(c.height.toString());
@@ -265,7 +267,7 @@ function saveCommitSigs(id: string, cs: Array<tendermint.CommitSig>): Array<stri
     const commitSig = cs[i];
     const commitSigID = `${id}-${i}`;
     saveCommitSig(commitSigID, commitSig);
-    commitSigIDs.push(commitSigID);
+    commitSigIDs[i] = commitSigID;
   }
   return commitSigIDs;
 }
@@ -304,9 +306,7 @@ function saveTxResult(id: string, height: BigInt, index: BigInt, txRes: tendermi
 
 function saveBeginBlock(id: string, beginBlock: tendermint.ResponseBeginBlock): void {
   const responseBeginBlock = new ResponseBeginBlock(id);
-  if (beginBlock.events.length > 0) {
-    responseBeginBlock.events = saveEvents(`responseBeginBlock-${id}`, beginBlock.events);
-  }
+  responseBeginBlock.events = saveEvents(`responseBeginBlock-${id}`, beginBlock.events);
   responseBeginBlock.save();
 }
 
@@ -316,9 +316,7 @@ function saveEndBlock(id: string, endBlock: tendermint.ResponseEndBlock): void {
   const responseEndBlock = new ResponseEndBlock(id);
   responseEndBlock.validator_updates = saveValidatorUpdates(id, endBlock.validator_updates);
   responseEndBlock.consensus_param_updates = id;
-  if (endBlock.events.length > 0) {
-    responseEndBlock.events = saveEvents(`responseEndBlock-${id}`, endBlock.events);
-  }
+  responseEndBlock.events = saveEvents(`responseEndBlock-${id}`, endBlock.events);
   responseEndBlock.save();
 }
 
@@ -329,7 +327,7 @@ function saveValidatorUpdates(id: string, validators: Array<tendermint.Validator
     const validatorUpdate = validators[i];
     const validatorUpdateID = `${id}-${validatorUpdate.address}`;
     saveValidatorUpdate(validatorUpdateID, validatorUpdate);
-    validatorIDs.push(validatorUpdateID);
+    validatorIDs[i] = validatorUpdateID;
   }
   return validatorIDs;
 }
@@ -402,7 +400,7 @@ function saveEvents(id: string, events: Array<tendermint.Event>): Array<string> 
     const event = events[i];
     const eventID = `${id}-${i}`;
     saveEvent(eventID, event);
-    eventIDs.push(eventID);
+    eventIDs[i] = eventID;
   }
   return eventIDs;
 }
@@ -421,7 +419,7 @@ function saveEventAttributes(id: string, eventAttributes: Array<tendermint.Event
     const eventAttribute = eventAttributes[i];
     const eventAttributeID = `${id}-${i}`;
     saveEventAttribute(eventAttributeID, eventAttribute);
-    eventAttributeIDs.push(eventAttributeID);
+    eventAttributeIDs[i] = eventAttributeID;
   }
   return eventAttributeIDs;
 }

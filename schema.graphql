@@ -24,7 +24,6 @@ type Block @entity {
 
 type BlockID @entity {
   id: ID!
-  "bytes hash = 1 [(fig.bytetype) = \"Hash\"];"
   hash: Bytes
   part_set_header: PartSetHeader
 }
@@ -95,14 +94,14 @@ type DuplicateVoteEvidence @entity {
 
 type Event @entity {
   id: ID!
-  type: String
+  event_type: String
   attributes: [EventAttribute!]
 }
 
 type EventAttribute @entity {
   id: ID!
-  key: Bytes
-  value: Bytes
+  key: String
+  value: String
   "nondeterministic"
   index: Boolean
 }
@@ -177,11 +176,6 @@ type EvidenceParams @entity {
   max_bytes: BigInt
 }
 
-"fig"
-type fig @entity {
-  id: ID!
-}
-
 type Header @entity {
   id: ID!
   version: Consensus
@@ -204,7 +198,7 @@ type Header @entity {
   "hash 256 32 bytes - first block will be results of an empty hash"
   last_results_hash: Bytes
   "hash sha256 32 bytes"
-  eidence_hash: Bytes
+  evidence_hash: Bytes
   "hash 256 20 bytes - this is the first 20 characters of a 32-byte key - SHA256(pubkey)[:20]"
   proposer_address: Bytes
 }
@@ -281,6 +275,14 @@ type Timestamp @entity {
   nanos: Int
 }
 
+type TxResult @entity {
+  id: ID!
+  height: BigInt
+  index: BigInt
+  tx: Bytes
+  result: ResponseDeliverTx
+}
+
 type Validator @entity {
   id: ID!
   address: Bytes
@@ -290,20 +292,9 @@ type Validator @entity {
   proposer_priority: BigInt
 }
 
-type ValidatorUpdate @entity {
-  id: ID!
-  pub_key: PublicKey
-  power: BigInt
-}
-
 type ValidatorParams @entity {
   id: ID!
-  pub_key_types: [String]
-}
-
-type VersionParams @entity {
-  id: ID!
-  app_version: BigInt
+  pub_key_types: [String!]
 }
 
 type ValidatorSet @entity {
@@ -315,10 +306,14 @@ type ValidatorSet @entity {
   total_voting_power: BigInt
 }
 
-type TxResult @entity {
+type ValidatorUpdate @entity {
   id: ID!
-  height: BigInt
-  index: BigInt
-  tx: Bytes
-  result: ResponseDeliverTx
+  address: Bytes
+  pub_key: PublicKey
+  power: BigInt
+}
+
+type VersionParams @entity {
+  id: ID!
+  app_version: BigInt
 }
