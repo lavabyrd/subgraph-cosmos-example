@@ -1,4 +1,4 @@
-import { BigInt, log, tendermint } from "@graphprotocol/graph-ts";
+import { BigInt, Bytes, log, tendermint } from "@graphprotocol/graph-ts";
 import {
   Block,
   BlockID,
@@ -33,6 +33,7 @@ import {
   ValidatorUpdate,
   VersionParams
 } from "../generated/schema";
+import { decodeTxs } from "./cosmos";
 
 export function handleBlock(el: tendermint.EventList): void {
   const block = el.new_block.block;
@@ -90,6 +91,8 @@ function saveBlock(id: string, b: tendermint.Block): void {
 }
 
 function saveData(id: string, d: tendermint.Data): void {
+  decodeTxs(d.txs);
+
   const data = new Data(id);
   data.txs = d.txs;
   data.save();
@@ -262,6 +265,7 @@ function saveCommit(id: string, c: tendermint.Commit): void {
 
 function saveCommitSigs(id: string, cs: Array<tendermint.CommitSig>): Array<string> {
   const len = cs.length;
+  log.info("signatures len: {}", [len.toString()])
   let commitSigIDs = new Array<string>(len);
   for (let i = 0; i < len; i++) {
     const commitSig = cs[i];
@@ -274,6 +278,7 @@ function saveCommitSigs(id: string, cs: Array<tendermint.CommitSig>): Array<stri
 
 function saveCommitSig(id: string, cs: tendermint.CommitSig): void {
   saveTimestamp(id, cs.timestamp);
+  log.info("saveCommitSig {}", [cs.signature.toHexString()])
   
   const commitSig = new CommitSig(id);
   commitSig.block_id_flag = cs.block_id_flag.toString();
@@ -450,7 +455,7 @@ export function handleReward(eventData: tendermint.EventData): void {
   const amount = eventData.event.attributes[0].value;
   const validator = eventData.event.attributes[1].value;
 
-  log.info("REWARD amount = {}, validator = {}", [amount, validator]);
+  // log.info("REWARD amount = {}, validator = {}", [amount, validator]);
 
   let reward = new Reward(`${height}-${validator}`);
 
