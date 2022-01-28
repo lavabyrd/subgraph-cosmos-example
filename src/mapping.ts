@@ -2,25 +2,18 @@ import { BigInt, log, tendermint } from "@graphprotocol/graph-ts";
 import {
   Block,
   BlockID,
-  BlockParams,
   Commit,
   CommitSig,
   Consensus,
-  ConsensusParams,
   Data,
   DuplicateVoteEvidence,
-  Duration,
-  Event,
-  EventAttribute,
   EventVote,
   Evidence,
-  EvidenceParams,
   Header,
   LightBlock,
   LightClientAttackEvidence,
   PartSetHeader,
   PublicKey,
-  ResponseBeginBlock,
   ResponseDeliverTx,
   ResponseEndBlock,
   Reward,
@@ -28,10 +21,8 @@ import {
   Timestamp,
   TxResult,
   Validator,
-  ValidatorParams,
   ValidatorSet,
   ValidatorUpdate,
-  VersionParams
 } from "../generated/schema";
 
 export function handleBlock(el: tendermint.EventList): void {
@@ -53,7 +44,6 @@ export function handleBlock(el: tendermint.EventList): void {
     saveTxResult(txID, height, BigInt.fromI32(index), txResult)
   }
 
-  saveBeginBlock(blockHash, el.new_block.result_begin_block);
   saveEndBlock(blockHash, el.new_block.result_end_block);
 
   log.info("BLOCK {} txs: {}", [height.toString(), txLen.toString()])
@@ -304,19 +294,10 @@ function saveTxResult(id: string, height: BigInt, index: BigInt, txRes: tendermi
   txResult.save();
 }
 
-function saveBeginBlock(id: string, beginBlock: tendermint.ResponseBeginBlock): void {
-  const responseBeginBlock = new ResponseBeginBlock(id);
-  responseBeginBlock.events = saveEvents(`responseBeginBlock-${id}`, beginBlock.events);
-  responseBeginBlock.save();
-}
-
 function saveEndBlock(id: string, endBlock: tendermint.ResponseEndBlock): void {
-  saveConsensusParamUpdates(id, endBlock.consensus_param_updates);
-
   const responseEndBlock = new ResponseEndBlock(id);
   responseEndBlock.validator_updates = saveValidatorUpdates(id, endBlock.validator_updates);
   responseEndBlock.consensus_param_updates = id;
-  responseEndBlock.events = saveEvents(`responseEndBlock-${id}`, endBlock.events);
   responseEndBlock.save();
 }
 
@@ -341,95 +322,6 @@ function saveValidatorUpdate(id: string, v: tendermint.ValidatorUpdate): void {
   validatorUpdate.pub_key = validatorAddress;
   validatorUpdate.power = BigInt.fromString(v.power.toString());
   validatorUpdate.save();
-}
-
-function saveConsensusParamUpdates(id: string, cpu: tendermint.ConsensusParams): void {
-  saveBlockParams(id, cpu.block);
-  saveEvidenceParams(id, cpu.evidence);
-  saveValidatorParams(id, cpu.validator);
-  saveVersionParams(id, cpu.version);
-
-  const consensusParamsUpdates = new ConsensusParams(id);
-  consensusParamsUpdates.block = id;
-  consensusParamsUpdates.evidence = id;
-  consensusParamsUpdates.validator = id;
-  consensusParamsUpdates.version = id;
-  consensusParamsUpdates.save();
-}
-
-function saveBlockParams(id: string, bp: tendermint.BlockParams): void {
-  const blockParams = new BlockParams(id);
-  blockParams.max_bytes = BigInt.fromString(bp.max_bytes.toString());
-  blockParams.max_gas = BigInt.fromString(bp.max_gas.toString());
-  blockParams.save();
-}
-
-function saveEvidenceParams(id: string, ep: tendermint.EvidenceParams): void {
-  saveDuration(id, ep.max_age_duration);
-
-  const evidenceParams = new EvidenceParams(id);
-  evidenceParams.max_age_num_blocks = BigInt.fromString(ep.max_age_num_blocks.toString());
-  evidenceParams.max_age_duration = id;
-  evidenceParams.max_bytes = BigInt.fromString(ep.max_bytes.toString());
-  evidenceParams.save();
-}
-
-function saveDuration(id: string, ts: tendermint.Duration): void {
-  const timestamp = new Duration(id);
-  timestamp.seconds = BigInt.fromString(ts.seconds.toString());
-  timestamp.nanos = ts.nanos;
-  timestamp.save();
-}
-
-function saveValidatorParams(id: string, vp: tendermint.ValidatorParams): void {
-  const validatorParams = new ValidatorParams(id);
-  validatorParams.pub_key_types = vp.pub_key_types;
-  validatorParams.save();
-}
-
-function saveVersionParams(id: string, vp: tendermint.VersionParams): void {
-  const versionParams = new VersionParams(id);
-  versionParams.app_version = BigInt.fromString(vp.app_version.toString());
-  versionParams.save();
-}
-
-function saveEvents(id: string, events: Array<tendermint.Event>): Array<string> {
-  const len = events.length;
-  let eventIDs = new Array<string>(len);
-  for (let i = 0; i < len; i++) {
-    const event = events[i];
-    const eventID = `${id}-${i}`;
-    saveEvent(eventID, event);
-    eventIDs[i] = eventID;
-  }
-  return eventIDs;
-}
-
-function saveEvent(id: string, e: tendermint.Event): void {
-  const event = new Event(id);
-  event.event_type = e.event_type;
-  event.attributes = saveEventAttributes(id, e.attributes);
-  event.save()
-}
-
-function saveEventAttributes(id: string, eventAttributes: Array<tendermint.EventAttribute>): Array<string> {
-  const len = eventAttributes.length;
-  let eventAttributeIDs = new Array<string>(len);
-  for (let i = 0; i < len; i++) {
-    const eventAttribute = eventAttributes[i];
-    const eventAttributeID = `${id}-${i}`;
-    saveEventAttribute(eventAttributeID, eventAttribute);
-    eventAttributeIDs[i] = eventAttributeID;
-  }
-  return eventAttributeIDs;
-}
-
-function saveEventAttribute(id: string, e: tendermint.EventAttribute): void {
-  const eventAttribute = new EventAttribute(id);
-  eventAttribute.key = e.key;
-  eventAttribute.value = e.value;
-  eventAttribute.index = e.index;
-  eventAttribute.save()
 }
 
 function savePublicKey(id: string, publicKey: tendermint.PublicKey): void {
