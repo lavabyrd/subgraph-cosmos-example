@@ -5,19 +5,19 @@
 1. Run ingestor
 
 ```bash
-git clone ssh:github.com:figment-networks/ingestor-tendermint.git
+git clone https://github.com/figment-networks/ingestor-tendermint.git
 ```
 
 2. Run graph-node
 
 ```bash
-git clone ssh:github.com:figment-networks/graph-node.git
+git clone https://github.com/figment-networks/graph-node.git
 ```
 
 3. Run gaia
 
 ```bash
-git clone ssh:github.com:figment-networks/gaia.git
+git clone https://github.com/figment-networks/gaia.git
 ```
 
 ## Build
@@ -31,11 +31,11 @@ yarn build
 ## Create subgraph
 
 ```bash
-yarn create
+yarn create-local
 ```
 
 ## Deploy subgraph
 
 ```bash
-yarn deploy
+yarn deploy-local
 ```
