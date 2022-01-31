@@ -264,13 +264,29 @@ function saveCommitSigs(id: string, cs: Array<tendermint.CommitSig>): Array<stri
 
 function saveCommitSig(id: string, cs: tendermint.CommitSig): void {
   saveTimestamp(id, cs.timestamp);
-  
+
   const commitSig = new CommitSig(id);
-  commitSig.block_id_flag = cs.block_id_flag.toString();
+  commitSig.block_id_flag = getBlockIDFlag(cs.block_id_flag);
   commitSig.validator_address = cs.validator_address;
   commitSig.timestamp = id;
   commitSig.signature = cs.signature;
   commitSig.save();
+}
+
+function getBlockIDFlag(bf: tendermint.BlockIDFlag): string {
+  switch (bf) {
+    case tendermint.BlockIDFlag.BLOCK_ID_FLAG_UNKNOWN:
+      return "BLOCK_ID_FLAG_UNKNOWN"
+    case tendermint.BlockIDFlag.BLOCK_ID_FLAG_ABSENT:
+      return "BLOCK_ID_FLAG_ABSENT"
+    case tendermint.BlockIDFlag.BLOCK_ID_FLAG_COMMIT:
+      return "BLOCK_ID_FLAG_COMMIT"
+    case tendermint.BlockIDFlag.BLOCK_ID_FLAG_NIL:
+      return "BLOCK_ID_FLAG_NIL"
+    default:
+      log.error("unknown block_id_flag: {}", [bf.toString()])
+      return "unknown"
+  }
 }
 
 function saveResponseDeliverTx(id: string, txResult: tendermint.TxResult): void {
@@ -338,7 +354,7 @@ function savePublicKey(id: string, publicKey: tendermint.PublicKey): void {
 }
 
 export function handleReward(eventData: tendermint.EventData): void {
-  const height = eventData.block.new_block.block.header.height
+  const height = eventData.block.block.header.height
   const amount = eventData.event.attributes[0].value;
   const validator = eventData.event.attributes[1].value;
 
