@@ -11,23 +11,35 @@ dataSources:
       # Address and abi is required only for manifest validation at this moment
       address: '0x0000000000000000000000000000000000000000'
       abi: ''
-      startBlock: 5201351
+      startBlock: 0
     mapping:
       kind: tendermint
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - EventList
-        - Version
         - Block
-        - Header
         - BlockID
+        - Commit
+        - CommitSig
+        - Consensus
         - Data
-        - TxResult
+        - DuplicateVoteEvidence
+        - EventVote
+        - Evidence
+        - Header
+        - LightBlock
+        - LightClientAttackEvidence
+        - PartSetHeader
+        - PublicKey
         - ResponseDeliverTx
-        - Address
-        - Timestamp
+        - ResponseEndBlock
         - Reward
+        - SignedHeader
+        - Timestamp
+        - TxResult
+        - Validator
+        - ValidatorSet
+        - ValidatorUpdate
       abis: []
       blockHandlers:
         - handler: handleBlock
