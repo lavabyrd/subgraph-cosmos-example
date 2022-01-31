@@ -1,21 +1,19 @@
 {
-    "name": "cosmos-example",
-    "version": "0.1.0",
-    "repository": "https://github.com/figment-networks/subgraph-cosmos-example",
-    "license": "MIT",
-    "scripts": {
-      "codegen": "graph codegen",
-      "build": "graph build",
-      "create-local": "graph create cosmos-example --node http://localhost:8020",
-      "deploy-local": "graph deploy cosmos-example -l v0.1.0 --ipfs http://localhost:5001 --node http://localhost:8020",
-      "remove-local": "graph remove cosmos-example --node http://localhost:8020"
-    },
-    "devDependencies": {
-      "@graphprotocol/graph-cli": "^0.22.1",
-      "@graphprotocol/graph-ts": "^0.22.1"
-    },
-    "dependencies": {
-      "babel-polyfill": "^6.26.0",
-      "babel-register": "^6.26.0"
-    }
+  "name": "cosmos-example",
+  "version": "0.1.0",
+  "repository": "https://github.com/figment-networks/subgraph-cosmos-example",
+  "license": "MIT",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "create-local": "graph create cosmos-example --node http://localhost:8020",
+    "deploy-local": "graph deploy cosmos-example -l v0.1.0 --ipfs http://localhost:5001 --node http://localhost:8020",
+    "remove-local": "graph remove cosmos-example --node http://localhost:8020"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "babel-register": "^6.26.0",
+    "pretty-error": "^4.0.0"
   }
+}

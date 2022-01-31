@@ -11,483 +11,6 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class EventList extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save EventList entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save EventList entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("EventList", id.toString(), this);
-    }
-  }
-
-  static load(id: string): EventList | null {
-    return changetype<EventList | null>(store.get("EventList", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get newblock(): string | null {
-    let value = this.get("newblock");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set newblock(value: string | null) {
-    if (!value) {
-      this.unset("newblock");
-    } else {
-      this.set("newblock", Value.fromString(<string>value));
-    }
-  }
-
-  get transaction(): Array<string> | null {
-    let value = this.get("transaction");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set transaction(value: Array<string> | null) {
-    if (!value) {
-      this.unset("transaction");
-    } else {
-      this.set("transaction", Value.fromStringArray(<Array<string>>value));
-    }
-  }
-
-  get validatorsetupdates(): string | null {
-    let value = this.get("validatorsetupdates");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set validatorsetupdates(value: string | null) {
-    if (!value) {
-      this.unset("validatorsetupdates");
-    } else {
-      this.set("validatorsetupdates", Value.fromString(<string>value));
-    }
-  }
-}
-
-export class EventBlock extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save EventBlock entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save EventBlock entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("EventBlock", id.toString(), this);
-    }
-  }
-
-  static load(id: string): EventBlock | null {
-    return changetype<EventBlock | null>(store.get("EventBlock", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get block(): string | null {
-    let value = this.get("block");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set block(value: string | null) {
-    if (!value) {
-      this.unset("block");
-    } else {
-      this.set("block", Value.fromString(<string>value));
-    }
-  }
-
-  get block_id(): string | null {
-    let value = this.get("block_id");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set block_id(value: string | null) {
-    if (!value) {
-      this.unset("block_id");
-    } else {
-      this.set("block_id", Value.fromString(<string>value));
-    }
-  }
-
-  get result_begin_block(): string | null {
-    let value = this.get("result_begin_block");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set result_begin_block(value: string | null) {
-    if (!value) {
-      this.unset("result_begin_block");
-    } else {
-      this.set("result_begin_block", Value.fromString(<string>value));
-    }
-  }
-
-  get result_end_block(): string | null {
-    let value = this.get("result_end_block");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set result_end_block(value: string | null) {
-    if (!value) {
-      this.unset("result_end_block");
-    } else {
-      this.set("result_end_block", Value.fromString(<string>value));
-    }
-  }
-}
-
-export class ResponseBeginBlock extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save ResponseBeginBlock entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save ResponseBeginBlock entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("ResponseBeginBlock", id.toString(), this);
-    }
-  }
-
-  static load(id: string): ResponseBeginBlock | null {
-    return changetype<ResponseBeginBlock | null>(
-      store.get("ResponseBeginBlock", id)
-    );
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get events(): Array<string> | null {
-    let value = this.get("events");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set events(value: Array<string> | null) {
-    if (!value) {
-      this.unset("events");
-    } else {
-      this.set("events", Value.fromStringArray(<Array<string>>value));
-    }
-  }
-}
-
-export class ResponseEndBlock extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save ResponseEndBlock entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save ResponseEndBlock entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("ResponseEndBlock", id.toString(), this);
-    }
-  }
-
-  static load(id: string): ResponseEndBlock | null {
-    return changetype<ResponseEndBlock | null>(
-      store.get("ResponseEndBlock", id)
-    );
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get validator_updates(): Array<string> | null {
-    let value = this.get("validator_updates");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set validator_updates(value: Array<string> | null) {
-    if (!value) {
-      this.unset("validator_updates");
-    } else {
-      this.set(
-        "validator_updates",
-        Value.fromStringArray(<Array<string>>value)
-      );
-    }
-  }
-
-  get consensus_param_updates(): string | null {
-    let value = this.get("consensus_param_updates");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set consensus_param_updates(value: string | null) {
-    if (!value) {
-      this.unset("consensus_param_updates");
-    } else {
-      this.set("consensus_param_updates", Value.fromString(<string>value));
-    }
-  }
-
-  get events(): Array<string> | null {
-    let value = this.get("events");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set events(value: Array<string> | null) {
-    if (!value) {
-      this.unset("events");
-    } else {
-      this.set("events", Value.fromStringArray(<Array<string>>value));
-    }
-  }
-}
-
-export class ConsensusParams extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save ConsensusParams entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save ConsensusParams entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("ConsensusParams", id.toString(), this);
-    }
-  }
-
-  static load(id: string): ConsensusParams | null {
-    return changetype<ConsensusParams | null>(store.get("ConsensusParams", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get block(): string | null {
-    let value = this.get("block");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set block(value: string | null) {
-    if (!value) {
-      this.unset("block");
-    } else {
-      this.set("block", Value.fromString(<string>value));
-    }
-  }
-
-  get evidence(): string | null {
-    let value = this.get("evidence");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set evidence(value: string | null) {
-    if (!value) {
-      this.unset("evidence");
-    } else {
-      this.set("evidence", Value.fromString(<string>value));
-    }
-  }
-
-  get validator(): string | null {
-    let value = this.get("validator");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set validator(value: string | null) {
-    if (!value) {
-      this.unset("validator");
-    } else {
-      this.set("validator", Value.fromString(<string>value));
-    }
-  }
-
-  get version(): string | null {
-    let value = this.get("version");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set version(value: string | null) {
-    if (!value) {
-      this.unset("version");
-    } else {
-      this.set("version", Value.fromString(<string>value));
-    }
-  }
-}
-
-export class Version extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save Version entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save Version entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("Version", id.toString(), this);
-    }
-  }
-
-  static load(id: string): Version | null {
-    return changetype<Version | null>(store.get("Version", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get app_version(): BigInt | null {
-    let value = this.get("app_version");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set app_version(value: BigInt | null) {
-    if (!value) {
-      this.unset("app_version");
-    } else {
-      this.set("app_version", Value.fromBigInt(<BigInt>value));
-    }
-  }
-}
-
 export class Block extends Entity {
   constructor(id: string) {
     super();
@@ -589,12 +112,144 @@ export class Block extends Entity {
   }
 }
 
+export class BlockID extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save BlockID entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save BlockID entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("BlockID", id.toString(), this);
+    }
+  }
+
+  static load(id: string): BlockID | null {
+    return changetype<BlockID | null>(store.get("BlockID", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get hash(): Bytes | null {
+    let value = this.get("hash");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set hash(value: Bytes | null) {
+    if (!value) {
+      this.unset("hash");
+    } else {
+      this.set("hash", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get part_set_header(): string | null {
+    let value = this.get("part_set_header");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set part_set_header(value: string | null) {
+    if (!value) {
+      this.unset("part_set_header");
+    } else {
+      this.set("part_set_header", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class BlockParams extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save BlockParams entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save BlockParams entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("BlockParams", id.toString(), this);
+    }
+  }
+
+  static load(id: string): BlockParams | null {
+    return changetype<BlockParams | null>(store.get("BlockParams", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get max_bytes(): BigInt | null {
+    let value = this.get("max_bytes");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set max_bytes(value: BigInt | null) {
+    if (!value) {
+      this.unset("max_bytes");
+    } else {
+      this.set("max_bytes", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get max_gas(): BigInt | null {
+    let value = this.get("max_gas");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set max_gas(value: BigInt | null) {
+    if (!value) {
+      this.unset("max_gas");
+    } else {
+      this.set("max_gas", Value.fromBigInt(<BigInt>value));
+    }
+  }
+}
+
 export class Commit extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("round", Value.fromI32(0));
   }
 
   save(): void {
@@ -733,20 +388,20 @@ export class CommitSig extends Entity {
     }
   }
 
-  get validator_address(): string | null {
+  get validator_address(): Bytes | null {
     let value = this.get("validator_address");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
-      return value.toString();
+      return value.toBytes();
     }
   }
 
-  set validator_address(value: string | null) {
+  set validator_address(value: Bytes | null) {
     if (!value) {
       this.unset("validator_address");
     } else {
-      this.set("validator_address", Value.fromString(<string>value));
+      this.set("validator_address", Value.fromBytes(<Bytes>value));
     }
   }
 
@@ -785,7 +440,7 @@ export class CommitSig extends Entity {
   }
 }
 
-export class EventBlockHeader extends Entity {
+export class Consensus extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -793,20 +448,300 @@ export class EventBlockHeader extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save EventBlockHeader entity without an ID");
+    assert(id != null, "Cannot save Consensus entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save EventBlockHeader entity with non-string ID. " +
+        "Cannot save Consensus entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("EventBlockHeader", id.toString(), this);
+      store.set("Consensus", id.toString(), this);
     }
   }
 
-  static load(id: string): EventBlockHeader | null {
-    return changetype<EventBlockHeader | null>(
-      store.get("EventBlockHeader", id)
+  static load(id: string): Consensus | null {
+    return changetype<Consensus | null>(store.get("Consensus", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get block(): BigInt | null {
+    let value = this.get("block");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set block(value: BigInt | null) {
+    if (!value) {
+      this.unset("block");
+    } else {
+      this.set("block", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get app(): BigInt | null {
+    let value = this.get("app");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set app(value: BigInt | null) {
+    if (!value) {
+      this.unset("app");
+    } else {
+      this.set("app", Value.fromBigInt(<BigInt>value));
+    }
+  }
+}
+
+export class ConsensusParams extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save ConsensusParams entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save ConsensusParams entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("ConsensusParams", id.toString(), this);
+    }
+  }
+
+  static load(id: string): ConsensusParams | null {
+    return changetype<ConsensusParams | null>(store.get("ConsensusParams", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get block(): string | null {
+    let value = this.get("block");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set block(value: string | null) {
+    if (!value) {
+      this.unset("block");
+    } else {
+      this.set("block", Value.fromString(<string>value));
+    }
+  }
+
+  get evidence(): string | null {
+    let value = this.get("evidence");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set evidence(value: string | null) {
+    if (!value) {
+      this.unset("evidence");
+    } else {
+      this.set("evidence", Value.fromString(<string>value));
+    }
+  }
+
+  get validator(): string | null {
+    let value = this.get("validator");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set validator(value: string | null) {
+    if (!value) {
+      this.unset("validator");
+    } else {
+      this.set("validator", Value.fromString(<string>value));
+    }
+  }
+
+  get version(): string | null {
+    let value = this.get("version");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set version(value: string | null) {
+    if (!value) {
+      this.unset("version");
+    } else {
+      this.set("version", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class Data extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Data entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Data entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Data", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Data | null {
+    return changetype<Data | null>(store.get("Data", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get txs(): Array<Bytes> | null {
+    let value = this.get("txs");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytesArray();
+    }
+  }
+
+  set txs(value: Array<Bytes> | null) {
+    if (!value) {
+      this.unset("txs");
+    } else {
+      this.set("txs", Value.fromBytesArray(<Array<Bytes>>value));
+    }
+  }
+}
+
+export class Duration extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Duration entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Duration entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Duration", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Duration | null {
+    return changetype<Duration | null>(store.get("Duration", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get seconds(): BigInt | null {
+    let value = this.get("seconds");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set seconds(value: BigInt | null) {
+    if (!value) {
+      this.unset("seconds");
+    } else {
+      this.set("seconds", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get nanos(): i32 {
+    let value = this.get("nanos");
+    return value!.toI32();
+  }
+
+  set nanos(value: i32) {
+    this.set("nanos", Value.fromI32(value));
+  }
+}
+
+export class DuplicateVoteEvidence extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save DuplicateVoteEvidence entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save DuplicateVoteEvidence entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("DuplicateVoteEvidence", id.toString(), this);
+    }
+  }
+
+  static load(id: string): DuplicateVoteEvidence | null {
+    return changetype<DuplicateVoteEvidence | null>(
+      store.get("DuplicateVoteEvidence", id)
     );
   }
 
@@ -819,8 +754,8 @@ export class EventBlockHeader extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get header(): string | null {
-    let value = this.get("header");
+  get vote_a(): string | null {
+    let value = this.get("vote_a");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -828,16 +763,33 @@ export class EventBlockHeader extends Entity {
     }
   }
 
-  set header(value: string | null) {
+  set vote_a(value: string | null) {
     if (!value) {
-      this.unset("header");
+      this.unset("vote_a");
     } else {
-      this.set("header", Value.fromString(<string>value));
+      this.set("vote_a", Value.fromString(<string>value));
     }
   }
 
-  get num_txs(): BigInt | null {
-    let value = this.get("num_txs");
+  get vote_b(): string | null {
+    let value = this.get("vote_b");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set vote_b(value: string | null) {
+    if (!value) {
+      this.unset("vote_b");
+    } else {
+      this.set("vote_b", Value.fromString(<string>value));
+    }
+  }
+
+  get total_voting_power(): BigInt | null {
+    let value = this.get("total_voting_power");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -845,11 +797,255 @@ export class EventBlockHeader extends Entity {
     }
   }
 
-  set num_txs(value: BigInt | null) {
+  set total_voting_power(value: BigInt | null) {
     if (!value) {
-      this.unset("num_txs");
+      this.unset("total_voting_power");
     } else {
-      this.set("num_txs", Value.fromBigInt(<BigInt>value));
+      this.set("total_voting_power", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get validator_power(): BigInt | null {
+    let value = this.get("validator_power");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set validator_power(value: BigInt | null) {
+    if (!value) {
+      this.unset("validator_power");
+    } else {
+      this.set("validator_power", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get timestamp(): string | null {
+    let value = this.get("timestamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set timestamp(value: string | null) {
+    if (!value) {
+      this.unset("timestamp");
+    } else {
+      this.set("timestamp", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class Event extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Event entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Event entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Event", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Event | null {
+    return changetype<Event | null>(store.get("Event", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get event_type(): string | null {
+    let value = this.get("event_type");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set event_type(value: string | null) {
+    if (!value) {
+      this.unset("event_type");
+    } else {
+      this.set("event_type", Value.fromString(<string>value));
+    }
+  }
+
+  get attributes(): Array<string> | null {
+    let value = this.get("attributes");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set attributes(value: Array<string> | null) {
+    if (!value) {
+      this.unset("attributes");
+    } else {
+      this.set("attributes", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+}
+
+export class EventAttribute extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save EventAttribute entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save EventAttribute entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("EventAttribute", id.toString(), this);
+    }
+  }
+
+  static load(id: string): EventAttribute | null {
+    return changetype<EventAttribute | null>(store.get("EventAttribute", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get key(): string | null {
+    let value = this.get("key");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set key(value: string | null) {
+    if (!value) {
+      this.unset("key");
+    } else {
+      this.set("key", Value.fromString(<string>value));
+    }
+  }
+
+  get value(): string | null {
+    let value = this.get("value");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set value(value: string | null) {
+    if (!value) {
+      this.unset("value");
+    } else {
+      this.set("value", Value.fromString(<string>value));
+    }
+  }
+
+  get index(): boolean {
+    let value = this.get("index");
+    return value!.toBoolean();
+  }
+
+  set index(value: boolean) {
+    this.set("index", Value.fromBoolean(value));
+  }
+}
+
+export class EventBlock extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save EventBlock entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save EventBlock entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("EventBlock", id.toString(), this);
+    }
+  }
+
+  static load(id: string): EventBlock | null {
+    return changetype<EventBlock | null>(store.get("EventBlock", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get block(): string | null {
+    let value = this.get("block");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set block(value: string | null) {
+    if (!value) {
+      this.unset("block");
+    } else {
+      this.set("block", Value.fromString(<string>value));
+    }
+  }
+
+  get block_id(): string | null {
+    let value = this.get("block_id");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set block_id(value: string | null) {
+    if (!value) {
+      this.unset("block_id");
+    } else {
+      this.set("block_id", Value.fromString(<string>value));
     }
   }
 
@@ -884,6 +1080,619 @@ export class EventBlockHeader extends Entity {
       this.unset("result_end_block");
     } else {
       this.set("result_end_block", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class EventData extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save EventData entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save EventData entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("EventData", id.toString(), this);
+    }
+  }
+
+  static load(id: string): EventData | null {
+    return changetype<EventData | null>(store.get("EventData", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get event(): string | null {
+    let value = this.get("event");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set event(value: string | null) {
+    if (!value) {
+      this.unset("event");
+    } else {
+      this.set("event", Value.fromString(<string>value));
+    }
+  }
+
+  get block(): string | null {
+    let value = this.get("block");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set block(value: string | null) {
+    if (!value) {
+      this.unset("block");
+    } else {
+      this.set("block", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class EventList extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save EventList entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save EventList entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("EventList", id.toString(), this);
+    }
+  }
+
+  static load(id: string): EventList | null {
+    return changetype<EventList | null>(store.get("EventList", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get new_block(): string | null {
+    let value = this.get("new_block");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set new_block(value: string | null) {
+    if (!value) {
+      this.unset("new_block");
+    } else {
+      this.set("new_block", Value.fromString(<string>value));
+    }
+  }
+
+  get transaction(): Array<string> | null {
+    let value = this.get("transaction");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set transaction(value: Array<string> | null) {
+    if (!value) {
+      this.unset("transaction");
+    } else {
+      this.set("transaction", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+
+  get validator_set_updates(): string | null {
+    let value = this.get("validator_set_updates");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set validator_set_updates(value: string | null) {
+    if (!value) {
+      this.unset("validator_set_updates");
+    } else {
+      this.set("validator_set_updates", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class EventTx extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save EventTx entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save EventTx entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("EventTx", id.toString(), this);
+    }
+  }
+
+  static load(id: string): EventTx | null {
+    return changetype<EventTx | null>(store.get("EventTx", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get tx_result(): string | null {
+    let value = this.get("tx_result");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set tx_result(value: string | null) {
+    if (!value) {
+      this.unset("tx_result");
+    } else {
+      this.set("tx_result", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class EventValidatorSetUpdates extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save EventValidatorSetUpdates entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save EventValidatorSetUpdates entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("EventValidatorSetUpdates", id.toString(), this);
+    }
+  }
+
+  static load(id: string): EventValidatorSetUpdates | null {
+    return changetype<EventValidatorSetUpdates | null>(
+      store.get("EventValidatorSetUpdates", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get validator_updates(): Array<string> | null {
+    let value = this.get("validator_updates");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set validator_updates(value: Array<string> | null) {
+    if (!value) {
+      this.unset("validator_updates");
+    } else {
+      this.set(
+        "validator_updates",
+        Value.fromStringArray(<Array<string>>value)
+      );
+    }
+  }
+}
+
+export class EventVote extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save EventVote entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save EventVote entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("EventVote", id.toString(), this);
+    }
+  }
+
+  static load(id: string): EventVote | null {
+    return changetype<EventVote | null>(store.get("EventVote", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get event_vote_type(): string | null {
+    let value = this.get("event_vote_type");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set event_vote_type(value: string | null) {
+    if (!value) {
+      this.unset("event_vote_type");
+    } else {
+      this.set("event_vote_type", Value.fromString(<string>value));
+    }
+  }
+
+  get height(): BigInt | null {
+    let value = this.get("height");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set height(value: BigInt | null) {
+    if (!value) {
+      this.unset("height");
+    } else {
+      this.set("height", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get round(): i32 {
+    let value = this.get("round");
+    return value!.toI32();
+  }
+
+  set round(value: i32) {
+    this.set("round", Value.fromI32(value));
+  }
+
+  get block_id(): string | null {
+    let value = this.get("block_id");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set block_id(value: string | null) {
+    if (!value) {
+      this.unset("block_id");
+    } else {
+      this.set("block_id", Value.fromString(<string>value));
+    }
+  }
+
+  get timestamp(): string | null {
+    let value = this.get("timestamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set timestamp(value: string | null) {
+    if (!value) {
+      this.unset("timestamp");
+    } else {
+      this.set("timestamp", Value.fromString(<string>value));
+    }
+  }
+
+  get validator_address(): Bytes | null {
+    let value = this.get("validator_address");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set validator_address(value: Bytes | null) {
+    if (!value) {
+      this.unset("validator_address");
+    } else {
+      this.set("validator_address", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get validator_index(): i32 {
+    let value = this.get("validator_index");
+    return value!.toI32();
+  }
+
+  set validator_index(value: i32) {
+    this.set("validator_index", Value.fromI32(value));
+  }
+
+  get signature(): Bytes | null {
+    let value = this.get("signature");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set signature(value: Bytes | null) {
+    if (!value) {
+      this.unset("signature");
+    } else {
+      this.set("signature", Value.fromBytes(<Bytes>value));
+    }
+  }
+}
+
+export class Evidence extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Evidence entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Evidence entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Evidence", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Evidence | null {
+    return changetype<Evidence | null>(store.get("Evidence", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get duplicate_vote_evidence(): string | null {
+    let value = this.get("duplicate_vote_evidence");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set duplicate_vote_evidence(value: string | null) {
+    if (!value) {
+      this.unset("duplicate_vote_evidence");
+    } else {
+      this.set("duplicate_vote_evidence", Value.fromString(<string>value));
+    }
+  }
+
+  get light_client_attack_evidence(): string | null {
+    let value = this.get("light_client_attack_evidence");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set light_client_attack_evidence(value: string | null) {
+    if (!value) {
+      this.unset("light_client_attack_evidence");
+    } else {
+      this.set("light_client_attack_evidence", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class EvidenceList extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save EvidenceList entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save EvidenceList entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("EvidenceList", id.toString(), this);
+    }
+  }
+
+  static load(id: string): EvidenceList | null {
+    return changetype<EvidenceList | null>(store.get("EvidenceList", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get evidence(): Array<string> | null {
+    let value = this.get("evidence");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set evidence(value: Array<string> | null) {
+    if (!value) {
+      this.unset("evidence");
+    } else {
+      this.set("evidence", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+}
+
+export class EvidenceParams extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save EvidenceParams entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save EvidenceParams entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("EvidenceParams", id.toString(), this);
+    }
+  }
+
+  static load(id: string): EvidenceParams | null {
+    return changetype<EvidenceParams | null>(store.get("EvidenceParams", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get max_age_num_blocks(): BigInt | null {
+    let value = this.get("max_age_num_blocks");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set max_age_num_blocks(value: BigInt | null) {
+    if (!value) {
+      this.unset("max_age_num_blocks");
+    } else {
+      this.set("max_age_num_blocks", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get max_age_duration(): string | null {
+    let value = this.get("max_age_duration");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set max_age_duration(value: string | null) {
+    if (!value) {
+      this.unset("max_age_duration");
+    } else {
+      this.set("max_age_duration", Value.fromString(<string>value));
+    }
+  }
+
+  get max_bytes(): BigInt | null {
+    let value = this.get("max_bytes");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set max_bytes(value: BigInt | null) {
+    if (!value) {
+      this.unset("max_bytes");
+    } else {
+      this.set("max_bytes", Value.fromBigInt(<BigInt>value));
     }
   }
 }
@@ -1141,25 +1950,25 @@ export class Header extends Entity {
     }
   }
 
-  get proposer_address(): string | null {
+  get proposer_address(): Bytes | null {
     let value = this.get("proposer_address");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
-      return value.toString();
+      return value.toBytes();
     }
   }
 
-  set proposer_address(value: string | null) {
+  set proposer_address(value: Bytes | null) {
     if (!value) {
       this.unset("proposer_address");
     } else {
-      this.set("proposer_address", Value.fromString(<string>value));
+      this.set("proposer_address", Value.fromBytes(<Bytes>value));
     }
   }
 }
 
-export class Consensus extends Entity {
+export class LightBlock extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -1167,19 +1976,19 @@ export class Consensus extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save Consensus entity without an ID");
+    assert(id != null, "Cannot save LightBlock entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Consensus entity with non-string ID. " +
+        "Cannot save LightBlock entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("Consensus", id.toString(), this);
+      store.set("LightBlock", id.toString(), this);
     }
   }
 
-  static load(id: string): Consensus | null {
-    return changetype<Consensus | null>(store.get("Consensus", id));
+  static load(id: string): LightBlock | null {
+    return changetype<LightBlock | null>(store.get("LightBlock", id));
   }
 
   get id(): string {
@@ -1191,92 +2000,8 @@ export class Consensus extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get block(): BigInt | null {
-    let value = this.get("block");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set block(value: BigInt | null) {
-    if (!value) {
-      this.unset("block");
-    } else {
-      this.set("block", Value.fromBigInt(<BigInt>value));
-    }
-  }
-
-  get app(): BigInt | null {
-    let value = this.get("app");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set app(value: BigInt | null) {
-    if (!value) {
-      this.unset("app");
-    } else {
-      this.set("app", Value.fromBigInt(<BigInt>value));
-    }
-  }
-}
-
-export class BlockID extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save BlockID entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save BlockID entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("BlockID", id.toString(), this);
-    }
-  }
-
-  static load(id: string): BlockID | null {
-    return changetype<BlockID | null>(store.get("BlockID", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get hash(): Bytes | null {
-    let value = this.get("hash");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBytes();
-    }
-  }
-
-  set hash(value: Bytes | null) {
-    if (!value) {
-      this.unset("hash");
-    } else {
-      this.set("hash", Value.fromBytes(<Bytes>value));
-    }
-  }
-
-  get part_set_header(): string | null {
-    let value = this.get("part_set_header");
+  get signed_header(): string | null {
+    let value = this.get("signed_header");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1284,166 +2009,16 @@ export class BlockID extends Entity {
     }
   }
 
-  set part_set_header(value: string | null) {
+  set signed_header(value: string | null) {
     if (!value) {
-      this.unset("part_set_header");
+      this.unset("signed_header");
     } else {
-      this.set("part_set_header", Value.fromString(<string>value));
-    }
-  }
-}
-
-export class PartSetHeader extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save PartSetHeader entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save PartSetHeader entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("PartSetHeader", id.toString(), this);
+      this.set("signed_header", Value.fromString(<string>value));
     }
   }
 
-  static load(id: string): PartSetHeader | null {
-    return changetype<PartSetHeader | null>(store.get("PartSetHeader", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get total(): BigInt | null {
-    let value = this.get("total");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set total(value: BigInt | null) {
-    if (!value) {
-      this.unset("total");
-    } else {
-      this.set("total", Value.fromBigInt(<BigInt>value));
-    }
-  }
-
-  get hash(): Bytes | null {
-    let value = this.get("hash");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBytes();
-    }
-  }
-
-  set hash(value: Bytes | null) {
-    if (!value) {
-      this.unset("hash");
-    } else {
-      this.set("hash", Value.fromBytes(<Bytes>value));
-    }
-  }
-}
-
-export class Data extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save Data entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save Data entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("Data", id.toString(), this);
-    }
-  }
-
-  static load(id: string): Data | null {
-    return changetype<Data | null>(store.get("Data", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get txs(): Array<Bytes> | null {
-    let value = this.get("txs");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBytesArray();
-    }
-  }
-
-  set txs(value: Array<Bytes> | null) {
-    if (!value) {
-      this.unset("txs");
-    } else {
-      this.set("txs", Value.fromBytesArray(<Array<Bytes>>value));
-    }
-  }
-}
-
-export class Evidence extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save Evidence entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save Evidence entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("Evidence", id.toString(), this);
-    }
-  }
-
-  static load(id: string): Evidence | null {
-    return changetype<Evidence | null>(store.get("Evidence", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get duplicate_vote_evidence(): string | null {
-    let value = this.get("duplicate_vote_evidence");
+  get validator_set(): string | null {
+    let value = this.get("validator_set");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1451,357 +2026,11 @@ export class Evidence extends Entity {
     }
   }
 
-  set duplicate_vote_evidence(value: string | null) {
+  set validator_set(value: string | null) {
     if (!value) {
-      this.unset("duplicate_vote_evidence");
+      this.unset("validator_set");
     } else {
-      this.set("duplicate_vote_evidence", Value.fromString(<string>value));
-    }
-  }
-
-  get light_client_attack_evidence(): string | null {
-    let value = this.get("light_client_attack_evidence");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set light_client_attack_evidence(value: string | null) {
-    if (!value) {
-      this.unset("light_client_attack_evidence");
-    } else {
-      this.set("light_client_attack_evidence", Value.fromString(<string>value));
-    }
-  }
-}
-
-export class DuplicateVoteEvidence extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(
-      id != null,
-      "Cannot save DuplicateVoteEvidence entity without an ID"
-    );
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save DuplicateVoteEvidence entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("DuplicateVoteEvidence", id.toString(), this);
-    }
-  }
-
-  static load(id: string): DuplicateVoteEvidence | null {
-    return changetype<DuplicateVoteEvidence | null>(
-      store.get("DuplicateVoteEvidence", id)
-    );
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get vote_a(): string | null {
-    let value = this.get("vote_a");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set vote_a(value: string | null) {
-    if (!value) {
-      this.unset("vote_a");
-    } else {
-      this.set("vote_a", Value.fromString(<string>value));
-    }
-  }
-
-  get vote_b(): string | null {
-    let value = this.get("vote_b");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set vote_b(value: string | null) {
-    if (!value) {
-      this.unset("vote_b");
-    } else {
-      this.set("vote_b", Value.fromString(<string>value));
-    }
-  }
-
-  get total_voting_power(): BigInt | null {
-    let value = this.get("total_voting_power");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set total_voting_power(value: BigInt | null) {
-    if (!value) {
-      this.unset("total_voting_power");
-    } else {
-      this.set("total_voting_power", Value.fromBigInt(<BigInt>value));
-    }
-  }
-
-  get validator_power(): BigInt | null {
-    let value = this.get("validator_power");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set validator_power(value: BigInt | null) {
-    if (!value) {
-      this.unset("validator_power");
-    } else {
-      this.set("validator_power", Value.fromBigInt(<BigInt>value));
-    }
-  }
-
-  get timestamp(): string | null {
-    let value = this.get("timestamp");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set timestamp(value: string | null) {
-    if (!value) {
-      this.unset("timestamp");
-    } else {
-      this.set("timestamp", Value.fromString(<string>value));
-    }
-  }
-}
-
-export class EventTx extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save EventTx entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save EventTx entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("EventTx", id.toString(), this);
-    }
-  }
-
-  static load(id: string): EventTx | null {
-    return changetype<EventTx | null>(store.get("EventTx", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get TxResult(): string | null {
-    let value = this.get("TxResult");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set TxResult(value: string | null) {
-    if (!value) {
-      this.unset("TxResult");
-    } else {
-      this.set("TxResult", Value.fromString(<string>value));
-    }
-  }
-}
-
-export class EventVote extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-
-    this.set("round", Value.fromI32(0));
-    this.set("validator_index", Value.fromI32(0));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save EventVote entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save EventVote entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("EventVote", id.toString(), this);
-    }
-  }
-
-  static load(id: string): EventVote | null {
-    return changetype<EventVote | null>(store.get("EventVote", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get eventvotetype(): string | null {
-    let value = this.get("eventvotetype");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set eventvotetype(value: string | null) {
-    if (!value) {
-      this.unset("eventvotetype");
-    } else {
-      this.set("eventvotetype", Value.fromString(<string>value));
-    }
-  }
-
-  get height(): BigInt | null {
-    let value = this.get("height");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set height(value: BigInt | null) {
-    if (!value) {
-      this.unset("height");
-    } else {
-      this.set("height", Value.fromBigInt(<BigInt>value));
-    }
-  }
-
-  get round(): i32 {
-    let value = this.get("round");
-    return value!.toI32();
-  }
-
-  set round(value: i32) {
-    this.set("round", Value.fromI32(value));
-  }
-
-  get block_id(): string | null {
-    let value = this.get("block_id");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set block_id(value: string | null) {
-    if (!value) {
-      this.unset("block_id");
-    } else {
-      this.set("block_id", Value.fromString(<string>value));
-    }
-  }
-
-  get timestamp(): string | null {
-    let value = this.get("timestamp");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set timestamp(value: string | null) {
-    if (!value) {
-      this.unset("timestamp");
-    } else {
-      this.set("timestamp", Value.fromString(<string>value));
-    }
-  }
-
-  get validator_address(): string | null {
-    let value = this.get("validator_address");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set validator_address(value: string | null) {
-    if (!value) {
-      this.unset("validator_address");
-    } else {
-      this.set("validator_address", Value.fromString(<string>value));
-    }
-  }
-
-  get validator_index(): i32 {
-    let value = this.get("validator_index");
-    return value!.toI32();
-  }
-
-  set validator_index(value: i32) {
-    this.set("validator_index", Value.fromI32(value));
-  }
-
-  get signature(): Bytes | null {
-    let value = this.get("signature");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBytes();
-    }
-  }
-
-  set signature(value: Bytes | null) {
-    if (!value) {
-      this.unset("signature");
-    } else {
-      this.set("signature", Value.fromBytes(<Bytes>value));
+      this.set("validator_set", Value.fromString(<string>value));
     }
   }
 }
@@ -1932,375 +2161,6 @@ export class LightClientAttackEvidence extends Entity {
   }
 }
 
-export class LightBlock extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save LightBlock entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save LightBlock entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("LightBlock", id.toString(), this);
-    }
-  }
-
-  static load(id: string): LightBlock | null {
-    return changetype<LightBlock | null>(store.get("LightBlock", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get signed_header(): string | null {
-    let value = this.get("signed_header");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set signed_header(value: string | null) {
-    if (!value) {
-      this.unset("signed_header");
-    } else {
-      this.set("signed_header", Value.fromString(<string>value));
-    }
-  }
-
-  get validator_set(): string | null {
-    let value = this.get("validator_set");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set validator_set(value: string | null) {
-    if (!value) {
-      this.unset("validator_set");
-    } else {
-      this.set("validator_set", Value.fromString(<string>value));
-    }
-  }
-}
-
-export class ValidatorSet extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save ValidatorSet entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save ValidatorSet entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("ValidatorSet", id.toString(), this);
-    }
-  }
-
-  static load(id: string): ValidatorSet | null {
-    return changetype<ValidatorSet | null>(store.get("ValidatorSet", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get validators(): Array<string> | null {
-    let value = this.get("validators");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set validators(value: Array<string> | null) {
-    if (!value) {
-      this.unset("validators");
-    } else {
-      this.set("validators", Value.fromStringArray(<Array<string>>value));
-    }
-  }
-
-  get proposer(): string | null {
-    let value = this.get("proposer");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set proposer(value: string | null) {
-    if (!value) {
-      this.unset("proposer");
-    } else {
-      this.set("proposer", Value.fromString(<string>value));
-    }
-  }
-
-  get total_voting_power(): BigInt | null {
-    let value = this.get("total_voting_power");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set total_voting_power(value: BigInt | null) {
-    if (!value) {
-      this.unset("total_voting_power");
-    } else {
-      this.set("total_voting_power", Value.fromBigInt(<BigInt>value));
-    }
-  }
-}
-
-export class SignedHeader extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save SignedHeader entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save SignedHeader entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("SignedHeader", id.toString(), this);
-    }
-  }
-
-  static load(id: string): SignedHeader | null {
-    return changetype<SignedHeader | null>(store.get("SignedHeader", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get header(): string | null {
-    let value = this.get("header");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set header(value: string | null) {
-    if (!value) {
-      this.unset("header");
-    } else {
-      this.set("header", Value.fromString(<string>value));
-    }
-  }
-
-  get commit(): string | null {
-    let value = this.get("commit");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set commit(value: string | null) {
-    if (!value) {
-      this.unset("commit");
-    } else {
-      this.set("commit", Value.fromString(<string>value));
-    }
-  }
-}
-
-export class EvidenceList extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save EvidenceList entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save EvidenceList entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("EvidenceList", id.toString(), this);
-    }
-  }
-
-  static load(id: string): EvidenceList | null {
-    return changetype<EvidenceList | null>(store.get("EvidenceList", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get evidence(): Array<string> | null {
-    let value = this.get("evidence");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set evidence(value: Array<string> | null) {
-    if (!value) {
-      this.unset("evidence");
-    } else {
-      this.set("evidence", Value.fromStringArray(<Array<string>>value));
-    }
-  }
-}
-
-export class Validator extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save Validator entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save Validator entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("Validator", id.toString(), this);
-    }
-  }
-
-  static load(id: string): Validator | null {
-    return changetype<Validator | null>(store.get("Validator", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get address(): Bytes | null {
-    let value = this.get("address");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBytes();
-    }
-  }
-
-  set address(value: Bytes | null) {
-    if (!value) {
-      this.unset("address");
-    } else {
-      this.set("address", Value.fromBytes(<Bytes>value));
-    }
-  }
-
-  get pub_key(): string | null {
-    let value = this.get("pub_key");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set pub_key(value: string | null) {
-    if (!value) {
-      this.unset("pub_key");
-    } else {
-      this.set("pub_key", Value.fromString(<string>value));
-    }
-  }
-
-  get voting_power(): BigInt | null {
-    let value = this.get("voting_power");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set voting_power(value: BigInt | null) {
-    if (!value) {
-      this.unset("voting_power");
-    } else {
-      this.set("voting_power", Value.fromBigInt(<BigInt>value));
-    }
-  }
-
-  get proposer_priority(): BigInt | null {
-    let value = this.get("proposer_priority");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set proposer_priority(value: BigInt | null) {
-    if (!value) {
-      this.unset("proposer_priority");
-    } else {
-      this.set("proposer_priority", Value.fromBigInt(<BigInt>value));
-    }
-  }
-}
-
 export class PublicKey extends Entity {
   constructor(id: string) {
     super();
@@ -2366,26 +2226,9 @@ export class PublicKey extends Entity {
       this.set("secp256k1", Value.fromBytes(<Bytes>value));
     }
   }
-
-  get sr25519(): Bytes | null {
-    let value = this.get("sr25519");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBytes();
-    }
-  }
-
-  set sr25519(value: Bytes | null) {
-    if (!value) {
-      this.unset("sr25519");
-    } else {
-      this.set("sr25519", Value.fromBytes(<Bytes>value));
-    }
-  }
 }
 
-export class TxResult extends Entity {
+export class PartSetHeader extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -2393,19 +2236,19 @@ export class TxResult extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save TxResult entity without an ID");
+    assert(id != null, "Cannot save PartSetHeader entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save TxResult entity with non-string ID. " +
+        "Cannot save PartSetHeader entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("TxResult", id.toString(), this);
+      store.set("PartSetHeader", id.toString(), this);
     }
   }
 
-  static load(id: string): TxResult | null {
-    return changetype<TxResult | null>(store.get("TxResult", id));
+  static load(id: string): PartSetHeader | null {
+    return changetype<PartSetHeader | null>(store.get("PartSetHeader", id));
   }
 
   get id(): string {
@@ -2417,8 +2260,8 @@ export class TxResult extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get height(): BigInt | null {
-    let value = this.get("height");
+  get total(): BigInt | null {
+    let value = this.get("total");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -2426,33 +2269,16 @@ export class TxResult extends Entity {
     }
   }
 
-  set height(value: BigInt | null) {
+  set total(value: BigInt | null) {
     if (!value) {
-      this.unset("height");
+      this.unset("total");
     } else {
-      this.set("height", Value.fromBigInt(<BigInt>value));
+      this.set("total", Value.fromBigInt(<BigInt>value));
     }
   }
 
-  get index(): BigInt | null {
-    let value = this.get("index");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set index(value: BigInt | null) {
-    if (!value) {
-      this.unset("index");
-    } else {
-      this.set("index", Value.fromBigInt(<BigInt>value));
-    }
-  }
-
-  get tx(): Bytes | null {
-    let value = this.get("tx");
+  get hash(): Bytes | null {
+    let value = this.get("hash");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -2460,16 +2286,123 @@ export class TxResult extends Entity {
     }
   }
 
-  set tx(value: Bytes | null) {
+  set hash(value: Bytes | null) {
     if (!value) {
-      this.unset("tx");
+      this.unset("hash");
     } else {
-      this.set("tx", Value.fromBytes(<Bytes>value));
+      this.set("hash", Value.fromBytes(<Bytes>value));
+    }
+  }
+}
+
+export class ResponseBeginBlock extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save ResponseBeginBlock entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save ResponseBeginBlock entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("ResponseBeginBlock", id.toString(), this);
     }
   }
 
-  get result(): string | null {
-    let value = this.get("result");
+  static load(id: string): ResponseBeginBlock | null {
+    return changetype<ResponseBeginBlock | null>(
+      store.get("ResponseBeginBlock", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get events(): Array<string> | null {
+    let value = this.get("events");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set events(value: Array<string> | null) {
+    if (!value) {
+      this.unset("events");
+    } else {
+      this.set("events", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+}
+
+export class ResponseEndBlock extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save ResponseEndBlock entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save ResponseEndBlock entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("ResponseEndBlock", id.toString(), this);
+    }
+  }
+
+  static load(id: string): ResponseEndBlock | null {
+    return changetype<ResponseEndBlock | null>(
+      store.get("ResponseEndBlock", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get validator_updates(): Array<string> | null {
+    let value = this.get("validator_updates");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set validator_updates(value: Array<string> | null) {
+    if (!value) {
+      this.unset("validator_updates");
+    } else {
+      this.set(
+        "validator_updates",
+        Value.fromStringArray(<Array<string>>value)
+      );
+    }
+  }
+
+  get consensus_param_updates(): string | null {
+    let value = this.get("consensus_param_updates");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -2477,11 +2410,28 @@ export class TxResult extends Entity {
     }
   }
 
-  set result(value: string | null) {
+  set consensus_param_updates(value: string | null) {
     if (!value) {
-      this.unset("result");
+      this.unset("consensus_param_updates");
     } else {
-      this.set("result", Value.fromString(<string>value));
+      this.set("consensus_param_updates", Value.fromString(<string>value));
+    }
+  }
+
+  get events(): Array<string> | null {
+    let value = this.get("events");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set events(value: Array<string> | null) {
+    if (!value) {
+      this.unset("events");
+    } else {
+      this.set("events", Value.fromStringArray(<Array<string>>value));
     }
   }
 }
@@ -2657,7 +2607,7 @@ export class ResponseDeliverTx extends Entity {
   }
 }
 
-export class Event extends Entity {
+export class Reward extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -2665,19 +2615,19 @@ export class Event extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save Event entity without an ID");
+    assert(id != null, "Cannot save Reward entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Event entity with non-string ID. " +
+        "Cannot save Reward entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("Event", id.toString(), this);
+      store.set("Reward", id.toString(), this);
     }
   }
 
-  static load(id: string): Event | null {
-    return changetype<Event | null>(store.get("Event", id));
+  static load(id: string): Reward | null {
+    return changetype<Reward | null>(store.get("Reward", id));
   }
 
   get id(): string {
@@ -2689,8 +2639,8 @@ export class Event extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get eventtype(): string | null {
-    let value = this.get("eventtype");
+  get amount(): string | null {
+    let value = this.get("amount");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -2698,68 +2648,16 @@ export class Event extends Entity {
     }
   }
 
-  set eventtype(value: string | null) {
+  set amount(value: string | null) {
     if (!value) {
-      this.unset("eventtype");
+      this.unset("amount");
     } else {
-      this.set("eventtype", Value.fromString(<string>value));
+      this.set("amount", Value.fromString(<string>value));
     }
   }
 
-  get attributes(): Array<string> | null {
-    let value = this.get("attributes");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set attributes(value: Array<string> | null) {
-    if (!value) {
-      this.unset("attributes");
-    } else {
-      this.set("attributes", Value.fromStringArray(<Array<string>>value));
-    }
-  }
-}
-
-export class EventAttribute extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-
-    this.set("index", Value.fromBoolean(false));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save EventAttribute entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save EventAttribute entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("EventAttribute", id.toString(), this);
-    }
-  }
-
-  static load(id: string): EventAttribute | null {
-    return changetype<EventAttribute | null>(store.get("EventAttribute", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get key(): string | null {
-    let value = this.get("key");
+  get validator(): string | null {
+    let value = this.get("validator");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -2767,16 +2665,49 @@ export class EventAttribute extends Entity {
     }
   }
 
-  set key(value: string | null) {
+  set validator(value: string | null) {
     if (!value) {
-      this.unset("key");
+      this.unset("validator");
     } else {
-      this.set("key", Value.fromString(<string>value));
+      this.set("validator", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class SignedHeader extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save SignedHeader entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save SignedHeader entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("SignedHeader", id.toString(), this);
     }
   }
 
-  get value(): string | null {
-    let value = this.get("value");
+  static load(id: string): SignedHeader | null {
+    return changetype<SignedHeader | null>(store.get("SignedHeader", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get header(): string | null {
+    let value = this.get("header");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -2784,128 +2715,28 @@ export class EventAttribute extends Entity {
     }
   }
 
-  set value(value: string | null) {
+  set header(value: string | null) {
     if (!value) {
-      this.unset("value");
+      this.unset("header");
     } else {
-      this.set("value", Value.fromString(<string>value));
+      this.set("header", Value.fromString(<string>value));
     }
   }
 
-  get index(): boolean {
-    let value = this.get("index");
-    return value!.toBoolean();
-  }
-
-  set index(value: boolean) {
-    this.set("index", Value.fromBoolean(value));
-  }
-}
-
-export class Address extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save Address entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save Address entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("Address", id.toString(), this);
-    }
-  }
-
-  static load(id: string): Address | null {
-    return changetype<Address | null>(store.get("Address", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get address(): Bytes | null {
-    let value = this.get("address");
+  get commit(): string | null {
+    let value = this.get("commit");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
-      return value.toBytes();
+      return value.toString();
     }
   }
 
-  set address(value: Bytes | null) {
+  set commit(value: string | null) {
     if (!value) {
-      this.unset("address");
+      this.unset("commit");
     } else {
-      this.set("address", Value.fromBytes(<Bytes>value));
-    }
-  }
-}
-
-export class EventValidatorSetUpdates extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(
-      id != null,
-      "Cannot save EventValidatorSetUpdates entity without an ID"
-    );
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save EventValidatorSetUpdates entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("EventValidatorSetUpdates", id.toString(), this);
-    }
-  }
-
-  static load(id: string): EventValidatorSetUpdates | null {
-    return changetype<EventValidatorSetUpdates | null>(
-      store.get("EventValidatorSetUpdates", id)
-    );
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get validator_updates(): Array<string> | null {
-    let value = this.get("validator_updates");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set validator_updates(value: Array<string> | null) {
-    if (!value) {
-      this.unset("validator_updates");
-    } else {
-      this.set(
-        "validator_updates",
-        Value.fromStringArray(<Array<string>>value)
-      );
+      this.set("commit", Value.fromString(<string>value));
     }
   }
 }
@@ -2914,8 +2745,6 @@ export class Timestamp extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("nanos", Value.fromI32(0));
   }
 
   save(): void {
@@ -2971,7 +2800,7 @@ export class Timestamp extends Entity {
   }
 }
 
-export class fig extends Entity {
+export class TxResult extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -2979,19 +2808,19 @@ export class fig extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save fig entity without an ID");
+    assert(id != null, "Cannot save TxResult entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save fig entity with non-string ID. " +
+        "Cannot save TxResult entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("fig", id.toString(), this);
+      store.set("TxResult", id.toString(), this);
     }
   }
 
-  static load(id: string): fig | null {
-    return changetype<fig | null>(store.get("fig", id));
+  static load(id: string): TxResult | null {
+    return changetype<TxResult | null>(store.get("TxResult", id));
   }
 
   get id(): string {
@@ -3001,33 +2830,98 @@ export class fig extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get height(): BigInt | null {
+    let value = this.get("height");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set height(value: BigInt | null) {
+    if (!value) {
+      this.unset("height");
+    } else {
+      this.set("height", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get index(): BigInt | null {
+    let value = this.get("index");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set index(value: BigInt | null) {
+    if (!value) {
+      this.unset("index");
+    } else {
+      this.set("index", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get tx(): Bytes | null {
+    let value = this.get("tx");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set tx(value: Bytes | null) {
+    if (!value) {
+      this.unset("tx");
+    } else {
+      this.set("tx", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get result(): string | null {
+    let value = this.get("result");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set result(value: string | null) {
+    if (!value) {
+      this.unset("result");
+    } else {
+      this.set("result", Value.fromString(<string>value));
+    }
   }
 }
 
-export class Reward extends Entity {
+export class Validator extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("amount", Value.fromString(""));
-    this.set("validator", Value.fromString(""));
   }
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save Reward entity without an ID");
+    assert(id != null, "Cannot save Validator entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Reward entity with non-string ID. " +
+        "Cannot save Validator entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("Reward", id.toString(), this);
+      store.set("Validator", id.toString(), this);
     }
   }
 
-  static load(id: string): Reward | null {
-    return changetype<Reward | null>(store.get("Reward", id));
+  static load(id: string): Validator | null {
+    return changetype<Validator | null>(store.get("Validator", id));
   }
 
   get id(): string {
@@ -3039,21 +2933,339 @@ export class Reward extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get amount(): string {
-    let value = this.get("amount");
+  get address(): Bytes | null {
+    let value = this.get("address");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set address(value: Bytes | null) {
+    if (!value) {
+      this.unset("address");
+    } else {
+      this.set("address", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get pub_key(): string | null {
+    let value = this.get("pub_key");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set pub_key(value: string | null) {
+    if (!value) {
+      this.unset("pub_key");
+    } else {
+      this.set("pub_key", Value.fromString(<string>value));
+    }
+  }
+
+  get voting_power(): BigInt | null {
+    let value = this.get("voting_power");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set voting_power(value: BigInt | null) {
+    if (!value) {
+      this.unset("voting_power");
+    } else {
+      this.set("voting_power", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get proposer_priority(): BigInt | null {
+    let value = this.get("proposer_priority");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set proposer_priority(value: BigInt | null) {
+    if (!value) {
+      this.unset("proposer_priority");
+    } else {
+      this.set("proposer_priority", Value.fromBigInt(<BigInt>value));
+    }
+  }
+}
+
+export class ValidatorParams extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save ValidatorParams entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save ValidatorParams entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("ValidatorParams", id.toString(), this);
+    }
+  }
+
+  static load(id: string): ValidatorParams | null {
+    return changetype<ValidatorParams | null>(store.get("ValidatorParams", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
     return value!.toString();
   }
 
-  set amount(value: string) {
-    this.set("amount", Value.fromString(value));
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
   }
 
-  get validator(): string {
-    let value = this.get("validator");
+  get pub_key_types(): Array<string> | null {
+    let value = this.get("pub_key_types");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set pub_key_types(value: Array<string> | null) {
+    if (!value) {
+      this.unset("pub_key_types");
+    } else {
+      this.set("pub_key_types", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+}
+
+export class ValidatorSet extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save ValidatorSet entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save ValidatorSet entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("ValidatorSet", id.toString(), this);
+    }
+  }
+
+  static load(id: string): ValidatorSet | null {
+    return changetype<ValidatorSet | null>(store.get("ValidatorSet", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
     return value!.toString();
   }
 
-  set validator(value: string) {
-    this.set("validator", Value.fromString(value));
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get validators(): Array<string> | null {
+    let value = this.get("validators");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set validators(value: Array<string> | null) {
+    if (!value) {
+      this.unset("validators");
+    } else {
+      this.set("validators", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+
+  get proposer(): string | null {
+    let value = this.get("proposer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set proposer(value: string | null) {
+    if (!value) {
+      this.unset("proposer");
+    } else {
+      this.set("proposer", Value.fromString(<string>value));
+    }
+  }
+
+  get total_voting_power(): BigInt | null {
+    let value = this.get("total_voting_power");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set total_voting_power(value: BigInt | null) {
+    if (!value) {
+      this.unset("total_voting_power");
+    } else {
+      this.set("total_voting_power", Value.fromBigInt(<BigInt>value));
+    }
+  }
+}
+
+export class ValidatorUpdate extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save ValidatorUpdate entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save ValidatorUpdate entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("ValidatorUpdate", id.toString(), this);
+    }
+  }
+
+  static load(id: string): ValidatorUpdate | null {
+    return changetype<ValidatorUpdate | null>(store.get("ValidatorUpdate", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get address(): Bytes | null {
+    let value = this.get("address");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set address(value: Bytes | null) {
+    if (!value) {
+      this.unset("address");
+    } else {
+      this.set("address", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get pub_key(): string | null {
+    let value = this.get("pub_key");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set pub_key(value: string | null) {
+    if (!value) {
+      this.unset("pub_key");
+    } else {
+      this.set("pub_key", Value.fromString(<string>value));
+    }
+  }
+
+  get power(): BigInt | null {
+    let value = this.get("power");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set power(value: BigInt | null) {
+    if (!value) {
+      this.unset("power");
+    } else {
+      this.set("power", Value.fromBigInt(<BigInt>value));
+    }
+  }
+}
+
+export class VersionParams extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save VersionParams entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save VersionParams entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("VersionParams", id.toString(), this);
+    }
+  }
+
+  static load(id: string): VersionParams | null {
+    return changetype<VersionParams | null>(store.get("VersionParams", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get app_version(): BigInt | null {
+    let value = this.get("app_version");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set app_version(value: BigInt | null) {
+    if (!value) {
+      this.unset("app_version");
+    } else {
+      this.set("app_version", Value.fromBigInt(<BigInt>value));
+    }
   }
 }
