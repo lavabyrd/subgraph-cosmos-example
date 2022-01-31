@@ -91,7 +91,7 @@ function saveBlock(id: string, b: tendermint.Block): void {
 }
 
 function saveData(id: string, d: tendermint.Data): void {
-  decodeTxs(d.txs);
+  decodeTxs(id, d.txs);
 
   const data = new Data(id);
   data.txs = d.txs;
