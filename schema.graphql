@@ -14,14 +14,6 @@ enum BlockIDFlag {
   BLOCK_ID_FLAG_NIL
 }
 
-"EventData"
-type EventData @entity {
-  id: ID!
-  event: Event
-  block: EventBlock
-}
-
-"EventList"
 type EventList @entity {
   id: ID!
   newBlock: EventBlock
@@ -29,11 +21,10 @@ type EventList @entity {
   validatorSetUpdates: EventValidatorSetUpdates
 }
 
-"Reward"
-type Reward @entity {
+type EventData @entity {
   id: ID!
-  amount: String
-  validator: String
+  event: Event
+  block: EventBlock
 }
 
 type Block @entity {
@@ -72,7 +63,7 @@ type CommitSig @entity {
   id: ID!
   "must match those in the enum above"
   blockIdFlag: BlockIDFlag
-  "hash 256 20 bytes - this is the first 20 characters of a 32-byte key -\nSHA256(pubkey)[:20]"
+  "hash 256 20 bytes - this is the first 20 characters of a 32-byte key - SHA256(pubkey)[:20]"
   validatorAddress: Bytes
   timestamp: Timestamp
   "length should be > 0 and < 64"
@@ -205,7 +196,7 @@ type Header @entity {
   lastResultsHash: Bytes
   "hash sha256 32 bytes"
   evidenceHash: Bytes
-  "hash 256 20 bytes - this is the first 20 characters of a 32-byte key -\nSHA256(pubkey)[:20]"
+  "hash 256 20 bytes - this is the first 20 characters of a 32-byte key - SHA256(pubkey)[:20]"
   proposerAddress: Bytes
 }
 
@@ -316,4 +307,11 @@ type ValidatorUpdate @entity {
 type VersionParams @entity {
   id: ID!
   appVersion: BigInt
+}
+
+"Reward is not auto-generated but necessary"
+type Reward @entity {
+  id: ID!
+  amount: String
+  validator: String
 }

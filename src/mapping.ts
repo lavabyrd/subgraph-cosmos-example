@@ -29,7 +29,7 @@ export function handleBlock(el: tendermint.EventList): void {
   const block = el.newBlock.block;
   const blockID = el.newBlock.blockId;
   const header = block.header;
-  const blockHash = blockID.hash.toHex();
+  const blockHash = blockID.hash.toHexString();
   const height = BigInt.fromString(header.height.toString());
   const txLen = el.transaction.length;
 
