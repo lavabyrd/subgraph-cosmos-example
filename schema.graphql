@@ -330,6 +330,12 @@ type Tx @entity {
   id: ID!
   body: TxBody
   auth_info: AuthInfo
+}
+
+type TxRaw @entity {
+  id: ID!
+  body_bytes: Bytes
+  auth_info_bytes: Bytes
   signatures: [Bytes!]
 }
 
@@ -404,4 +410,414 @@ type Any @entity {
   id: ID!
   type_url: String
   value: Bytes
+}
+
+type PubKey @entity {
+  id: ID!
+  key: Bytes
+}
+
+enum State {
+  STATE_UNINITIALIZED_UNSPECIFIED
+  STATE_INIT
+  STATE_TRYOPEN
+  STATE_OPEN
+  STATE_CLOSED
+}
+
+enum Order {
+  ORDER_NONE_UNSPECIFIED
+  ORDER_UNORDERED
+  ORDER_ORDERED
+}
+
+enum VoteOption {
+  VOTE_OPTION_UNSPECIFIED
+  VOTE_OPTION_YES
+  VOTE_OPTION_ABSTAIN
+  VOTE_OPTION_NO
+  VOTE_OPTION_NO_WITH_VETO
+}
+
+type MsgSend @entity {
+  id: ID!
+  from_address: String
+  to_address: String
+  amount: [Coin!]
+}
+
+type MsgMultiSend @entity {
+  id: ID!
+  inputs: [Input!]
+  outputs: [Output!]
+}
+
+type MsgVerifyInvariant @entity {
+  id: ID!
+  sender: String
+  invariant_module_name: String
+  invariant_route: String
+}
+
+type MsgSetWithdrawAddress @entity {
+  id: ID!
+  delegator_address: String
+  withdraw_address: String
+}
+
+type MsgWithdrawDelegatorReward @entity {
+  id: ID!
+  delegator_address: String
+  validator_address: String
+}
+
+type MsgWithdrawValidatorCommission @entity {
+  id: ID!
+  validator_address: String
+}
+
+type MsgFundCommunityPool @entity {
+  id: ID!
+  amount: [Coin!]
+  depositor: String
+}
+
+type MsgSubmitEvidence @entity {
+  id: ID!
+  submitter: String
+  evidence: Any
+}
+
+type MsgSubmitProposal @entity {
+  id: ID!
+  content: Any
+  initial_deposit: [Coin!]
+  proposer: String
+}
+
+type MsgVote @entity {
+  id: ID!
+  proposal_id: BigInt
+  voter: String
+  option: VoteOption
+}
+
+type MsgDeposit @entity {
+  id: ID!
+  proposal_id: BigInt
+  depositor: String
+  amount: [Coin!]
+}
+
+type MsgUnjail @entity {
+  id: ID!
+  validator_addr: String
+}
+
+type MsgCreateValidator @entity {
+  id: ID!
+  description: Description
+  commission: CommissionRates
+  min_self_delegation: String
+  delegator_address: String
+  validator_address: String
+  pubkey: Any
+  value: Coin
+}
+
+type MsgEditValidator @entity {
+  id: ID!
+  description: Description
+  validator_address: String
+  commission_rate: String
+  min_self_delegation: String
+}
+
+type MsgDelegate @entity {
+  id: ID!
+  delegator_address: String
+  validator_address: String
+  amount: Coin
+}
+
+type MsgBeginRedelegate @entity {
+  id: ID!
+  delegator_address: String
+  validator_src_address: String
+  validator_dst_address: String
+  amount: Coin
+}
+
+type MsgUndelegate @entity {
+  id: ID!
+  delegator_address: String
+  validator_address: String
+  amount: Coin
+}
+
+type MsgCreateVestingAccount @entity {
+  id: ID!
+  from_address: String
+  to_address: String
+  amount: Coin
+  end_time: BigInt
+  delayed: Boolean
+}
+
+type MsgTransfer @entity {
+  id: ID!
+  source_port: String
+  source_channel: String
+  token: Coin
+  sender: String
+  receiver: String
+  timeout_height: Height
+  timeout_timestamp: BigInt
+}
+
+type MsgChannelOpenInit @entity {
+  id: ID!
+  port_id: String
+  channel: Channel
+  signer: String
+}
+
+type MsgChannelOpenTry @entity {
+  id: ID!
+  port_id: String
+  previous_channel_id: String
+  channel: Channel
+  counterparty_version: String
+  proof_init: Bytes
+  proof_height: Height
+  signer: String
+}
+
+type MsgChannelOpenAck @entity {
+  id: ID!
+  port_id: String
+  channel_id: String
+  counterparty_channel_id: String
+  counterparty_version: String
+  proof_try: Bytes
+  proof_height: Height
+  signer: String
+}
+
+type MsgChannelOpenConfirm @entity {
+  id: ID!
+  port_id: String
+  channel_id: String
+  proof_ack: Bytes
+  proof_height: Height
+  signer: String
+}
+
+type MsgChannelCloseInit @entity {
+  id: ID!
+  port_id: String
+  channel_id: String
+  signer: String
+}
+
+type MsgChannelCloseConfirm @entity {
+  id: ID!
+  port_id: String
+  channel_id: String
+  proof_init: Bytes
+  proof_height: Height
+  signer: String
+}
+
+type MsgRecvPacket @entity {
+  id: ID!
+  packet: Packet
+  proof_commitment: Bytes
+  proof_height: Height
+  signer: String
+}
+
+type MsgTimeout @entity {
+  id: ID!
+  packet: Packet
+  proof_unreceived: Bytes
+  proof_height: Height
+  next_sequence_recv: BigInt
+  signer: String
+}
+
+type MsgTimeoutOnClose @entity {
+  id: ID!
+  packet: Packet
+  proof_unreceived: Bytes
+  proof_close: Bytes
+  proof_height: Height
+  next_sequence_recv: BigInt
+  signer: String
+}
+
+type MsgAcknowledgement @entity {
+  id: ID!
+  packet: Packet
+  acknowledgement: Bytes
+  proof_acked: Bytes
+  proof_height: Height
+  signer: String
+}
+
+type MsgCreateClient @entity {
+  id: ID!
+  client_state: Any
+  consensus_state: Any
+  signer: String
+}
+
+type MsgUpdateClient @entity {
+  id: ID!
+  client_id: String
+  header: Any
+  signer: String
+}
+
+type MsgUpgradeClient @entity {
+  id: ID!
+  client_id: String
+  client_state: Any
+  consensus_state: Any
+  proof_upgrade_client: Bytes
+  proof_upgrade_consensus_state: Bytes
+  signer: String
+}
+
+type MsgSubmitMisbehaviour @entity {
+  id: ID!
+  client_id: String
+  misbehaviour: Any
+  signer: String
+}
+
+type MsgConnectionOpenInit @entity {
+  id: ID!
+  client_id: String
+  counterparty: ConnectionCounterparty
+  version: ConnectionVersion
+  delay_period: BigInt
+  signer: String
+}
+
+type MsgConnectionOpenTry @entity {
+  id: ID!
+  client_id: String
+  previous_connection_id: String
+  client_state: Any
+  counterparty: ConnectionCounterparty
+  delay_period: BigInt
+  counterparty_versions: [ConnectionVersion!]
+  proof_height: Height
+  proof_init: Bytes
+  proof_client: Bytes
+  proof_consensus: Bytes
+  consensus_height: Height
+  signer: String
+}
+
+type MsgConnectionOpenAck @entity {
+  id: ID!
+  connection_id: String
+  counterparty_connection_id: String
+  version: ConnectionVersion
+  client_state: Any
+  proof_height: Height
+  proof_try: Bytes
+  proof_client: Bytes
+  proof_consensus: Bytes
+  consensus_height: Height
+  signer: String
+}
+
+type MsgConnectionOpenConfirm @entity {
+  id: ID!
+  connection_id: String
+  proof_ack: Bytes
+  proof_height: Height
+  signer: String
+}
+
+type Channel @entity {
+  id: ID!
+  state: State
+  ordering: Order
+  counterparty: ChannelCounterparty
+  connection_hops: [String!]
+  version: String
+}
+
+type ChannelCounterparty @entity {
+  id: ID!
+  port_id: String
+  channel_id: String
+}
+
+type CommissionRates @entity {
+  id: ID!
+  rate: String
+  max_rate: String
+  max_change_rate: String
+}
+
+type ConnectionCounterparty @entity {
+  id: ID!
+  client_id: String
+  connection_id: String
+  prefix: MerklePrefix
+}
+
+type ConnectionVersion @entity {
+  id: ID!
+  identifier: String
+  features: [String!]
+}
+
+type Description @entity {
+  id: ID!
+  moniker: String
+  identity: String
+  website: String
+  security_contact: String
+  details: String
+}
+
+type Height @entity {
+  id: ID!
+  revision_number: BigInt
+  revision_height: BigInt
+}
+
+type Input @entity {
+  id: ID!
+  address: String
+  coins: [Coin!]
+}
+
+type Output @entity {
+  id: ID!
+  address: String
+  coins: [Coin!]
+}
+
+type MerklePrefix @entity {
+  id: ID!
+  key_prefix: Bytes
+}
+
+type Packet @entity {
+  id: ID!
+  sequence: BigInt
+  source_port: String
+  source_channel: String
+  destination_port: String
+  destination_channel: String
+  data: Bytes
+  timeout_height: Height
+  timeout_timestamp: BigInt
 }
