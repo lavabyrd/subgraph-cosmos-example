@@ -14,6 +14,28 @@ enum BlockIDFlag {
   BLOCK_ID_FLAG_NIL
 }
 
+"EventData"
+type EventData @entity {
+  id: ID!
+  event: Event
+  block: EventList
+}
+
+"EventList"
+type EventList @entity {
+  id: ID!
+  new_block: EventBlock
+  transaction: [EventTx!]
+  validator_set_updates: EventValidatorSetUpdates
+}
+
+"Reward"
+type Reward @entity {
+  id: ID!
+  amount: String
+  validator: String
+}
+
 type Block @entity {
   id: ID!
   header: Header
@@ -43,7 +65,6 @@ type Commit @entity {
   "must be > 0"
   round: Int
   block_id: BlockID
-  "must be > 0"
   signatures: [CommitSig!]
 }
 
@@ -113,21 +134,6 @@ type EventBlock @entity {
   block_id: BlockID
   result_begin_block: ResponseBeginBlock
   result_end_block: ResponseEndBlock
-}
-
-"EventData"
-type EventData @entity {
-  id: ID!
-  event: Event
-  block: EventList
-}
-
-"EventList"
-type EventList @entity {
-  id: ID!
-  new_block: EventBlock
-  transaction: [EventTx!]
-  validator_set_updates: EventValidatorSetUpdates
 }
 
 type EventTx @entity {
@@ -257,12 +263,6 @@ type ResponseDeliverTx @entity {
   codespace: String
 }
 
-type Reward @entity {
-  id: ID!
-  amount: String
-  validator: String
-}
-
 type SignedHeader @entity {
   id: ID!
   header: Header
@@ -286,7 +286,7 @@ type TxResult @entity {
 type Validator @entity {
   id: ID!
   address: Bytes
-  "must be >0"
+  "must be > 0"
   pub_key: PublicKey
   voting_power: BigInt
   proposer_priority: BigInt
@@ -299,7 +299,7 @@ type ValidatorParams @entity {
 
 type ValidatorSet @entity {
   id: ID!
-  "cannot be empty of nil"
+  "cannot be empty or nil"
   validators: [Validator!]
   "cannot be nil"
   proposer: Validator
