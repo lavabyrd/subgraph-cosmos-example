@@ -11,6 +11,157 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
+export class EventList extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save EventList entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save EventList entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("EventList", id.toString(), this);
+    }
+  }
+
+  static load(id: string): EventList | null {
+    return changetype<EventList | null>(store.get("EventList", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get newBlock(): string | null {
+    let value = this.get("newBlock");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set newBlock(value: string | null) {
+    if (!value) {
+      this.unset("newBlock");
+    } else {
+      this.set("newBlock", Value.fromString(<string>value));
+    }
+  }
+
+  get transaction(): Array<string> | null {
+    let value = this.get("transaction");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set transaction(value: Array<string> | null) {
+    if (!value) {
+      this.unset("transaction");
+    } else {
+      this.set("transaction", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+
+  get validatorSetUpdates(): string | null {
+    let value = this.get("validatorSetUpdates");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set validatorSetUpdates(value: string | null) {
+    if (!value) {
+      this.unset("validatorSetUpdates");
+    } else {
+      this.set("validatorSetUpdates", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class EventData extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save EventData entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save EventData entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("EventData", id.toString(), this);
+    }
+  }
+
+  static load(id: string): EventData | null {
+    return changetype<EventData | null>(store.get("EventData", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get event(): string | null {
+    let value = this.get("event");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set event(value: string | null) {
+    if (!value) {
+      this.unset("event");
+    } else {
+      this.set("event", Value.fromString(<string>value));
+    }
+  }
+
+  get block(): string | null {
+    let value = this.get("block");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set block(value: string | null) {
+    if (!value) {
+      this.unset("block");
+    } else {
+      this.set("block", Value.fromString(<string>value));
+    }
+  }
+}
+
 export class Block extends Entity {
   constructor(id: string) {
     super();
@@ -94,8 +245,8 @@ export class Block extends Entity {
     }
   }
 
-  get last_commit(): string | null {
-    let value = this.get("last_commit");
+  get lastCommit(): string | null {
+    let value = this.get("lastCommit");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -103,11 +254,11 @@ export class Block extends Entity {
     }
   }
 
-  set last_commit(value: string | null) {
+  set lastCommit(value: string | null) {
     if (!value) {
-      this.unset("last_commit");
+      this.unset("lastCommit");
     } else {
-      this.set("last_commit", Value.fromString(<string>value));
+      this.set("lastCommit", Value.fromString(<string>value));
     }
   }
 }
@@ -161,8 +312,8 @@ export class BlockID extends Entity {
     }
   }
 
-  get part_set_header(): string | null {
-    let value = this.get("part_set_header");
+  get partSetHeader(): string | null {
+    let value = this.get("partSetHeader");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -170,11 +321,11 @@ export class BlockID extends Entity {
     }
   }
 
-  set part_set_header(value: string | null) {
+  set partSetHeader(value: string | null) {
     if (!value) {
-      this.unset("part_set_header");
+      this.unset("partSetHeader");
     } else {
-      this.set("part_set_header", Value.fromString(<string>value));
+      this.set("partSetHeader", Value.fromString(<string>value));
     }
   }
 }
@@ -211,8 +362,8 @@ export class BlockParams extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get max_bytes(): BigInt | null {
-    let value = this.get("max_bytes");
+  get maxBytes(): BigInt | null {
+    let value = this.get("maxBytes");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -220,16 +371,16 @@ export class BlockParams extends Entity {
     }
   }
 
-  set max_bytes(value: BigInt | null) {
+  set maxBytes(value: BigInt | null) {
     if (!value) {
-      this.unset("max_bytes");
+      this.unset("maxBytes");
     } else {
-      this.set("max_bytes", Value.fromBigInt(<BigInt>value));
+      this.set("maxBytes", Value.fromBigInt(<BigInt>value));
     }
   }
 
-  get max_gas(): BigInt | null {
-    let value = this.get("max_gas");
+  get maxGas(): BigInt | null {
+    let value = this.get("maxGas");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -237,11 +388,11 @@ export class BlockParams extends Entity {
     }
   }
 
-  set max_gas(value: BigInt | null) {
+  set maxGas(value: BigInt | null) {
     if (!value) {
-      this.unset("max_gas");
+      this.unset("maxGas");
     } else {
-      this.set("max_gas", Value.fromBigInt(<BigInt>value));
+      this.set("maxGas", Value.fromBigInt(<BigInt>value));
     }
   }
 }
@@ -304,8 +455,8 @@ export class Commit extends Entity {
     this.set("round", Value.fromI32(value));
   }
 
-  get block_id(): string | null {
-    let value = this.get("block_id");
+  get blockId(): string | null {
+    let value = this.get("blockId");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -313,11 +464,11 @@ export class Commit extends Entity {
     }
   }
 
-  set block_id(value: string | null) {
+  set blockId(value: string | null) {
     if (!value) {
-      this.unset("block_id");
+      this.unset("blockId");
     } else {
-      this.set("block_id", Value.fromString(<string>value));
+      this.set("blockId", Value.fromString(<string>value));
     }
   }
 
@@ -371,8 +522,8 @@ export class CommitSig extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get block_id_flag(): string | null {
-    let value = this.get("block_id_flag");
+  get blockIdFlag(): string | null {
+    let value = this.get("blockIdFlag");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -380,16 +531,16 @@ export class CommitSig extends Entity {
     }
   }
 
-  set block_id_flag(value: string | null) {
+  set blockIdFlag(value: string | null) {
     if (!value) {
-      this.unset("block_id_flag");
+      this.unset("blockIdFlag");
     } else {
-      this.set("block_id_flag", Value.fromString(<string>value));
+      this.set("blockIdFlag", Value.fromString(<string>value));
     }
   }
 
-  get validator_address(): Bytes | null {
-    let value = this.get("validator_address");
+  get validatorAddress(): Bytes | null {
+    let value = this.get("validatorAddress");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -397,11 +548,11 @@ export class CommitSig extends Entity {
     }
   }
 
-  set validator_address(value: Bytes | null) {
+  set validatorAddress(value: Bytes | null) {
     if (!value) {
-      this.unset("validator_address");
+      this.unset("validatorAddress");
     } else {
-      this.set("validator_address", Value.fromBytes(<Bytes>value));
+      this.set("validatorAddress", Value.fromBytes(<Bytes>value));
     }
   }
 
@@ -754,8 +905,8 @@ export class DuplicateVoteEvidence extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get vote_a(): string | null {
-    let value = this.get("vote_a");
+  get voteA(): string | null {
+    let value = this.get("voteA");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -763,16 +914,16 @@ export class DuplicateVoteEvidence extends Entity {
     }
   }
 
-  set vote_a(value: string | null) {
+  set voteA(value: string | null) {
     if (!value) {
-      this.unset("vote_a");
+      this.unset("voteA");
     } else {
-      this.set("vote_a", Value.fromString(<string>value));
+      this.set("voteA", Value.fromString(<string>value));
     }
   }
 
-  get vote_b(): string | null {
-    let value = this.get("vote_b");
+  get voteB(): string | null {
+    let value = this.get("voteB");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -780,16 +931,16 @@ export class DuplicateVoteEvidence extends Entity {
     }
   }
 
-  set vote_b(value: string | null) {
+  set voteB(value: string | null) {
     if (!value) {
-      this.unset("vote_b");
+      this.unset("voteB");
     } else {
-      this.set("vote_b", Value.fromString(<string>value));
+      this.set("voteB", Value.fromString(<string>value));
     }
   }
 
-  get total_voting_power(): BigInt | null {
-    let value = this.get("total_voting_power");
+  get totalVotingPower(): BigInt | null {
+    let value = this.get("totalVotingPower");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -797,16 +948,16 @@ export class DuplicateVoteEvidence extends Entity {
     }
   }
 
-  set total_voting_power(value: BigInt | null) {
+  set totalVotingPower(value: BigInt | null) {
     if (!value) {
-      this.unset("total_voting_power");
+      this.unset("totalVotingPower");
     } else {
-      this.set("total_voting_power", Value.fromBigInt(<BigInt>value));
+      this.set("totalVotingPower", Value.fromBigInt(<BigInt>value));
     }
   }
 
-  get validator_power(): BigInt | null {
-    let value = this.get("validator_power");
+  get validatorPower(): BigInt | null {
+    let value = this.get("validatorPower");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -814,11 +965,11 @@ export class DuplicateVoteEvidence extends Entity {
     }
   }
 
-  set validator_power(value: BigInt | null) {
+  set validatorPower(value: BigInt | null) {
     if (!value) {
-      this.unset("validator_power");
+      this.unset("validatorPower");
     } else {
-      this.set("validator_power", Value.fromBigInt(<BigInt>value));
+      this.set("validatorPower", Value.fromBigInt(<BigInt>value));
     }
   }
 
@@ -872,8 +1023,8 @@ export class Event extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get event_type(): string | null {
-    let value = this.get("event_type");
+  get eventType(): string | null {
+    let value = this.get("eventType");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -881,11 +1032,11 @@ export class Event extends Entity {
     }
   }
 
-  set event_type(value: string | null) {
+  set eventType(value: string | null) {
     if (!value) {
-      this.unset("event_type");
+      this.unset("eventType");
     } else {
-      this.set("event_type", Value.fromString(<string>value));
+      this.set("eventType", Value.fromString(<string>value));
     }
   }
 
@@ -1032,8 +1183,8 @@ export class EventBlock extends Entity {
     }
   }
 
-  get block_id(): string | null {
-    let value = this.get("block_id");
+  get blockId(): string | null {
+    let value = this.get("blockId");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1041,16 +1192,16 @@ export class EventBlock extends Entity {
     }
   }
 
-  set block_id(value: string | null) {
+  set blockId(value: string | null) {
     if (!value) {
-      this.unset("block_id");
+      this.unset("blockId");
     } else {
-      this.set("block_id", Value.fromString(<string>value));
+      this.set("blockId", Value.fromString(<string>value));
     }
   }
 
-  get result_begin_block(): string | null {
-    let value = this.get("result_begin_block");
+  get resultBeginBlock(): string | null {
+    let value = this.get("resultBeginBlock");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1058,16 +1209,16 @@ export class EventBlock extends Entity {
     }
   }
 
-  set result_begin_block(value: string | null) {
+  set resultBeginBlock(value: string | null) {
     if (!value) {
-      this.unset("result_begin_block");
+      this.unset("resultBeginBlock");
     } else {
-      this.set("result_begin_block", Value.fromString(<string>value));
+      this.set("resultBeginBlock", Value.fromString(<string>value));
     }
   }
 
-  get result_end_block(): string | null {
-    let value = this.get("result_end_block");
+  get resultEndBlock(): string | null {
+    let value = this.get("resultEndBlock");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1075,162 +1226,11 @@ export class EventBlock extends Entity {
     }
   }
 
-  set result_end_block(value: string | null) {
+  set resultEndBlock(value: string | null) {
     if (!value) {
-      this.unset("result_end_block");
+      this.unset("resultEndBlock");
     } else {
-      this.set("result_end_block", Value.fromString(<string>value));
-    }
-  }
-}
-
-export class EventData extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save EventData entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save EventData entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("EventData", id.toString(), this);
-    }
-  }
-
-  static load(id: string): EventData | null {
-    return changetype<EventData | null>(store.get("EventData", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get event(): string | null {
-    let value = this.get("event");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set event(value: string | null) {
-    if (!value) {
-      this.unset("event");
-    } else {
-      this.set("event", Value.fromString(<string>value));
-    }
-  }
-
-  get block(): string | null {
-    let value = this.get("block");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set block(value: string | null) {
-    if (!value) {
-      this.unset("block");
-    } else {
-      this.set("block", Value.fromString(<string>value));
-    }
-  }
-}
-
-export class EventList extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save EventList entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save EventList entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("EventList", id.toString(), this);
-    }
-  }
-
-  static load(id: string): EventList | null {
-    return changetype<EventList | null>(store.get("EventList", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get new_block(): string | null {
-    let value = this.get("new_block");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set new_block(value: string | null) {
-    if (!value) {
-      this.unset("new_block");
-    } else {
-      this.set("new_block", Value.fromString(<string>value));
-    }
-  }
-
-  get transaction(): Array<string> | null {
-    let value = this.get("transaction");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set transaction(value: Array<string> | null) {
-    if (!value) {
-      this.unset("transaction");
-    } else {
-      this.set("transaction", Value.fromStringArray(<Array<string>>value));
-    }
-  }
-
-  get validator_set_updates(): string | null {
-    let value = this.get("validator_set_updates");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set validator_set_updates(value: string | null) {
-    if (!value) {
-      this.unset("validator_set_updates");
-    } else {
-      this.set("validator_set_updates", Value.fromString(<string>value));
+      this.set("resultEndBlock", Value.fromString(<string>value));
     }
   }
 }
@@ -1267,8 +1267,8 @@ export class EventTx extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get tx_result(): string | null {
-    let value = this.get("tx_result");
+  get txResult(): string | null {
+    let value = this.get("txResult");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1276,11 +1276,11 @@ export class EventTx extends Entity {
     }
   }
 
-  set tx_result(value: string | null) {
+  set txResult(value: string | null) {
     if (!value) {
-      this.unset("tx_result");
+      this.unset("txResult");
     } else {
-      this.set("tx_result", Value.fromString(<string>value));
+      this.set("txResult", Value.fromString(<string>value));
     }
   }
 }
@@ -1322,8 +1322,8 @@ export class EventValidatorSetUpdates extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get validator_updates(): Array<string> | null {
-    let value = this.get("validator_updates");
+  get validatorUpdates(): Array<string> | null {
+    let value = this.get("validatorUpdates");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1331,14 +1331,11 @@ export class EventValidatorSetUpdates extends Entity {
     }
   }
 
-  set validator_updates(value: Array<string> | null) {
+  set validatorUpdates(value: Array<string> | null) {
     if (!value) {
-      this.unset("validator_updates");
+      this.unset("validatorUpdates");
     } else {
-      this.set(
-        "validator_updates",
-        Value.fromStringArray(<Array<string>>value)
-      );
+      this.set("validatorUpdates", Value.fromStringArray(<Array<string>>value));
     }
   }
 }
@@ -1375,8 +1372,8 @@ export class EventVote extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get event_vote_type(): string | null {
-    let value = this.get("event_vote_type");
+  get eventVoteType(): string | null {
+    let value = this.get("eventVoteType");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1384,11 +1381,11 @@ export class EventVote extends Entity {
     }
   }
 
-  set event_vote_type(value: string | null) {
+  set eventVoteType(value: string | null) {
     if (!value) {
-      this.unset("event_vote_type");
+      this.unset("eventVoteType");
     } else {
-      this.set("event_vote_type", Value.fromString(<string>value));
+      this.set("eventVoteType", Value.fromString(<string>value));
     }
   }
 
@@ -1418,8 +1415,8 @@ export class EventVote extends Entity {
     this.set("round", Value.fromI32(value));
   }
 
-  get block_id(): string | null {
-    let value = this.get("block_id");
+  get blockId(): string | null {
+    let value = this.get("blockId");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1427,11 +1424,11 @@ export class EventVote extends Entity {
     }
   }
 
-  set block_id(value: string | null) {
+  set blockId(value: string | null) {
     if (!value) {
-      this.unset("block_id");
+      this.unset("blockId");
     } else {
-      this.set("block_id", Value.fromString(<string>value));
+      this.set("blockId", Value.fromString(<string>value));
     }
   }
 
@@ -1452,8 +1449,8 @@ export class EventVote extends Entity {
     }
   }
 
-  get validator_address(): Bytes | null {
-    let value = this.get("validator_address");
+  get validatorAddress(): Bytes | null {
+    let value = this.get("validatorAddress");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1461,21 +1458,21 @@ export class EventVote extends Entity {
     }
   }
 
-  set validator_address(value: Bytes | null) {
+  set validatorAddress(value: Bytes | null) {
     if (!value) {
-      this.unset("validator_address");
+      this.unset("validatorAddress");
     } else {
-      this.set("validator_address", Value.fromBytes(<Bytes>value));
+      this.set("validatorAddress", Value.fromBytes(<Bytes>value));
     }
   }
 
-  get validator_index(): i32 {
-    let value = this.get("validator_index");
+  get validatorIndex(): i32 {
+    let value = this.get("validatorIndex");
     return value!.toI32();
   }
 
-  set validator_index(value: i32) {
-    this.set("validator_index", Value.fromI32(value));
+  set validatorIndex(value: i32) {
+    this.set("validatorIndex", Value.fromI32(value));
   }
 
   get signature(): Bytes | null {
@@ -1528,8 +1525,8 @@ export class Evidence extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get duplicate_vote_evidence(): string | null {
-    let value = this.get("duplicate_vote_evidence");
+  get duplicateVoteEvidence(): string | null {
+    let value = this.get("duplicateVoteEvidence");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1537,16 +1534,16 @@ export class Evidence extends Entity {
     }
   }
 
-  set duplicate_vote_evidence(value: string | null) {
+  set duplicateVoteEvidence(value: string | null) {
     if (!value) {
-      this.unset("duplicate_vote_evidence");
+      this.unset("duplicateVoteEvidence");
     } else {
-      this.set("duplicate_vote_evidence", Value.fromString(<string>value));
+      this.set("duplicateVoteEvidence", Value.fromString(<string>value));
     }
   }
 
-  get light_client_attack_evidence(): string | null {
-    let value = this.get("light_client_attack_evidence");
+  get lightClientAttackEvidence(): string | null {
+    let value = this.get("lightClientAttackEvidence");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1554,11 +1551,11 @@ export class Evidence extends Entity {
     }
   }
 
-  set light_client_attack_evidence(value: string | null) {
+  set lightClientAttackEvidence(value: string | null) {
     if (!value) {
-      this.unset("light_client_attack_evidence");
+      this.unset("lightClientAttackEvidence");
     } else {
-      this.set("light_client_attack_evidence", Value.fromString(<string>value));
+      this.set("lightClientAttackEvidence", Value.fromString(<string>value));
     }
   }
 }
@@ -1645,8 +1642,8 @@ export class EvidenceParams extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get max_age_num_blocks(): BigInt | null {
-    let value = this.get("max_age_num_blocks");
+  get maxAgeNumBlocks(): BigInt | null {
+    let value = this.get("maxAgeNumBlocks");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1654,16 +1651,16 @@ export class EvidenceParams extends Entity {
     }
   }
 
-  set max_age_num_blocks(value: BigInt | null) {
+  set maxAgeNumBlocks(value: BigInt | null) {
     if (!value) {
-      this.unset("max_age_num_blocks");
+      this.unset("maxAgeNumBlocks");
     } else {
-      this.set("max_age_num_blocks", Value.fromBigInt(<BigInt>value));
+      this.set("maxAgeNumBlocks", Value.fromBigInt(<BigInt>value));
     }
   }
 
-  get max_age_duration(): string | null {
-    let value = this.get("max_age_duration");
+  get maxAgeDuration(): string | null {
+    let value = this.get("maxAgeDuration");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1671,16 +1668,16 @@ export class EvidenceParams extends Entity {
     }
   }
 
-  set max_age_duration(value: string | null) {
+  set maxAgeDuration(value: string | null) {
     if (!value) {
-      this.unset("max_age_duration");
+      this.unset("maxAgeDuration");
     } else {
-      this.set("max_age_duration", Value.fromString(<string>value));
+      this.set("maxAgeDuration", Value.fromString(<string>value));
     }
   }
 
-  get max_bytes(): BigInt | null {
-    let value = this.get("max_bytes");
+  get maxBytes(): BigInt | null {
+    let value = this.get("maxBytes");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1688,11 +1685,11 @@ export class EvidenceParams extends Entity {
     }
   }
 
-  set max_bytes(value: BigInt | null) {
+  set maxBytes(value: BigInt | null) {
     if (!value) {
-      this.unset("max_bytes");
+      this.unset("maxBytes");
     } else {
-      this.set("max_bytes", Value.fromBigInt(<BigInt>value));
+      this.set("maxBytes", Value.fromBigInt(<BigInt>value));
     }
   }
 }
@@ -1746,8 +1743,8 @@ export class Header extends Entity {
     }
   }
 
-  get chain_id(): string | null {
-    let value = this.get("chain_id");
+  get chainId(): string | null {
+    let value = this.get("chainId");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1755,11 +1752,11 @@ export class Header extends Entity {
     }
   }
 
-  set chain_id(value: string | null) {
+  set chainId(value: string | null) {
     if (!value) {
-      this.unset("chain_id");
+      this.unset("chainId");
     } else {
-      this.set("chain_id", Value.fromString(<string>value));
+      this.set("chainId", Value.fromString(<string>value));
     }
   }
 
@@ -1797,8 +1794,8 @@ export class Header extends Entity {
     }
   }
 
-  get last_block_id(): string | null {
-    let value = this.get("last_block_id");
+  get lastBlockId(): string | null {
+    let value = this.get("lastBlockId");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1806,16 +1803,16 @@ export class Header extends Entity {
     }
   }
 
-  set last_block_id(value: string | null) {
+  set lastBlockId(value: string | null) {
     if (!value) {
-      this.unset("last_block_id");
+      this.unset("lastBlockId");
     } else {
-      this.set("last_block_id", Value.fromString(<string>value));
+      this.set("lastBlockId", Value.fromString(<string>value));
     }
   }
 
-  get last_commit_hash(): Bytes | null {
-    let value = this.get("last_commit_hash");
+  get lastCommitHash(): Bytes | null {
+    let value = this.get("lastCommitHash");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1823,16 +1820,16 @@ export class Header extends Entity {
     }
   }
 
-  set last_commit_hash(value: Bytes | null) {
+  set lastCommitHash(value: Bytes | null) {
     if (!value) {
-      this.unset("last_commit_hash");
+      this.unset("lastCommitHash");
     } else {
-      this.set("last_commit_hash", Value.fromBytes(<Bytes>value));
+      this.set("lastCommitHash", Value.fromBytes(<Bytes>value));
     }
   }
 
-  get data_hash(): Bytes | null {
-    let value = this.get("data_hash");
+  get dataHash(): Bytes | null {
+    let value = this.get("dataHash");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1840,16 +1837,16 @@ export class Header extends Entity {
     }
   }
 
-  set data_hash(value: Bytes | null) {
+  set dataHash(value: Bytes | null) {
     if (!value) {
-      this.unset("data_hash");
+      this.unset("dataHash");
     } else {
-      this.set("data_hash", Value.fromBytes(<Bytes>value));
+      this.set("dataHash", Value.fromBytes(<Bytes>value));
     }
   }
 
-  get validators_hash(): Bytes | null {
-    let value = this.get("validators_hash");
+  get validatorsHash(): Bytes | null {
+    let value = this.get("validatorsHash");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1857,16 +1854,16 @@ export class Header extends Entity {
     }
   }
 
-  set validators_hash(value: Bytes | null) {
+  set validatorsHash(value: Bytes | null) {
     if (!value) {
-      this.unset("validators_hash");
+      this.unset("validatorsHash");
     } else {
-      this.set("validators_hash", Value.fromBytes(<Bytes>value));
+      this.set("validatorsHash", Value.fromBytes(<Bytes>value));
     }
   }
 
-  get next_validators_hash(): Bytes | null {
-    let value = this.get("next_validators_hash");
+  get nextValidatorsHash(): Bytes | null {
+    let value = this.get("nextValidatorsHash");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1874,16 +1871,16 @@ export class Header extends Entity {
     }
   }
 
-  set next_validators_hash(value: Bytes | null) {
+  set nextValidatorsHash(value: Bytes | null) {
     if (!value) {
-      this.unset("next_validators_hash");
+      this.unset("nextValidatorsHash");
     } else {
-      this.set("next_validators_hash", Value.fromBytes(<Bytes>value));
+      this.set("nextValidatorsHash", Value.fromBytes(<Bytes>value));
     }
   }
 
-  get consensus_hash(): Bytes | null {
-    let value = this.get("consensus_hash");
+  get consensusHash(): Bytes | null {
+    let value = this.get("consensusHash");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1891,16 +1888,16 @@ export class Header extends Entity {
     }
   }
 
-  set consensus_hash(value: Bytes | null) {
+  set consensusHash(value: Bytes | null) {
     if (!value) {
-      this.unset("consensus_hash");
+      this.unset("consensusHash");
     } else {
-      this.set("consensus_hash", Value.fromBytes(<Bytes>value));
+      this.set("consensusHash", Value.fromBytes(<Bytes>value));
     }
   }
 
-  get app_hash(): Bytes | null {
-    let value = this.get("app_hash");
+  get appHash(): Bytes | null {
+    let value = this.get("appHash");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1908,16 +1905,16 @@ export class Header extends Entity {
     }
   }
 
-  set app_hash(value: Bytes | null) {
+  set appHash(value: Bytes | null) {
     if (!value) {
-      this.unset("app_hash");
+      this.unset("appHash");
     } else {
-      this.set("app_hash", Value.fromBytes(<Bytes>value));
+      this.set("appHash", Value.fromBytes(<Bytes>value));
     }
   }
 
-  get last_results_hash(): Bytes | null {
-    let value = this.get("last_results_hash");
+  get lastResultsHash(): Bytes | null {
+    let value = this.get("lastResultsHash");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1925,16 +1922,16 @@ export class Header extends Entity {
     }
   }
 
-  set last_results_hash(value: Bytes | null) {
+  set lastResultsHash(value: Bytes | null) {
     if (!value) {
-      this.unset("last_results_hash");
+      this.unset("lastResultsHash");
     } else {
-      this.set("last_results_hash", Value.fromBytes(<Bytes>value));
+      this.set("lastResultsHash", Value.fromBytes(<Bytes>value));
     }
   }
 
-  get evidence_hash(): Bytes | null {
-    let value = this.get("evidence_hash");
+  get evidenceHash(): Bytes | null {
+    let value = this.get("evidenceHash");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1942,16 +1939,16 @@ export class Header extends Entity {
     }
   }
 
-  set evidence_hash(value: Bytes | null) {
+  set evidenceHash(value: Bytes | null) {
     if (!value) {
-      this.unset("evidence_hash");
+      this.unset("evidenceHash");
     } else {
-      this.set("evidence_hash", Value.fromBytes(<Bytes>value));
+      this.set("evidenceHash", Value.fromBytes(<Bytes>value));
     }
   }
 
-  get proposer_address(): Bytes | null {
-    let value = this.get("proposer_address");
+  get proposerAddress(): Bytes | null {
+    let value = this.get("proposerAddress");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -1959,11 +1956,11 @@ export class Header extends Entity {
     }
   }
 
-  set proposer_address(value: Bytes | null) {
+  set proposerAddress(value: Bytes | null) {
     if (!value) {
-      this.unset("proposer_address");
+      this.unset("proposerAddress");
     } else {
-      this.set("proposer_address", Value.fromBytes(<Bytes>value));
+      this.set("proposerAddress", Value.fromBytes(<Bytes>value));
     }
   }
 }
@@ -2000,8 +1997,8 @@ export class LightBlock extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get signed_header(): string | null {
-    let value = this.get("signed_header");
+  get signedHeader(): string | null {
+    let value = this.get("signedHeader");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -2009,16 +2006,16 @@ export class LightBlock extends Entity {
     }
   }
 
-  set signed_header(value: string | null) {
+  set signedHeader(value: string | null) {
     if (!value) {
-      this.unset("signed_header");
+      this.unset("signedHeader");
     } else {
-      this.set("signed_header", Value.fromString(<string>value));
+      this.set("signedHeader", Value.fromString(<string>value));
     }
   }
 
-  get validator_set(): string | null {
-    let value = this.get("validator_set");
+  get validatorSet(): string | null {
+    let value = this.get("validatorSet");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -2026,11 +2023,11 @@ export class LightBlock extends Entity {
     }
   }
 
-  set validator_set(value: string | null) {
+  set validatorSet(value: string | null) {
     if (!value) {
-      this.unset("validator_set");
+      this.unset("validatorSet");
     } else {
-      this.set("validator_set", Value.fromString(<string>value));
+      this.set("validatorSet", Value.fromString(<string>value));
     }
   }
 }
@@ -2072,8 +2069,8 @@ export class LightClientAttackEvidence extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get conflicting_block(): string | null {
-    let value = this.get("conflicting_block");
+  get conflictingBlock(): string | null {
+    let value = this.get("conflictingBlock");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -2081,16 +2078,16 @@ export class LightClientAttackEvidence extends Entity {
     }
   }
 
-  set conflicting_block(value: string | null) {
+  set conflictingBlock(value: string | null) {
     if (!value) {
-      this.unset("conflicting_block");
+      this.unset("conflictingBlock");
     } else {
-      this.set("conflicting_block", Value.fromString(<string>value));
+      this.set("conflictingBlock", Value.fromString(<string>value));
     }
   }
 
-  get common_height(): BigInt | null {
-    let value = this.get("common_height");
+  get commonHeight(): BigInt | null {
+    let value = this.get("commonHeight");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -2098,16 +2095,16 @@ export class LightClientAttackEvidence extends Entity {
     }
   }
 
-  set common_height(value: BigInt | null) {
+  set commonHeight(value: BigInt | null) {
     if (!value) {
-      this.unset("common_height");
+      this.unset("commonHeight");
     } else {
-      this.set("common_height", Value.fromBigInt(<BigInt>value));
+      this.set("commonHeight", Value.fromBigInt(<BigInt>value));
     }
   }
 
-  get byzantine_validators(): Array<string> | null {
-    let value = this.get("byzantine_validators");
+  get byzantineValidators(): Array<string> | null {
+    let value = this.get("byzantineValidators");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -2115,19 +2112,19 @@ export class LightClientAttackEvidence extends Entity {
     }
   }
 
-  set byzantine_validators(value: Array<string> | null) {
+  set byzantineValidators(value: Array<string> | null) {
     if (!value) {
-      this.unset("byzantine_validators");
+      this.unset("byzantineValidators");
     } else {
       this.set(
-        "byzantine_validators",
+        "byzantineValidators",
         Value.fromStringArray(<Array<string>>value)
       );
     }
   }
 
-  get total_voting_power(): BigInt | null {
-    let value = this.get("total_voting_power");
+  get totalVotingPower(): BigInt | null {
+    let value = this.get("totalVotingPower");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -2135,11 +2132,11 @@ export class LightClientAttackEvidence extends Entity {
     }
   }
 
-  set total_voting_power(value: BigInt | null) {
+  set totalVotingPower(value: BigInt | null) {
     if (!value) {
-      this.unset("total_voting_power");
+      this.unset("totalVotingPower");
     } else {
-      this.set("total_voting_power", Value.fromBigInt(<BigInt>value));
+      this.set("totalVotingPower", Value.fromBigInt(<BigInt>value));
     }
   }
 
@@ -2381,8 +2378,8 @@ export class ResponseEndBlock extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get validator_updates(): Array<string> | null {
-    let value = this.get("validator_updates");
+  get validatorUpdates(): Array<string> | null {
+    let value = this.get("validatorUpdates");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -2390,19 +2387,16 @@ export class ResponseEndBlock extends Entity {
     }
   }
 
-  set validator_updates(value: Array<string> | null) {
+  set validatorUpdates(value: Array<string> | null) {
     if (!value) {
-      this.unset("validator_updates");
+      this.unset("validatorUpdates");
     } else {
-      this.set(
-        "validator_updates",
-        Value.fromStringArray(<Array<string>>value)
-      );
+      this.set("validatorUpdates", Value.fromStringArray(<Array<string>>value));
     }
   }
 
-  get consensus_param_updates(): string | null {
-    let value = this.get("consensus_param_updates");
+  get consensusParamUpdates(): string | null {
+    let value = this.get("consensusParamUpdates");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -2410,11 +2404,11 @@ export class ResponseEndBlock extends Entity {
     }
   }
 
-  set consensus_param_updates(value: string | null) {
+  set consensusParamUpdates(value: string | null) {
     if (!value) {
-      this.unset("consensus_param_updates");
+      this.unset("consensusParamUpdates");
     } else {
-      this.set("consensus_param_updates", Value.fromString(<string>value));
+      this.set("consensusParamUpdates", Value.fromString(<string>value));
     }
   }
 
@@ -2538,8 +2532,8 @@ export class ResponseDeliverTx extends Entity {
     }
   }
 
-  get gas_wanted(): BigInt | null {
-    let value = this.get("gas_wanted");
+  get gasWanted(): BigInt | null {
+    let value = this.get("gasWanted");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -2547,16 +2541,16 @@ export class ResponseDeliverTx extends Entity {
     }
   }
 
-  set gas_wanted(value: BigInt | null) {
+  set gasWanted(value: BigInt | null) {
     if (!value) {
-      this.unset("gas_wanted");
+      this.unset("gasWanted");
     } else {
-      this.set("gas_wanted", Value.fromBigInt(<BigInt>value));
+      this.set("gasWanted", Value.fromBigInt(<BigInt>value));
     }
   }
 
-  get gas_used(): BigInt | null {
-    let value = this.get("gas_used");
+  get gasUsed(): BigInt | null {
+    let value = this.get("gasUsed");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -2564,11 +2558,11 @@ export class ResponseDeliverTx extends Entity {
     }
   }
 
-  set gas_used(value: BigInt | null) {
+  set gasUsed(value: BigInt | null) {
     if (!value) {
-      this.unset("gas_used");
+      this.unset("gasUsed");
     } else {
-      this.set("gas_used", Value.fromBigInt(<BigInt>value));
+      this.set("gasUsed", Value.fromBigInt(<BigInt>value));
     }
   }
 
@@ -2603,73 +2597,6 @@ export class ResponseDeliverTx extends Entity {
       this.unset("codespace");
     } else {
       this.set("codespace", Value.fromString(<string>value));
-    }
-  }
-}
-
-export class Reward extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save Reward entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save Reward entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("Reward", id.toString(), this);
-    }
-  }
-
-  static load(id: string): Reward | null {
-    return changetype<Reward | null>(store.get("Reward", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get amount(): string | null {
-    let value = this.get("amount");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set amount(value: string | null) {
-    if (!value) {
-      this.unset("amount");
-    } else {
-      this.set("amount", Value.fromString(<string>value));
-    }
-  }
-
-  get validator(): string | null {
-    let value = this.get("validator");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set validator(value: string | null) {
-    if (!value) {
-      this.unset("validator");
-    } else {
-      this.set("validator", Value.fromString(<string>value));
     }
   }
 }
@@ -2950,8 +2877,8 @@ export class Validator extends Entity {
     }
   }
 
-  get pub_key(): string | null {
-    let value = this.get("pub_key");
+  get pubKey(): string | null {
+    let value = this.get("pubKey");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -2959,16 +2886,16 @@ export class Validator extends Entity {
     }
   }
 
-  set pub_key(value: string | null) {
+  set pubKey(value: string | null) {
     if (!value) {
-      this.unset("pub_key");
+      this.unset("pubKey");
     } else {
-      this.set("pub_key", Value.fromString(<string>value));
+      this.set("pubKey", Value.fromString(<string>value));
     }
   }
 
-  get voting_power(): BigInt | null {
-    let value = this.get("voting_power");
+  get votingPower(): BigInt | null {
+    let value = this.get("votingPower");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -2976,16 +2903,16 @@ export class Validator extends Entity {
     }
   }
 
-  set voting_power(value: BigInt | null) {
+  set votingPower(value: BigInt | null) {
     if (!value) {
-      this.unset("voting_power");
+      this.unset("votingPower");
     } else {
-      this.set("voting_power", Value.fromBigInt(<BigInt>value));
+      this.set("votingPower", Value.fromBigInt(<BigInt>value));
     }
   }
 
-  get proposer_priority(): BigInt | null {
-    let value = this.get("proposer_priority");
+  get proposerPriority(): BigInt | null {
+    let value = this.get("proposerPriority");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -2993,11 +2920,11 @@ export class Validator extends Entity {
     }
   }
 
-  set proposer_priority(value: BigInt | null) {
+  set proposerPriority(value: BigInt | null) {
     if (!value) {
-      this.unset("proposer_priority");
+      this.unset("proposerPriority");
     } else {
-      this.set("proposer_priority", Value.fromBigInt(<BigInt>value));
+      this.set("proposerPriority", Value.fromBigInt(<BigInt>value));
     }
   }
 }
@@ -3034,8 +2961,8 @@ export class ValidatorParams extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get pub_key_types(): Array<string> | null {
-    let value = this.get("pub_key_types");
+  get pubKeyTypes(): Array<string> | null {
+    let value = this.get("pubKeyTypes");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -3043,11 +2970,11 @@ export class ValidatorParams extends Entity {
     }
   }
 
-  set pub_key_types(value: Array<string> | null) {
+  set pubKeyTypes(value: Array<string> | null) {
     if (!value) {
-      this.unset("pub_key_types");
+      this.unset("pubKeyTypes");
     } else {
-      this.set("pub_key_types", Value.fromStringArray(<Array<string>>value));
+      this.set("pubKeyTypes", Value.fromStringArray(<Array<string>>value));
     }
   }
 }
@@ -3118,8 +3045,8 @@ export class ValidatorSet extends Entity {
     }
   }
 
-  get total_voting_power(): BigInt | null {
-    let value = this.get("total_voting_power");
+  get totalVotingPower(): BigInt | null {
+    let value = this.get("totalVotingPower");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -3127,11 +3054,11 @@ export class ValidatorSet extends Entity {
     }
   }
 
-  set total_voting_power(value: BigInt | null) {
+  set totalVotingPower(value: BigInt | null) {
     if (!value) {
-      this.unset("total_voting_power");
+      this.unset("totalVotingPower");
     } else {
-      this.set("total_voting_power", Value.fromBigInt(<BigInt>value));
+      this.set("totalVotingPower", Value.fromBigInt(<BigInt>value));
     }
   }
 }
@@ -3185,8 +3112,8 @@ export class ValidatorUpdate extends Entity {
     }
   }
 
-  get pub_key(): string | null {
-    let value = this.get("pub_key");
+  get pubKey(): string | null {
+    let value = this.get("pubKey");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -3194,11 +3121,11 @@ export class ValidatorUpdate extends Entity {
     }
   }
 
-  set pub_key(value: string | null) {
+  set pubKey(value: string | null) {
     if (!value) {
-      this.unset("pub_key");
+      this.unset("pubKey");
     } else {
-      this.set("pub_key", Value.fromString(<string>value));
+      this.set("pubKey", Value.fromString(<string>value));
     }
   }
 
@@ -3252,8 +3179,8 @@ export class VersionParams extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get app_version(): BigInt | null {
-    let value = this.get("app_version");
+  get appVersion(): BigInt | null {
+    let value = this.get("appVersion");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -3261,11 +3188,78 @@ export class VersionParams extends Entity {
     }
   }
 
-  set app_version(value: BigInt | null) {
+  set appVersion(value: BigInt | null) {
     if (!value) {
-      this.unset("app_version");
+      this.unset("appVersion");
     } else {
-      this.set("app_version", Value.fromBigInt(<BigInt>value));
+      this.set("appVersion", Value.fromBigInt(<BigInt>value));
+    }
+  }
+}
+
+export class Reward extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Reward entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Reward entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Reward", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Reward | null {
+    return changetype<Reward | null>(store.get("Reward", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get amount(): string | null {
+    let value = this.get("amount");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set amount(value: string | null) {
+    if (!value) {
+      this.unset("amount");
+    } else {
+      this.set("amount", Value.fromString(<string>value));
+    }
+  }
+
+  get validator(): string | null {
+    let value = this.get("validator");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set validator(value: string | null) {
+    if (!value) {
+      this.unset("validator");
+    } else {
+      this.set("validator", Value.fromString(<string>value));
     }
   }
 }

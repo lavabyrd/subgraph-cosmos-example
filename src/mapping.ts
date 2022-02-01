@@ -54,7 +54,7 @@ function saveBlockID(id: string, bID: tendermint.BlockID): void {
 
   const blockID = new BlockID(id);
   blockID.hash = bID.hash;
-  blockID.part_set_header = id;
+  blockID.partSetHeader = id;
   blockID.save();
 }
 
@@ -75,7 +75,7 @@ function saveBlock(id: string, b: tendermint.Block): void {
   block.data = id;
   block.header = id;
   block.evidence = id;
-  block.last_commit = id;
+  block.lastCommit = id;
   block.save()
 }
 
@@ -93,19 +93,19 @@ function saveHeader(id: string, h: tendermint.Header): void {
 
   const header = new Header(id);
   header.version = id;
-  header.chain_id = h.chainId;
+  header.chainId = h.chainId;
   header.height = height;
   header.time = id;
-  header.last_block_id = h.lastBlockId.hash.toHexString();
-  header.last_commit_hash = h.lastCommitHash;
-  header.data_hash = h.dataHash;
-  header.validators_hash = h.validatorsHash;
-  header.next_validators_hash = h.nextValidatorsHash;
-  header.consensus_hash = h.consensusHash;
-  header.app_hash = h.appHash;
-  header.last_results_hash = h.lastResultsHash;
-  header.evidence_hash = h.evidenceHash;
-  header.proposer_address = h.proposerAddress;
+  header.lastBlockId = h.lastBlockId.hash.toHexString();
+  header.lastCommitHash = h.lastCommitHash;
+  header.dataHash = h.dataHash;
+  header.validatorsHash = h.validatorsHash;
+  header.nextValidatorsHash = h.nextValidatorsHash;
+  header.consensusHash = h.consensusHash;
+  header.appHash = h.appHash;
+  header.lastResultsHash = h.lastResultsHash;
+  header.evidenceHash = h.evidenceHash;
+  header.proposerAddress = h.proposerAddress;
   header.save();
 }
 
@@ -139,11 +139,11 @@ function saveEvidence(id: string, e: tendermint.Evidence): void {
   const evidence = new Evidence(id);
   if (e.duplicateVoteEvidence !== null) {
     saveDuplicateVoteEvidence(id, e.duplicateVoteEvidence);
-    evidence.duplicate_vote_evidence = id;
+    evidence.duplicateVoteEvidence = id;
 
   } else if (e.lightClientAttackEvidence !== null) {
     saveLightClientAttackEvidence(id, e.lightClientAttackEvidence);
-    evidence.light_client_attack_evidence = id;
+    evidence.lightClientAttackEvidence = id;
   }
   evidence.save();
 }
@@ -156,10 +156,10 @@ function saveDuplicateVoteEvidence(id: string, e: tendermint.DuplicateVoteEviden
   saveTimestamp(id, e.timestamp);
 
   const duplicateVoteEvidence = new DuplicateVoteEvidence(id);
-  duplicateVoteEvidence.vote_a = voteAID;
-  duplicateVoteEvidence.vote_b = voteBID;
-  duplicateVoteEvidence.total_voting_power = BigInt.fromString(e.totalVotingPower.toString());
-  duplicateVoteEvidence.validator_power = BigInt.fromString(e.validatorPower.toString());
+  duplicateVoteEvidence.voteA = voteAID;
+  duplicateVoteEvidence.voteB = voteBID;
+  duplicateVoteEvidence.totalVotingPower = BigInt.fromString(e.totalVotingPower.toString());
+  duplicateVoteEvidence.validatorPower = BigInt.fromString(e.validatorPower.toString());
   duplicateVoteEvidence.timestamp = id;
   duplicateVoteEvidence.save();
 }
@@ -168,13 +168,13 @@ function saveEventVote(id: string, ev: tendermint.EventVote): void {
   saveTimestamp(id, ev.timestamp);
 
   const eventVote = new EventVote(id);
-  eventVote.event_vote_type = ev.eventVoteType.toString();
+  eventVote.eventVoteType = ev.eventVoteType.toString();
   eventVote.height = BigInt.fromString(ev.height.toString());
   eventVote.round = ev.round;
-  eventVote.block_id = ev.blockId.hash.toHexString();
+  eventVote.blockId = ev.blockId.hash.toHexString();
   eventVote.timestamp = id;
-  eventVote.validator_address = ev.validatorAddress;
-  eventVote.validator_index = ev.validatorIndex;
+  eventVote.validatorAddress = ev.validatorAddress;
+  eventVote.validatorIndex = ev.validatorIndex;
   eventVote.signature = ev.signature;
   eventVote.save();
 }
@@ -183,7 +183,7 @@ function saveLightClientAttackEvidence(id: string, e: tendermint.LightClientAtta
   saveLightBlock(id, e.conflictingBlock);
 
   const lightClientAttackEvidence = new LightClientAttackEvidence(id);
-  lightClientAttackEvidence.conflicting_block = id;
+  lightClientAttackEvidence.conflictingBlock = id;
   lightClientAttackEvidence.save();
 }
 
@@ -192,8 +192,8 @@ function saveLightBlock(id: string, lb: tendermint.LightBlock): void {
   saveValidatorSet(id, lb.validatorSet);
 
   const lightBlock = new LightBlock(id);
-  lightBlock.signed_header = id;
-  lightBlock.validator_set = id;
+  lightBlock.signedHeader = id;
+  lightBlock.validatorSet = id;
   lightBlock.save();
 }
 
@@ -213,7 +213,7 @@ function saveValidatorSet(id: string, sh: tendermint.ValidatorSet): void {
   const validatorSet = new ValidatorSet(id);
   validatorSet.validators = saveValidators(id, sh.validators);
   validatorSet.proposer = id;
-  validatorSet.total_voting_power = BigInt.fromString(sh.totalVotingPower.toString());
+  validatorSet.totalVotingPower = BigInt.fromString(sh.totalVotingPower.toString());
   validatorSet.save();
 }
 
@@ -234,8 +234,8 @@ function saveValidator(id: string, v: tendermint.Validator): void {
 
   const validator = new Validator(id);
   validator.address = v.address;
-  validator.voting_power = BigInt.fromString(v.votingPower.toString());
-  validator.proposer_priority = BigInt.fromString(v.proposerPriority.toString());
+  validator.votingPower = BigInt.fromString(v.votingPower.toString());
+  validator.proposerPriority = BigInt.fromString(v.proposerPriority.toString());
   validator.save();
 }
 
@@ -245,7 +245,7 @@ function saveCommit(id: string, c: tendermint.Commit): void {
   const commit = new Commit(id);
   commit.height = BigInt.fromString(c.height.toString());
   commit.round = c.round;
-  commit.block_id = c.blockId.hash.toHexString();
+  commit.blockId = c.blockId.hash.toHexString();
   commit.signatures = saveCommitSigs(id, c.signatures);
   commit.save();
 }
@@ -266,8 +266,8 @@ function saveCommitSig(id: string, cs: tendermint.CommitSig): void {
   saveTimestamp(id, cs.timestamp);
 
   const commitSig = new CommitSig(id);
-  commitSig.block_id_flag = getBlockIDFlag(cs.blockIdFlag);
-  commitSig.validator_address = cs.validatorAddress;
+  commitSig.blockIdFlag = getBlockIDFlag(cs.blockIdFlag);
+  commitSig.validatorAddress = cs.validatorAddress;
   commitSig.timestamp = id;
   commitSig.signature = cs.signature;
   commitSig.save();
@@ -295,8 +295,8 @@ function saveResponseDeliverTx(id: string, txResult: tendermint.TxResult): void 
   responseDeliverTx.data = txResult.tx;
   responseDeliverTx.log = txResult.result.log;
   responseDeliverTx.info = txResult.result.info;
-  responseDeliverTx.gas_wanted = BigInt.fromString(txResult.result.gasWanted.toString());
-  responseDeliverTx.gas_used = BigInt.fromString(txResult.result.gasUsed.toString());
+  responseDeliverTx.gasWanted = BigInt.fromString(txResult.result.gasWanted.toString());
+  responseDeliverTx.gasUsed = BigInt.fromString(txResult.result.gasUsed.toString());
   responseDeliverTx.codespace = txResult.result.codespace;
   responseDeliverTx.save();
 }
@@ -312,8 +312,8 @@ function saveTxResult(id: string, height: BigInt, index: BigInt, txRes: tendermi
 
 function saveEndBlock(id: string, endBlock: tendermint.ResponseEndBlock): void {
   const responseEndBlock = new ResponseEndBlock(id);
-  responseEndBlock.validator_updates = saveValidatorUpdates(id, endBlock.validatorUpdates);
-  responseEndBlock.consensus_param_updates = id;
+  responseEndBlock.validatorUpdates = saveValidatorUpdates(id, endBlock.validatorUpdates);
+  responseEndBlock.consensusParamUpdates = id;
   responseEndBlock.save();
 }
 
@@ -335,7 +335,7 @@ function saveValidatorUpdate(id: string, v: tendermint.ValidatorUpdate): void {
 
   const validatorUpdate = new ValidatorUpdate(id);
   validatorUpdate.address = v.address;
-  validatorUpdate.pub_key = validatorAddress;
+  validatorUpdate.pubKey = validatorAddress;
   validatorUpdate.power = BigInt.fromString(v.power.toString());
   validatorUpdate.save();
 }
