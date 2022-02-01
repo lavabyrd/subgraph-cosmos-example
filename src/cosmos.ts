@@ -17,9 +17,9 @@ import {
 } from "../generated/schema";
 
 export function decodeTxs(id: string, txs: Array<Bytes>): void {
-  txs.forEach((tx, i) => {
-    saveTx(`${id}-${i}`, cosmos.v1.decodeTx(tx));
-  });
+  for (let i = 0; i < txs.length; i++) {
+    saveTx(`${id}-${i}`, cosmos.v1.decodeTx(txs[i]));
+  }
 }
 
 function saveTx(id: string, tx: cosmos.v1.Tx): void {
@@ -33,7 +33,9 @@ function saveAuthInfo(id: string, ai: cosmos.v1.AuthInfo): string {
   const authInfo = new AuthInfo(id);
   authInfo.fee = saveFee(`${id}-fee`, ai.fee as cosmos.v1.Fee);
   authInfo.signer_infos = saveSignerInfos(id, ai.signer_infos);
-  authInfo.tip = saveTip(`${id}-tip`, ai.tip as cosmos.v1.Tip);
+  if (ai.tip) {
+    authInfo.tip = saveTip(`${id}-tip`, ai.tip as cosmos.v1.Tip);
+  }
   authInfo.save();
   return id;
 }
@@ -78,9 +80,9 @@ function saveSignerInfos(
   sis: Array<cosmos.v1.SignerInfo>
 ): Array<string> {
   let signerInfoIDs = new Array<string>(sis.length);
-  sis.forEach((si, i) => {
-    signerInfoIDs[i] = saveSignerInfo(`${id}-${i}`, si);
-  });
+  for (let i = 0; i < sis.length; i++) {
+    signerInfoIDs[i] = saveSignerInfo(`${id}-${i}`, sis[i]);
+  }
   return signerInfoIDs;
 }
 
@@ -102,6 +104,7 @@ function savePublicKey(id: string, pk: cosmos.v1.Any): string {
   }
 
   log.error("Unknown public key type {}", [pkURL]);
+  return "";
 }
 
 function saveSecp256k1PublicKey(id: string, pk: cosmos.v1.PubKey): string {
@@ -116,9 +119,9 @@ function saveModeInfos(
   mis: Array<cosmos.v1.ModeInfo>
 ): Array<string> {
   let modeInfoIDs = new Array<string>(mis.length);
-  mis.forEach((mi, i) => {
-    modeInfoIDs[i] = saveModeInfo(`${id}-${i}`, mi);
-  });
+  for (let i = 0; i < mis.length; i++) {
+    modeInfoIDs[i] = saveModeInfo(`${id}-${i}`, mis[i]);
+  }
   return modeInfoIDs;
 }
 
@@ -191,9 +194,9 @@ function saveBody(id: string, b: cosmos.v1.TxBody): string {
 
 function saveMessages(id: string, msgs: Array<cosmos.v1.Any>): Array<string> {
   let messageIDs = new Array<string>(msgs.length);
-  msgs.forEach((msg, i) => {
-    messageIDs[i] = saveMessage(`${id}-${i}`, msg);
-  });
+  for (let i = 0; i < msgs.length; i++) {
+    messageIDs[i] = saveMessage(`${id}-${i}` as string, msgs[i]);
+  }
   return messageIDs;
 }
 
@@ -202,34 +205,34 @@ function saveMessage(id: string, msg: cosmos.v1.Any): string {
   let value = msg.value as Uint8Array;
 
   if (msgType == "/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward") {
-    saveMsgWithdrawDelegatorReward(
+    return saveMsgWithdrawDelegatorReward(
       id,
       cosmos.v1.decodeMsgWithdrawDelegatorReward(value)
     );
-    return;
   } else if (msgType == "/cosmos.staking.v1beta1.MsgDelegate") {
-    saveMsgDelegate(id, cosmos.v1.decodeMsgDelegate(value));
-    return;
+    return saveMsgDelegate(id, cosmos.v1.decodeMsgDelegate(value));
   }
 
   log.info("Unknown msg type: {}", [msgType]);
-  return id;
+  return "";
 }
 
-function saveMsgDelegate(id: string, m: cosmos.v1.MsgDelegate): void {
+function saveMsgDelegate(id: string, m: cosmos.v1.MsgDelegate): string {
   const msg = new MsgDelegate(id);
   msg.delegator_address = m.delegator_address;
   msg.validator_address = m.validator_address;
   msg.amount = saveCoin(id, m.amount as cosmos.v1.Coin);
   msg.save();
+  return id;
 }
 
 function saveMsgWithdrawDelegatorReward(
   id: string,
   m: cosmos.v1.MsgWithdrawDelegatorReward
-): void {
+): string {
   const msg = new MsgWithdrawDelegatorReward(id);
   msg.delegator_address = m.delegator_address;
   msg.validator_address = m.validator_address;
   msg.save();
+  return id;
 }

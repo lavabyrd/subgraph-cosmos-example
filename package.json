@@ -12,6 +12,7 @@
   },
   "devDependencies": {},
   "dependencies": {
+    "as-proto": "^0.2.0",
     "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
     "pretty-error": "^4.0.0"

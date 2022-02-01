@@ -17,6 +17,11 @@ ansi-styles@^2.2.1:
   resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-2.2.1.tgz#b432dd3358b634cf75e1e4664368240533c1ddbe"
   integrity sha1-tDLdM1i2NM914eRmQ2gkBTPB3b4=
 
+as-proto@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/as-proto/-/as-proto-0.2.0.tgz#bef36378b373106238d2d03d26dd31e72f423ffd"
+  integrity sha512-uxOCozku/ZcWrqNDyBI4mkkHGcFe522Ev1ZeUFBOxXvkto85saKE0K034eR18ioG6NqNWB7IaXfbfZQmhKpTWg==
+
 babel-code-frame@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-code-frame/-/babel-code-frame-6.26.0.tgz#63fd43f7dc1e3bb7ce35947db8fe369a3f58c74b"

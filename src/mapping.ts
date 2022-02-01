@@ -1,11 +1,10 @@
-import { BigInt, Bytes, log, tendermint } from "@graphprotocol/graph-ts";
+import { BigInt, log, tendermint } from "@graphprotocol/graph-ts";
 import {
   Block,
   BlockID,
   Commit,
   CommitSig,
   Consensus,
-  Data,
   DuplicateVoteEvidence,
   EventVote,
   Evidence,
@@ -48,6 +47,8 @@ export function handleBlock(el: tendermint.EventList): void {
 
   saveEndBlock(blockHash, el.new_block.result_end_block);
 
+  decodeTxs(blockHash, el.new_block.block.data.txs);
+
   log.info("BLOCK {} txs: {}", [height.toString(), txLen.toString()]);
 }
 
@@ -69,20 +70,10 @@ function savePartSetHeader(id: string, psh: tendermint.PartSetHeader): string {
 
 function saveBlock(id: string, b: tendermint.Block): void {
   const block = new Block(id);
-  block.data = saveData(id, b.data);
   block.header = saveHeader(id, b.header);
   block.evidence = saveEvidenceList(id, b.evidence);
   block.last_commit = saveCommit(id, b.last_commit);
   block.save();
-}
-
-function saveData(id: string, d: tendermint.Data): string {
-  decodeTxs(id, d.txs);
-
-  const data = new Data(id);
-  data.txs = d.txs;
-  data.save();
-  return id;
 }
 
 function saveHeader(id: string, h: tendermint.Header): string {
@@ -134,9 +125,9 @@ function saveEvidences(
   evs: Array<tendermint.Evidence>
 ): Array<string> {
   let evidenceIDs = new Array<string>(evs.length);
-  evs.forEach((e, i) => {
-    evidenceIDs[i] = saveEvidence(`${id}-${i}`, e);
-  });
+  for (let i = 0; i < evs.length; i++) {
+    evidenceIDs[i] = saveEvidence(`${id}-${i}`, evs[i]);
+  }
   return evidenceIDs;
 }
 
@@ -234,9 +225,9 @@ function saveValidators(
   validators: Array<tendermint.Validator>
 ): Array<string> {
   let validatorIDs = new Array<string>(validators.length);
-  validators.forEach((v, i) => {
-    validatorIDs[i] = saveValidator(`${id}-${i}`, v);
-  });
+  for (let i = 0; i < validators.length; i++) {
+    validatorIDs[i] = saveValidator(`${id}-${i}`, validators[i]);
+  }
   return validatorIDs;
 }
 
@@ -267,9 +258,9 @@ function saveCommitSigs(
   cs: Array<tendermint.CommitSig>
 ): Array<string> {
   let commitSigIDs = new Array<string>(cs.length);
-  cs.forEach((c, i) => {
-    commitSigIDs[i] = saveCommitSig(`${id}-${i}`, c);
-  });
+  for (let i = 0; i < cs.length; i++) {
+    commitSigIDs[i] = saveCommitSig(`${id}-${i}`, cs[i]);
+  }
   return commitSigIDs;
 }
 
@@ -347,9 +338,10 @@ function saveValidatorUpdates(
   validators: Array<tendermint.ValidatorUpdate>
 ): Array<string> {
   let validatorIDs = new Array<string>(validators.length);
-  validators.forEach((vs, i) => {
-    validatorIDs[i] = saveValidatorUpdate(`${id}-${vs.address}`, vs);
-  });
+  for (let i = 0; i < validators.length; i++) {
+    const v = validators[i];
+    validatorIDs[i] = saveValidatorUpdate(`${id}-${v.address}`, v);
+  }
   return validatorIDs;
 }
 
