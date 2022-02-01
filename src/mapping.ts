@@ -43,18 +43,18 @@ export function handleBlock(el: tendermint.EventList): void {
     const txID = `${header.data_hash.toHexString()}-${index.toString()}`;
 
     saveResponseDeliverTx(txID, txResult);
-    saveTxResult(txID, height, BigInt.fromI32(index), txResult)
+    saveTxResult(txID, height, BigInt.fromI32(index), txResult);
   }
 
   saveEndBlock(blockHash, el.new_block.result_end_block);
 
-  log.info("BLOCK {} txs: {}", [height.toString(), txLen.toString()])
+  log.info("BLOCK {} txs: {}", [height.toString(), txLen.toString()]);
 }
 
 function saveBlockID(id: string, bID: tendermint.BlockID): string {
   const blockID = new BlockID(id);
   blockID.hash = bID.hash;
-  blockID.part_set_header = savePartSetHeader(id, bID.part_set_header);;
+  blockID.part_set_header = savePartSetHeader(id, bID.part_set_header);
   blockID.save();
   return id;
 }
@@ -73,7 +73,7 @@ function saveBlock(id: string, b: tendermint.Block): void {
   block.header = saveHeader(id, b.header);
   block.evidence = saveEvidenceList(id, b.evidence);
   block.last_commit = saveCommit(id, b.last_commit);
-  block.save()
+  block.save();
 }
 
 function saveData(id: string, d: tendermint.Data): string {
@@ -129,8 +129,10 @@ function saveEvidenceList(id: string, el: tendermint.EvidenceList): string {
   return id;
 }
 
-
-function saveEvidences(id: string, evs: Array<tendermint.Evidence>): Array<string> {
+function saveEvidences(
+  id: string,
+  evs: Array<tendermint.Evidence>
+): Array<string> {
   let evidenceIDs = new Array<string>(evs.length);
   evs.forEach((e, i) => {
     evidenceIDs[i] = saveEvidence(`${id}-${i}`, e);
@@ -141,21 +143,33 @@ function saveEvidences(id: string, evs: Array<tendermint.Evidence>): Array<strin
 function saveEvidence(id: string, e: tendermint.Evidence): string {
   const evidence = new Evidence(id);
   if (e.duplicate_vote_evidence !== null) {
-    evidence.duplicate_vote_evidence = saveDuplicateVoteEvidence(id, e.duplicate_vote_evidence);
-
+    evidence.duplicate_vote_evidence = saveDuplicateVoteEvidence(
+      id,
+      e.duplicate_vote_evidence
+    );
   } else if (e.light_client_attack_evidence !== null) {
-    evidence.light_client_attack_evidence = saveLightClientAttackEvidence(id, e.light_client_attack_evidence);
+    evidence.light_client_attack_evidence = saveLightClientAttackEvidence(
+      id,
+      e.light_client_attack_evidence
+    );
   }
   evidence.save();
   return id;
 }
 
-function saveDuplicateVoteEvidence(id: string, e: tendermint.DuplicateVoteEvidence): string {
+function saveDuplicateVoteEvidence(
+  id: string,
+  e: tendermint.DuplicateVoteEvidence
+): string {
   const duplicateVoteEvidence = new DuplicateVoteEvidence(id);
   duplicateVoteEvidence.vote_a = saveEventVote(`${id}-voteA`, e.vote_a);
   duplicateVoteEvidence.vote_b = saveEventVote(`${id}-voteB`, e.vote_a);
-  duplicateVoteEvidence.total_voting_power = BigInt.fromString(e.total_voting_power.toString());
-  duplicateVoteEvidence.validator_power = BigInt.fromString(e.validator_power.toString());
+  duplicateVoteEvidence.total_voting_power = BigInt.fromString(
+    e.total_voting_power.toString()
+  );
+  duplicateVoteEvidence.validator_power = BigInt.fromString(
+    e.validator_power.toString()
+  );
   duplicateVoteEvidence.timestamp = saveTimestamp(id, e.timestamp);
   duplicateVoteEvidence.save();
   return id;
@@ -175,9 +189,15 @@ function saveEventVote(id: string, ev: tendermint.EventVote): string {
   return id;
 }
 
-function saveLightClientAttackEvidence(id: string, e: tendermint.LightClientAttackEvidence): string {
+function saveLightClientAttackEvidence(
+  id: string,
+  e: tendermint.LightClientAttackEvidence
+): string {
   const lightClientAttackEvidence = new LightClientAttackEvidence(id);
-  lightClientAttackEvidence.conflicting_block = saveLightBlock(id, e.conflicting_block);
+  lightClientAttackEvidence.conflicting_block = saveLightBlock(
+    id,
+    e.conflicting_block
+  );
   lightClientAttackEvidence.save();
   return id;
 }
@@ -202,12 +222,17 @@ function saveValidatorSet(id: string, sh: tendermint.ValidatorSet): string {
   const validatorSet = new ValidatorSet(id);
   validatorSet.validators = saveValidators(id, sh.validators);
   validatorSet.proposer = saveValidator(id, sh.proposer);
-  validatorSet.total_voting_power = BigInt.fromString(sh.total_voting_power.toString());
+  validatorSet.total_voting_power = BigInt.fromString(
+    sh.total_voting_power.toString()
+  );
   validatorSet.save();
   return id;
 }
 
-function saveValidators(id: string, validators: Array<tendermint.Validator>): Array<string> {
+function saveValidators(
+  id: string,
+  validators: Array<tendermint.Validator>
+): Array<string> {
   let validatorIDs = new Array<string>(validators.length);
   validators.forEach((v, i) => {
     validatorIDs[i] = saveValidator(`${id}-${i}`, v);
@@ -219,7 +244,9 @@ function saveValidator(id: string, v: tendermint.Validator): string {
   const validator = new Validator(id);
   validator.address = v.address;
   validator.voting_power = BigInt.fromString(v.voting_power.toString());
-  validator.proposer_priority = BigInt.fromString(v.proposer_priority.toString());
+  validator.proposer_priority = BigInt.fromString(
+    v.proposer_priority.toString()
+  );
   validator.pub_key = savePublicKey(v.address.toHexString(), v.pub_key);
   validator.save();
   return id;
@@ -229,13 +256,16 @@ function saveCommit(id: string, c: tendermint.Commit): string {
   const commit = new Commit(id);
   commit.height = BigInt.fromString(c.height.toString());
   commit.round = c.round;
-  commit.block_id = saveBlockID(c.block_id.hash.toHexString(), c.block_id)
+  commit.block_id = saveBlockID(c.block_id.hash.toHexString(), c.block_id);
   commit.signatures = saveCommitSigs(id, c.signatures);
   commit.save();
   return id;
 }
 
-function saveCommitSigs(id: string, cs: Array<tendermint.CommitSig>): Array<string> {
+function saveCommitSigs(
+  id: string,
+  cs: Array<tendermint.CommitSig>
+): Array<string> {
   let commitSigIDs = new Array<string>(cs.length);
   cs.forEach((c, i) => {
     commitSigIDs[i] = saveCommitSig(`${id}-${i}`, c);
@@ -256,32 +286,44 @@ function saveCommitSig(id: string, cs: tendermint.CommitSig): string {
 function getBlockIDFlag(bf: tendermint.BlockIDFlag): string {
   switch (bf) {
     case tendermint.BlockIDFlag.BLOCK_ID_FLAG_UNKNOWN:
-      return "BLOCK_ID_FLAG_UNKNOWN"
+      return "BLOCK_ID_FLAG_UNKNOWN";
     case tendermint.BlockIDFlag.BLOCK_ID_FLAG_ABSENT:
-      return "BLOCK_ID_FLAG_ABSENT"
+      return "BLOCK_ID_FLAG_ABSENT";
     case tendermint.BlockIDFlag.BLOCK_ID_FLAG_COMMIT:
-      return "BLOCK_ID_FLAG_COMMIT"
+      return "BLOCK_ID_FLAG_COMMIT";
     case tendermint.BlockIDFlag.BLOCK_ID_FLAG_NIL:
-      return "BLOCK_ID_FLAG_NIL"
+      return "BLOCK_ID_FLAG_NIL";
     default:
-      log.error("unknown block_id_flag: {}", [bf.toString()])
-      return "unknown"
+      log.error("unknown block_id_flag: {}", [bf.toString()]);
+      return "unknown";
   }
 }
 
-function saveResponseDeliverTx(id: string, txResult: tendermint.TxResult): void {
+function saveResponseDeliverTx(
+  id: string,
+  txResult: tendermint.TxResult
+): void {
   const responseDeliverTx = new ResponseDeliverTx(id);
   responseDeliverTx.code = new BigInt(txResult.result.code);
   responseDeliverTx.data = txResult.tx;
   responseDeliverTx.log = txResult.result.log;
   responseDeliverTx.info = txResult.result.info;
-  responseDeliverTx.gas_wanted = BigInt.fromString(txResult.result.gas_wanted.toString());
-  responseDeliverTx.gas_used = BigInt.fromString(txResult.result.gas_used.toString());
+  responseDeliverTx.gas_wanted = BigInt.fromString(
+    txResult.result.gas_wanted.toString()
+  );
+  responseDeliverTx.gas_used = BigInt.fromString(
+    txResult.result.gas_used.toString()
+  );
   responseDeliverTx.codespace = txResult.result.codespace;
   responseDeliverTx.save();
 }
 
-function saveTxResult(id: string, height: BigInt, index: BigInt, txRes: tendermint.TxResult): void {
+function saveTxResult(
+  id: string,
+  height: BigInt,
+  index: BigInt,
+  txRes: tendermint.TxResult
+): void {
   const txResult = new TxResult(id);
   txResult.height = height;
   txResult.index = index;
@@ -292,12 +334,18 @@ function saveTxResult(id: string, height: BigInt, index: BigInt, txRes: tendermi
 
 function saveEndBlock(id: string, endBlock: tendermint.ResponseEndBlock): void {
   const responseEndBlock = new ResponseEndBlock(id);
-  responseEndBlock.validator_updates = saveValidatorUpdates(id, endBlock.validator_updates);
+  responseEndBlock.validator_updates = saveValidatorUpdates(
+    id,
+    endBlock.validator_updates
+  );
   responseEndBlock.consensus_param_updates = id;
   responseEndBlock.save();
 }
 
-function saveValidatorUpdates(id: string, validators: Array<tendermint.ValidatorUpdate>): Array<string> {
+function saveValidatorUpdates(
+  id: string,
+  validators: Array<tendermint.ValidatorUpdate>
+): Array<string> {
   let validatorIDs = new Array<string>(validators.length);
   validators.forEach((vs, i) => {
     validatorIDs[i] = saveValidatorUpdate(`${id}-${vs.address}`, vs);
@@ -305,10 +353,13 @@ function saveValidatorUpdates(id: string, validators: Array<tendermint.Validator
   return validatorIDs;
 }
 
-function saveValidatorUpdate(id: string, v: tendermint.ValidatorUpdate): string {
+function saveValidatorUpdate(
+  id: string,
+  v: tendermint.ValidatorUpdate
+): string {
   const validatorUpdate = new ValidatorUpdate(id);
   validatorUpdate.address = v.address;
-  validatorUpdate.pub_key = savePublicKey(v.address.toHexString(), v.pub_key);;
+  validatorUpdate.pub_key = savePublicKey(v.address.toHexString(), v.pub_key);
   validatorUpdate.power = BigInt.fromString(v.power.toString());
   validatorUpdate.save();
   return id;
@@ -317,7 +368,7 @@ function saveValidatorUpdate(id: string, v: tendermint.ValidatorUpdate): string 
 function savePublicKey(id: string, publicKey: tendermint.PublicKey): string {
   let pk = PublicKey.load(id);
   if (pk !== null) {
-    log.debug("Validator with id: {} already exists", [id])
+    log.debug("Validator with id: {} already exists", [id]);
     return id;
   }
 
@@ -329,7 +380,7 @@ function savePublicKey(id: string, publicKey: tendermint.PublicKey): string {
 }
 
 export function handleReward(eventData: tendermint.EventData): void {
-  const height = eventData.block.block.header.height
+  const height = eventData.block.block.header.height;
   const amount = eventData.event.attributes[0].value;
   const validator = eventData.event.attributes[1].value;
 
