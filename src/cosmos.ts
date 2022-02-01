@@ -101,7 +101,6 @@ function savePublicKey(id: string, pk: cosmos.v1.Any): string {
     return saveSecp256k1PublicKey(id, cosmos.v1.decodePubKey(pv));
   }
 
-  log.info("public key: {} value: {}", [pkURL, pv.toString()]);
   log.error("Unknown public key type {}", [pkURL]);
 }
 
@@ -213,7 +212,7 @@ function saveMessage(id: string, msg: cosmos.v1.Any): string {
     return;
   }
 
-  log.info("unknown msg type: {}", [msgType]);
+  log.info("Unknown msg type: {}", [msgType]);
   return id;
 }
 
