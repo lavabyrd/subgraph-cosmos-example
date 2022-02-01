@@ -11,7 +11,7 @@ dataSources:
       # Address and abi is required only for manifest validation at this moment
       address: '0x0000000000000000000000000000000000000000'
       abi: ''
-      startBlock: 0
+      startBlock: 5201351
     mapping:
       kind: tendermint
       apiVersion: 0.0.5
@@ -40,6 +40,8 @@ dataSources:
         - Validator
         - ValidatorSet
         - ValidatorUpdate
+        - MsgDelegate
+        - MsgWithdrawDelegatorReward
       abis: []
       blockHandlers:
         - handler: handleBlock
