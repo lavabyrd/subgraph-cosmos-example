@@ -11,6 +11,73 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
+export class EventData extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save EventData entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save EventData entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("EventData", id.toString(), this);
+    }
+  }
+
+  static load(id: string): EventData | null {
+    return changetype<EventData | null>(store.get("EventData", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get event(): string | null {
+    let value = this.get("event");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set event(value: string | null) {
+    if (!value) {
+      this.unset("event");
+    } else {
+      this.set("event", Value.fromString(<string>value));
+    }
+  }
+
+  get block(): string | null {
+    let value = this.get("block");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set block(value: string | null) {
+    if (!value) {
+      this.unset("block");
+    } else {
+      this.set("block", Value.fromString(<string>value));
+    }
+  }
+}
+
 export class EventList extends Entity {
   constructor(id: string) {
     super();
@@ -95,7 +162,7 @@ export class EventList extends Entity {
   }
 }
 
-export class EventData extends Entity {
+export class Reward extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -103,19 +170,19 @@ export class EventData extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save EventData entity without an ID");
+    assert(id != null, "Cannot save Reward entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save EventData entity with non-string ID. " +
+        "Cannot save Reward entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("EventData", id.toString(), this);
+      store.set("Reward", id.toString(), this);
     }
   }
 
-  static load(id: string): EventData | null {
-    return changetype<EventData | null>(store.get("EventData", id));
+  static load(id: string): Reward | null {
+    return changetype<Reward | null>(store.get("Reward", id));
   }
 
   get id(): string {
@@ -127,8 +194,8 @@ export class EventData extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get event(): string | null {
-    let value = this.get("event");
+  get amount(): string | null {
+    let value = this.get("amount");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -136,16 +203,16 @@ export class EventData extends Entity {
     }
   }
 
-  set event(value: string | null) {
+  set amount(value: string | null) {
     if (!value) {
-      this.unset("event");
+      this.unset("amount");
     } else {
-      this.set("event", Value.fromString(<string>value));
+      this.set("amount", Value.fromString(<string>value));
     }
   }
 
-  get block(): string | null {
-    let value = this.get("block");
+  get validator(): string | null {
+    let value = this.get("validator");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -153,11 +220,11 @@ export class EventData extends Entity {
     }
   }
 
-  set block(value: string | null) {
+  set validator(value: string | null) {
     if (!value) {
-      this.unset("block");
+      this.unset("validator");
     } else {
-      this.set("block", Value.fromString(<string>value));
+      this.set("validator", Value.fromString(<string>value));
     }
   }
 }
@@ -3197,7 +3264,7 @@ export class VersionParams extends Entity {
   }
 }
 
-export class Reward extends Entity {
+export class Tx extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -3205,19 +3272,19 @@ export class Reward extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save Reward entity without an ID");
+    assert(id != null, "Cannot save Tx entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Reward entity with non-string ID. " +
+        "Cannot save Tx entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("Reward", id.toString(), this);
+      store.set("Tx", id.toString(), this);
     }
   }
 
-  static load(id: string): Reward | null {
-    return changetype<Reward | null>(store.get("Reward", id));
+  static load(id: string): Tx | null {
+    return changetype<Tx | null>(store.get("Tx", id));
   }
 
   get id(): string {
@@ -3227,6 +3294,2410 @@ export class Reward extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get body(): string | null {
+    let value = this.get("body");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set body(value: string | null) {
+    if (!value) {
+      this.unset("body");
+    } else {
+      this.set("body", Value.fromString(<string>value));
+    }
+  }
+
+  get authInfo(): string | null {
+    let value = this.get("authInfo");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set authInfo(value: string | null) {
+    if (!value) {
+      this.unset("authInfo");
+    } else {
+      this.set("authInfo", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class TxBody extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save TxBody entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save TxBody entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("TxBody", id.toString(), this);
+    }
+  }
+
+  static load(id: string): TxBody | null {
+    return changetype<TxBody | null>(store.get("TxBody", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get messages(): Array<string> | null {
+    let value = this.get("messages");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set messages(value: Array<string> | null) {
+    if (!value) {
+      this.unset("messages");
+    } else {
+      this.set("messages", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+
+  get memo(): string | null {
+    let value = this.get("memo");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set memo(value: string | null) {
+    if (!value) {
+      this.unset("memo");
+    } else {
+      this.set("memo", Value.fromString(<string>value));
+    }
+  }
+
+  get timeoutHeight(): BigInt | null {
+    let value = this.get("timeoutHeight");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set timeoutHeight(value: BigInt | null) {
+    if (!value) {
+      this.unset("timeoutHeight");
+    } else {
+      this.set("timeoutHeight", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get extensionOptions(): Array<string> | null {
+    let value = this.get("extensionOptions");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set extensionOptions(value: Array<string> | null) {
+    if (!value) {
+      this.unset("extensionOptions");
+    } else {
+      this.set("extensionOptions", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+
+  get nonCriticalExtensionOptions(): Array<string> | null {
+    let value = this.get("nonCriticalExtensionOptions");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set nonCriticalExtensionOptions(value: Array<string> | null) {
+    if (!value) {
+      this.unset("nonCriticalExtensionOptions");
+    } else {
+      this.set(
+        "nonCriticalExtensionOptions",
+        Value.fromStringArray(<Array<string>>value)
+      );
+    }
+  }
+}
+
+export class AuthInfo extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save AuthInfo entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save AuthInfo entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("AuthInfo", id.toString(), this);
+    }
+  }
+
+  static load(id: string): AuthInfo | null {
+    return changetype<AuthInfo | null>(store.get("AuthInfo", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get signerInfos(): Array<string> | null {
+    let value = this.get("signerInfos");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set signerInfos(value: Array<string> | null) {
+    if (!value) {
+      this.unset("signerInfos");
+    } else {
+      this.set("signerInfos", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+
+  get fee(): string | null {
+    let value = this.get("fee");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set fee(value: string | null) {
+    if (!value) {
+      this.unset("fee");
+    } else {
+      this.set("fee", Value.fromString(<string>value));
+    }
+  }
+
+  get tip(): string | null {
+    let value = this.get("tip");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set tip(value: string | null) {
+    if (!value) {
+      this.unset("tip");
+    } else {
+      this.set("tip", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class SignerInfo extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save SignerInfo entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save SignerInfo entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("SignerInfo", id.toString(), this);
+    }
+  }
+
+  static load(id: string): SignerInfo | null {
+    return changetype<SignerInfo | null>(store.get("SignerInfo", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get publicKey(): string | null {
+    let value = this.get("publicKey");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set publicKey(value: string | null) {
+    if (!value) {
+      this.unset("publicKey");
+    } else {
+      this.set("publicKey", Value.fromString(<string>value));
+    }
+  }
+
+  get modeInfo(): string | null {
+    let value = this.get("modeInfo");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set modeInfo(value: string | null) {
+    if (!value) {
+      this.unset("modeInfo");
+    } else {
+      this.set("modeInfo", Value.fromString(<string>value));
+    }
+  }
+
+  get sequence(): BigInt | null {
+    let value = this.get("sequence");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set sequence(value: BigInt | null) {
+    if (!value) {
+      this.unset("sequence");
+    } else {
+      this.set("sequence", Value.fromBigInt(<BigInt>value));
+    }
+  }
+}
+
+export class ModeInfo extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save ModeInfo entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save ModeInfo entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("ModeInfo", id.toString(), this);
+    }
+  }
+
+  static load(id: string): ModeInfo | null {
+    return changetype<ModeInfo | null>(store.get("ModeInfo", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get single(): string | null {
+    let value = this.get("single");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set single(value: string | null) {
+    if (!value) {
+      this.unset("single");
+    } else {
+      this.set("single", Value.fromString(<string>value));
+    }
+  }
+
+  get multi(): string | null {
+    let value = this.get("multi");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set multi(value: string | null) {
+    if (!value) {
+      this.unset("multi");
+    } else {
+      this.set("multi", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class Single extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Single entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Single entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Single", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Single | null {
+    return changetype<Single | null>(store.get("Single", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get mode(): string | null {
+    let value = this.get("mode");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set mode(value: string | null) {
+    if (!value) {
+      this.unset("mode");
+    } else {
+      this.set("mode", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class Multi extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Multi entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Multi entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Multi", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Multi | null {
+    return changetype<Multi | null>(store.get("Multi", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get bitarray(): string | null {
+    let value = this.get("bitarray");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set bitarray(value: string | null) {
+    if (!value) {
+      this.unset("bitarray");
+    } else {
+      this.set("bitarray", Value.fromString(<string>value));
+    }
+  }
+
+  get modeInfos(): Array<string> | null {
+    let value = this.get("modeInfos");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set modeInfos(value: Array<string> | null) {
+    if (!value) {
+      this.unset("modeInfos");
+    } else {
+      this.set("modeInfos", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+}
+
+export class CompactBitArray extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save CompactBitArray entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save CompactBitArray entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("CompactBitArray", id.toString(), this);
+    }
+  }
+
+  static load(id: string): CompactBitArray | null {
+    return changetype<CompactBitArray | null>(store.get("CompactBitArray", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get extraBitsStored(): BigInt | null {
+    let value = this.get("extraBitsStored");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set extraBitsStored(value: BigInt | null) {
+    if (!value) {
+      this.unset("extraBitsStored");
+    } else {
+      this.set("extraBitsStored", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get elems(): Bytes | null {
+    let value = this.get("elems");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set elems(value: Bytes | null) {
+    if (!value) {
+      this.unset("elems");
+    } else {
+      this.set("elems", Value.fromBytes(<Bytes>value));
+    }
+  }
+}
+
+export class Fee extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Fee entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Fee entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Fee", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Fee | null {
+    return changetype<Fee | null>(store.get("Fee", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get amount(): Array<string> | null {
+    let value = this.get("amount");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set amount(value: Array<string> | null) {
+    if (!value) {
+      this.unset("amount");
+    } else {
+      this.set("amount", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+
+  get gasLimit(): BigInt | null {
+    let value = this.get("gasLimit");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set gasLimit(value: BigInt | null) {
+    if (!value) {
+      this.unset("gasLimit");
+    } else {
+      this.set("gasLimit", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get payer(): string | null {
+    let value = this.get("payer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set payer(value: string | null) {
+    if (!value) {
+      this.unset("payer");
+    } else {
+      this.set("payer", Value.fromString(<string>value));
+    }
+  }
+
+  get granter(): string | null {
+    let value = this.get("granter");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set granter(value: string | null) {
+    if (!value) {
+      this.unset("granter");
+    } else {
+      this.set("granter", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class Tip extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Tip entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Tip entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Tip", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Tip | null {
+    return changetype<Tip | null>(store.get("Tip", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get amount(): Array<string> | null {
+    let value = this.get("amount");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set amount(value: Array<string> | null) {
+    if (!value) {
+      this.unset("amount");
+    } else {
+      this.set("amount", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+
+  get tipper(): string | null {
+    let value = this.get("tipper");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set tipper(value: string | null) {
+    if (!value) {
+      this.unset("tipper");
+    } else {
+      this.set("tipper", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class Coin extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Coin entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Coin entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Coin", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Coin | null {
+    return changetype<Coin | null>(store.get("Coin", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get denom(): string | null {
+    let value = this.get("denom");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set denom(value: string | null) {
+    if (!value) {
+      this.unset("denom");
+    } else {
+      this.set("denom", Value.fromString(<string>value));
+    }
+  }
+
+  get amount(): string | null {
+    let value = this.get("amount");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set amount(value: string | null) {
+    if (!value) {
+      this.unset("amount");
+    } else {
+      this.set("amount", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class Any extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Any entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Any entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Any", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Any | null {
+    return changetype<Any | null>(store.get("Any", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get typeUrl(): string | null {
+    let value = this.get("typeUrl");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set typeUrl(value: string | null) {
+    if (!value) {
+      this.unset("typeUrl");
+    } else {
+      this.set("typeUrl", Value.fromString(<string>value));
+    }
+  }
+
+  get value(): Bytes | null {
+    let value = this.get("value");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set value(value: Bytes | null) {
+    if (!value) {
+      this.unset("value");
+    } else {
+      this.set("value", Value.fromBytes(<Bytes>value));
+    }
+  }
+}
+
+export class PubKey extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save PubKey entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save PubKey entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("PubKey", id.toString(), this);
+    }
+  }
+
+  static load(id: string): PubKey | null {
+    return changetype<PubKey | null>(store.get("PubKey", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get key(): Bytes | null {
+    let value = this.get("key");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set key(value: Bytes | null) {
+    if (!value) {
+      this.unset("key");
+    } else {
+      this.set("key", Value.fromBytes(<Bytes>value));
+    }
+  }
+}
+
+export class MsgSend extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgSend entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgSend entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgSend", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgSend | null {
+    return changetype<MsgSend | null>(store.get("MsgSend", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get fromAddress(): string | null {
+    let value = this.get("fromAddress");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set fromAddress(value: string | null) {
+    if (!value) {
+      this.unset("fromAddress");
+    } else {
+      this.set("fromAddress", Value.fromString(<string>value));
+    }
+  }
+
+  get toAddress(): string | null {
+    let value = this.get("toAddress");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set toAddress(value: string | null) {
+    if (!value) {
+      this.unset("toAddress");
+    } else {
+      this.set("toAddress", Value.fromString(<string>value));
+    }
+  }
+
+  get amount(): Array<string> | null {
+    let value = this.get("amount");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set amount(value: Array<string> | null) {
+    if (!value) {
+      this.unset("amount");
+    } else {
+      this.set("amount", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+}
+
+export class MsgMultiSend extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgMultiSend entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgMultiSend entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgMultiSend", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgMultiSend | null {
+    return changetype<MsgMultiSend | null>(store.get("MsgMultiSend", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get inputs(): Array<string> | null {
+    let value = this.get("inputs");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set inputs(value: Array<string> | null) {
+    if (!value) {
+      this.unset("inputs");
+    } else {
+      this.set("inputs", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+
+  get outputs(): Array<string> | null {
+    let value = this.get("outputs");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set outputs(value: Array<string> | null) {
+    if (!value) {
+      this.unset("outputs");
+    } else {
+      this.set("outputs", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+}
+
+export class MsgVerifyInvariant extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgVerifyInvariant entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgVerifyInvariant entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgVerifyInvariant", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgVerifyInvariant | null {
+    return changetype<MsgVerifyInvariant | null>(
+      store.get("MsgVerifyInvariant", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get sender(): string | null {
+    let value = this.get("sender");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set sender(value: string | null) {
+    if (!value) {
+      this.unset("sender");
+    } else {
+      this.set("sender", Value.fromString(<string>value));
+    }
+  }
+
+  get invariantModuleName(): string | null {
+    let value = this.get("invariantModuleName");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set invariantModuleName(value: string | null) {
+    if (!value) {
+      this.unset("invariantModuleName");
+    } else {
+      this.set("invariantModuleName", Value.fromString(<string>value));
+    }
+  }
+
+  get invariantRoute(): string | null {
+    let value = this.get("invariantRoute");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set invariantRoute(value: string | null) {
+    if (!value) {
+      this.unset("invariantRoute");
+    } else {
+      this.set("invariantRoute", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgSetWithdrawAddress extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save MsgSetWithdrawAddress entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgSetWithdrawAddress entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgSetWithdrawAddress", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgSetWithdrawAddress | null {
+    return changetype<MsgSetWithdrawAddress | null>(
+      store.get("MsgSetWithdrawAddress", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get delegatorAddress(): string | null {
+    let value = this.get("delegatorAddress");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set delegatorAddress(value: string | null) {
+    if (!value) {
+      this.unset("delegatorAddress");
+    } else {
+      this.set("delegatorAddress", Value.fromString(<string>value));
+    }
+  }
+
+  get withdrawAddress(): string | null {
+    let value = this.get("withdrawAddress");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set withdrawAddress(value: string | null) {
+    if (!value) {
+      this.unset("withdrawAddress");
+    } else {
+      this.set("withdrawAddress", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgWithdrawDelegatorReward extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save MsgWithdrawDelegatorReward entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgWithdrawDelegatorReward entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgWithdrawDelegatorReward", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgWithdrawDelegatorReward | null {
+    return changetype<MsgWithdrawDelegatorReward | null>(
+      store.get("MsgWithdrawDelegatorReward", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get delegatorAddress(): string | null {
+    let value = this.get("delegatorAddress");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set delegatorAddress(value: string | null) {
+    if (!value) {
+      this.unset("delegatorAddress");
+    } else {
+      this.set("delegatorAddress", Value.fromString(<string>value));
+    }
+  }
+
+  get validatorAddress(): string | null {
+    let value = this.get("validatorAddress");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set validatorAddress(value: string | null) {
+    if (!value) {
+      this.unset("validatorAddress");
+    } else {
+      this.set("validatorAddress", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgWithdrawValidatorCommission extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save MsgWithdrawValidatorCommission entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgWithdrawValidatorCommission entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgWithdrawValidatorCommission", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgWithdrawValidatorCommission | null {
+    return changetype<MsgWithdrawValidatorCommission | null>(
+      store.get("MsgWithdrawValidatorCommission", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get validatorAddress(): string | null {
+    let value = this.get("validatorAddress");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set validatorAddress(value: string | null) {
+    if (!value) {
+      this.unset("validatorAddress");
+    } else {
+      this.set("validatorAddress", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgFundCommunityPool extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgFundCommunityPool entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgFundCommunityPool entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgFundCommunityPool", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgFundCommunityPool | null {
+    return changetype<MsgFundCommunityPool | null>(
+      store.get("MsgFundCommunityPool", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get amount(): Array<string> | null {
+    let value = this.get("amount");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set amount(value: Array<string> | null) {
+    if (!value) {
+      this.unset("amount");
+    } else {
+      this.set("amount", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+
+  get depositor(): string | null {
+    let value = this.get("depositor");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set depositor(value: string | null) {
+    if (!value) {
+      this.unset("depositor");
+    } else {
+      this.set("depositor", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgSubmitEvidence extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgSubmitEvidence entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgSubmitEvidence entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgSubmitEvidence", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgSubmitEvidence | null {
+    return changetype<MsgSubmitEvidence | null>(
+      store.get("MsgSubmitEvidence", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get submitter(): string | null {
+    let value = this.get("submitter");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set submitter(value: string | null) {
+    if (!value) {
+      this.unset("submitter");
+    } else {
+      this.set("submitter", Value.fromString(<string>value));
+    }
+  }
+
+  get evidence(): string | null {
+    let value = this.get("evidence");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set evidence(value: string | null) {
+    if (!value) {
+      this.unset("evidence");
+    } else {
+      this.set("evidence", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgSubmitProposal extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgSubmitProposal entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgSubmitProposal entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgSubmitProposal", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgSubmitProposal | null {
+    return changetype<MsgSubmitProposal | null>(
+      store.get("MsgSubmitProposal", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get content(): string | null {
+    let value = this.get("content");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set content(value: string | null) {
+    if (!value) {
+      this.unset("content");
+    } else {
+      this.set("content", Value.fromString(<string>value));
+    }
+  }
+
+  get initialDeposit(): Array<string> | null {
+    let value = this.get("initialDeposit");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set initialDeposit(value: Array<string> | null) {
+    if (!value) {
+      this.unset("initialDeposit");
+    } else {
+      this.set("initialDeposit", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+
+  get proposer(): string | null {
+    let value = this.get("proposer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set proposer(value: string | null) {
+    if (!value) {
+      this.unset("proposer");
+    } else {
+      this.set("proposer", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgVote extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgVote entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgVote entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgVote", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgVote | null {
+    return changetype<MsgVote | null>(store.get("MsgVote", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get proposalId(): BigInt | null {
+    let value = this.get("proposalId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set proposalId(value: BigInt | null) {
+    if (!value) {
+      this.unset("proposalId");
+    } else {
+      this.set("proposalId", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get voter(): string | null {
+    let value = this.get("voter");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set voter(value: string | null) {
+    if (!value) {
+      this.unset("voter");
+    } else {
+      this.set("voter", Value.fromString(<string>value));
+    }
+  }
+
+  get option(): string | null {
+    let value = this.get("option");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set option(value: string | null) {
+    if (!value) {
+      this.unset("option");
+    } else {
+      this.set("option", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgDeposit extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgDeposit entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgDeposit entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgDeposit", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgDeposit | null {
+    return changetype<MsgDeposit | null>(store.get("MsgDeposit", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get proposalId(): BigInt | null {
+    let value = this.get("proposalId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set proposalId(value: BigInt | null) {
+    if (!value) {
+      this.unset("proposalId");
+    } else {
+      this.set("proposalId", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get depositor(): string | null {
+    let value = this.get("depositor");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set depositor(value: string | null) {
+    if (!value) {
+      this.unset("depositor");
+    } else {
+      this.set("depositor", Value.fromString(<string>value));
+    }
+  }
+
+  get amount(): Array<string> | null {
+    let value = this.get("amount");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set amount(value: Array<string> | null) {
+    if (!value) {
+      this.unset("amount");
+    } else {
+      this.set("amount", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+}
+
+export class MsgUnjail extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgUnjail entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgUnjail entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgUnjail", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgUnjail | null {
+    return changetype<MsgUnjail | null>(store.get("MsgUnjail", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get validatorAddr(): string | null {
+    let value = this.get("validatorAddr");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set validatorAddr(value: string | null) {
+    if (!value) {
+      this.unset("validatorAddr");
+    } else {
+      this.set("validatorAddr", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgCreateValidator extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgCreateValidator entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgCreateValidator entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgCreateValidator", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgCreateValidator | null {
+    return changetype<MsgCreateValidator | null>(
+      store.get("MsgCreateValidator", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get description(): string | null {
+    let value = this.get("description");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set description(value: string | null) {
+    if (!value) {
+      this.unset("description");
+    } else {
+      this.set("description", Value.fromString(<string>value));
+    }
+  }
+
+  get commission(): string | null {
+    let value = this.get("commission");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set commission(value: string | null) {
+    if (!value) {
+      this.unset("commission");
+    } else {
+      this.set("commission", Value.fromString(<string>value));
+    }
+  }
+
+  get minSelfDelegation(): string | null {
+    let value = this.get("minSelfDelegation");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set minSelfDelegation(value: string | null) {
+    if (!value) {
+      this.unset("minSelfDelegation");
+    } else {
+      this.set("minSelfDelegation", Value.fromString(<string>value));
+    }
+  }
+
+  get delegatorAddress(): string | null {
+    let value = this.get("delegatorAddress");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set delegatorAddress(value: string | null) {
+    if (!value) {
+      this.unset("delegatorAddress");
+    } else {
+      this.set("delegatorAddress", Value.fromString(<string>value));
+    }
+  }
+
+  get validatorAddress(): string | null {
+    let value = this.get("validatorAddress");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set validatorAddress(value: string | null) {
+    if (!value) {
+      this.unset("validatorAddress");
+    } else {
+      this.set("validatorAddress", Value.fromString(<string>value));
+    }
+  }
+
+  get pubkey(): string | null {
+    let value = this.get("pubkey");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set pubkey(value: string | null) {
+    if (!value) {
+      this.unset("pubkey");
+    } else {
+      this.set("pubkey", Value.fromString(<string>value));
+    }
+  }
+
+  get value(): string | null {
+    let value = this.get("value");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set value(value: string | null) {
+    if (!value) {
+      this.unset("value");
+    } else {
+      this.set("value", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgEditValidator extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgEditValidator entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgEditValidator entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgEditValidator", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgEditValidator | null {
+    return changetype<MsgEditValidator | null>(
+      store.get("MsgEditValidator", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get description(): string | null {
+    let value = this.get("description");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set description(value: string | null) {
+    if (!value) {
+      this.unset("description");
+    } else {
+      this.set("description", Value.fromString(<string>value));
+    }
+  }
+
+  get validatorAddress(): string | null {
+    let value = this.get("validatorAddress");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set validatorAddress(value: string | null) {
+    if (!value) {
+      this.unset("validatorAddress");
+    } else {
+      this.set("validatorAddress", Value.fromString(<string>value));
+    }
+  }
+
+  get commissionRate(): string | null {
+    let value = this.get("commissionRate");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set commissionRate(value: string | null) {
+    if (!value) {
+      this.unset("commissionRate");
+    } else {
+      this.set("commissionRate", Value.fromString(<string>value));
+    }
+  }
+
+  get minSelfDelegation(): string | null {
+    let value = this.get("minSelfDelegation");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set minSelfDelegation(value: string | null) {
+    if (!value) {
+      this.unset("minSelfDelegation");
+    } else {
+      this.set("minSelfDelegation", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgDelegate extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgDelegate entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgDelegate entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgDelegate", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgDelegate | null {
+    return changetype<MsgDelegate | null>(store.get("MsgDelegate", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get delegatorAddress(): string | null {
+    let value = this.get("delegatorAddress");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set delegatorAddress(value: string | null) {
+    if (!value) {
+      this.unset("delegatorAddress");
+    } else {
+      this.set("delegatorAddress", Value.fromString(<string>value));
+    }
+  }
+
+  get validatorAddress(): string | null {
+    let value = this.get("validatorAddress");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set validatorAddress(value: string | null) {
+    if (!value) {
+      this.unset("validatorAddress");
+    } else {
+      this.set("validatorAddress", Value.fromString(<string>value));
+    }
+  }
+
+  get amount(): string | null {
+    let value = this.get("amount");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set amount(value: string | null) {
+    if (!value) {
+      this.unset("amount");
+    } else {
+      this.set("amount", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgBeginRedelegate extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgBeginRedelegate entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgBeginRedelegate entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgBeginRedelegate", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgBeginRedelegate | null {
+    return changetype<MsgBeginRedelegate | null>(
+      store.get("MsgBeginRedelegate", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get delegatorAddress(): string | null {
+    let value = this.get("delegatorAddress");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set delegatorAddress(value: string | null) {
+    if (!value) {
+      this.unset("delegatorAddress");
+    } else {
+      this.set("delegatorAddress", Value.fromString(<string>value));
+    }
+  }
+
+  get validatorSrcAddress(): string | null {
+    let value = this.get("validatorSrcAddress");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set validatorSrcAddress(value: string | null) {
+    if (!value) {
+      this.unset("validatorSrcAddress");
+    } else {
+      this.set("validatorSrcAddress", Value.fromString(<string>value));
+    }
+  }
+
+  get validatorDstAddress(): string | null {
+    let value = this.get("validatorDstAddress");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set validatorDstAddress(value: string | null) {
+    if (!value) {
+      this.unset("validatorDstAddress");
+    } else {
+      this.set("validatorDstAddress", Value.fromString(<string>value));
+    }
+  }
+
+  get amount(): string | null {
+    let value = this.get("amount");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set amount(value: string | null) {
+    if (!value) {
+      this.unset("amount");
+    } else {
+      this.set("amount", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgUndelegate extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgUndelegate entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgUndelegate entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgUndelegate", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgUndelegate | null {
+    return changetype<MsgUndelegate | null>(store.get("MsgUndelegate", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get delegatorAddress(): string | null {
+    let value = this.get("delegatorAddress");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set delegatorAddress(value: string | null) {
+    if (!value) {
+      this.unset("delegatorAddress");
+    } else {
+      this.set("delegatorAddress", Value.fromString(<string>value));
+    }
+  }
+
+  get validatorAddress(): string | null {
+    let value = this.get("validatorAddress");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set validatorAddress(value: string | null) {
+    if (!value) {
+      this.unset("validatorAddress");
+    } else {
+      this.set("validatorAddress", Value.fromString(<string>value));
+    }
+  }
+
+  get amount(): string | null {
+    let value = this.get("amount");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set amount(value: string | null) {
+    if (!value) {
+      this.unset("amount");
+    } else {
+      this.set("amount", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgCreateVestingAccount extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save MsgCreateVestingAccount entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgCreateVestingAccount entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgCreateVestingAccount", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgCreateVestingAccount | null {
+    return changetype<MsgCreateVestingAccount | null>(
+      store.get("MsgCreateVestingAccount", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get fromAddress(): string | null {
+    let value = this.get("fromAddress");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set fromAddress(value: string | null) {
+    if (!value) {
+      this.unset("fromAddress");
+    } else {
+      this.set("fromAddress", Value.fromString(<string>value));
+    }
+  }
+
+  get toAddress(): string | null {
+    let value = this.get("toAddress");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set toAddress(value: string | null) {
+    if (!value) {
+      this.unset("toAddress");
+    } else {
+      this.set("toAddress", Value.fromString(<string>value));
+    }
   }
 
   get amount(): string | null {
@@ -3246,8 +5717,67 @@ export class Reward extends Entity {
     }
   }
 
-  get validator(): string | null {
-    let value = this.get("validator");
+  get endTime(): BigInt | null {
+    let value = this.get("endTime");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set endTime(value: BigInt | null) {
+    if (!value) {
+      this.unset("endTime");
+    } else {
+      this.set("endTime", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get delayed(): boolean {
+    let value = this.get("delayed");
+    return value!.toBoolean();
+  }
+
+  set delayed(value: boolean) {
+    this.set("delayed", Value.fromBoolean(value));
+  }
+}
+
+export class MsgTransfer extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgTransfer entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgTransfer entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgTransfer", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgTransfer | null {
+    return changetype<MsgTransfer | null>(store.get("MsgTransfer", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get sourcePort(): string | null {
+    let value = this.get("sourcePort");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -3255,11 +5785,3352 @@ export class Reward extends Entity {
     }
   }
 
-  set validator(value: string | null) {
+  set sourcePort(value: string | null) {
     if (!value) {
-      this.unset("validator");
+      this.unset("sourcePort");
     } else {
-      this.set("validator", Value.fromString(<string>value));
+      this.set("sourcePort", Value.fromString(<string>value));
+    }
+  }
+
+  get sourceChannel(): string | null {
+    let value = this.get("sourceChannel");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set sourceChannel(value: string | null) {
+    if (!value) {
+      this.unset("sourceChannel");
+    } else {
+      this.set("sourceChannel", Value.fromString(<string>value));
+    }
+  }
+
+  get token(): string | null {
+    let value = this.get("token");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set token(value: string | null) {
+    if (!value) {
+      this.unset("token");
+    } else {
+      this.set("token", Value.fromString(<string>value));
+    }
+  }
+
+  get sender(): string | null {
+    let value = this.get("sender");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set sender(value: string | null) {
+    if (!value) {
+      this.unset("sender");
+    } else {
+      this.set("sender", Value.fromString(<string>value));
+    }
+  }
+
+  get receiver(): string | null {
+    let value = this.get("receiver");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set receiver(value: string | null) {
+    if (!value) {
+      this.unset("receiver");
+    } else {
+      this.set("receiver", Value.fromString(<string>value));
+    }
+  }
+
+  get timeoutHeight(): string | null {
+    let value = this.get("timeoutHeight");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set timeoutHeight(value: string | null) {
+    if (!value) {
+      this.unset("timeoutHeight");
+    } else {
+      this.set("timeoutHeight", Value.fromString(<string>value));
+    }
+  }
+
+  get timeoutTimestamp(): BigInt | null {
+    let value = this.get("timeoutTimestamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set timeoutTimestamp(value: BigInt | null) {
+    if (!value) {
+      this.unset("timeoutTimestamp");
+    } else {
+      this.set("timeoutTimestamp", Value.fromBigInt(<BigInt>value));
+    }
+  }
+}
+
+export class MsgChannelOpenInit extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgChannelOpenInit entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgChannelOpenInit entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgChannelOpenInit", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgChannelOpenInit | null {
+    return changetype<MsgChannelOpenInit | null>(
+      store.get("MsgChannelOpenInit", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get portId(): string | null {
+    let value = this.get("portId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set portId(value: string | null) {
+    if (!value) {
+      this.unset("portId");
+    } else {
+      this.set("portId", Value.fromString(<string>value));
+    }
+  }
+
+  get channel(): string | null {
+    let value = this.get("channel");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set channel(value: string | null) {
+    if (!value) {
+      this.unset("channel");
+    } else {
+      this.set("channel", Value.fromString(<string>value));
+    }
+  }
+
+  get signer(): string | null {
+    let value = this.get("signer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set signer(value: string | null) {
+    if (!value) {
+      this.unset("signer");
+    } else {
+      this.set("signer", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgChannelOpenTry extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgChannelOpenTry entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgChannelOpenTry entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgChannelOpenTry", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgChannelOpenTry | null {
+    return changetype<MsgChannelOpenTry | null>(
+      store.get("MsgChannelOpenTry", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get portId(): string | null {
+    let value = this.get("portId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set portId(value: string | null) {
+    if (!value) {
+      this.unset("portId");
+    } else {
+      this.set("portId", Value.fromString(<string>value));
+    }
+  }
+
+  get previousChannelId(): string | null {
+    let value = this.get("previousChannelId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set previousChannelId(value: string | null) {
+    if (!value) {
+      this.unset("previousChannelId");
+    } else {
+      this.set("previousChannelId", Value.fromString(<string>value));
+    }
+  }
+
+  get channel(): string | null {
+    let value = this.get("channel");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set channel(value: string | null) {
+    if (!value) {
+      this.unset("channel");
+    } else {
+      this.set("channel", Value.fromString(<string>value));
+    }
+  }
+
+  get counterpartyVersion(): string | null {
+    let value = this.get("counterpartyVersion");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set counterpartyVersion(value: string | null) {
+    if (!value) {
+      this.unset("counterpartyVersion");
+    } else {
+      this.set("counterpartyVersion", Value.fromString(<string>value));
+    }
+  }
+
+  get proofInit(): Bytes | null {
+    let value = this.get("proofInit");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set proofInit(value: Bytes | null) {
+    if (!value) {
+      this.unset("proofInit");
+    } else {
+      this.set("proofInit", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get proofHeight(): string | null {
+    let value = this.get("proofHeight");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set proofHeight(value: string | null) {
+    if (!value) {
+      this.unset("proofHeight");
+    } else {
+      this.set("proofHeight", Value.fromString(<string>value));
+    }
+  }
+
+  get signer(): string | null {
+    let value = this.get("signer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set signer(value: string | null) {
+    if (!value) {
+      this.unset("signer");
+    } else {
+      this.set("signer", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgChannelOpenAck extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgChannelOpenAck entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgChannelOpenAck entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgChannelOpenAck", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgChannelOpenAck | null {
+    return changetype<MsgChannelOpenAck | null>(
+      store.get("MsgChannelOpenAck", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get portId(): string | null {
+    let value = this.get("portId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set portId(value: string | null) {
+    if (!value) {
+      this.unset("portId");
+    } else {
+      this.set("portId", Value.fromString(<string>value));
+    }
+  }
+
+  get channelId(): string | null {
+    let value = this.get("channelId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set channelId(value: string | null) {
+    if (!value) {
+      this.unset("channelId");
+    } else {
+      this.set("channelId", Value.fromString(<string>value));
+    }
+  }
+
+  get counterpartyChannelId(): string | null {
+    let value = this.get("counterpartyChannelId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set counterpartyChannelId(value: string | null) {
+    if (!value) {
+      this.unset("counterpartyChannelId");
+    } else {
+      this.set("counterpartyChannelId", Value.fromString(<string>value));
+    }
+  }
+
+  get counterpartyVersion(): string | null {
+    let value = this.get("counterpartyVersion");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set counterpartyVersion(value: string | null) {
+    if (!value) {
+      this.unset("counterpartyVersion");
+    } else {
+      this.set("counterpartyVersion", Value.fromString(<string>value));
+    }
+  }
+
+  get proofTry(): Bytes | null {
+    let value = this.get("proofTry");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set proofTry(value: Bytes | null) {
+    if (!value) {
+      this.unset("proofTry");
+    } else {
+      this.set("proofTry", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get proofHeight(): string | null {
+    let value = this.get("proofHeight");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set proofHeight(value: string | null) {
+    if (!value) {
+      this.unset("proofHeight");
+    } else {
+      this.set("proofHeight", Value.fromString(<string>value));
+    }
+  }
+
+  get signer(): string | null {
+    let value = this.get("signer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set signer(value: string | null) {
+    if (!value) {
+      this.unset("signer");
+    } else {
+      this.set("signer", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgChannelOpenConfirm extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save MsgChannelOpenConfirm entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgChannelOpenConfirm entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgChannelOpenConfirm", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgChannelOpenConfirm | null {
+    return changetype<MsgChannelOpenConfirm | null>(
+      store.get("MsgChannelOpenConfirm", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get portId(): string | null {
+    let value = this.get("portId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set portId(value: string | null) {
+    if (!value) {
+      this.unset("portId");
+    } else {
+      this.set("portId", Value.fromString(<string>value));
+    }
+  }
+
+  get channelId(): string | null {
+    let value = this.get("channelId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set channelId(value: string | null) {
+    if (!value) {
+      this.unset("channelId");
+    } else {
+      this.set("channelId", Value.fromString(<string>value));
+    }
+  }
+
+  get proofAck(): Bytes | null {
+    let value = this.get("proofAck");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set proofAck(value: Bytes | null) {
+    if (!value) {
+      this.unset("proofAck");
+    } else {
+      this.set("proofAck", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get proofHeight(): string | null {
+    let value = this.get("proofHeight");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set proofHeight(value: string | null) {
+    if (!value) {
+      this.unset("proofHeight");
+    } else {
+      this.set("proofHeight", Value.fromString(<string>value));
+    }
+  }
+
+  get signer(): string | null {
+    let value = this.get("signer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set signer(value: string | null) {
+    if (!value) {
+      this.unset("signer");
+    } else {
+      this.set("signer", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgChannelCloseInit extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgChannelCloseInit entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgChannelCloseInit entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgChannelCloseInit", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgChannelCloseInit | null {
+    return changetype<MsgChannelCloseInit | null>(
+      store.get("MsgChannelCloseInit", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get portId(): string | null {
+    let value = this.get("portId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set portId(value: string | null) {
+    if (!value) {
+      this.unset("portId");
+    } else {
+      this.set("portId", Value.fromString(<string>value));
+    }
+  }
+
+  get channelId(): string | null {
+    let value = this.get("channelId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set channelId(value: string | null) {
+    if (!value) {
+      this.unset("channelId");
+    } else {
+      this.set("channelId", Value.fromString(<string>value));
+    }
+  }
+
+  get signer(): string | null {
+    let value = this.get("signer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set signer(value: string | null) {
+    if (!value) {
+      this.unset("signer");
+    } else {
+      this.set("signer", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgChannelCloseConfirm extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save MsgChannelCloseConfirm entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgChannelCloseConfirm entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgChannelCloseConfirm", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgChannelCloseConfirm | null {
+    return changetype<MsgChannelCloseConfirm | null>(
+      store.get("MsgChannelCloseConfirm", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get portId(): string | null {
+    let value = this.get("portId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set portId(value: string | null) {
+    if (!value) {
+      this.unset("portId");
+    } else {
+      this.set("portId", Value.fromString(<string>value));
+    }
+  }
+
+  get channelId(): string | null {
+    let value = this.get("channelId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set channelId(value: string | null) {
+    if (!value) {
+      this.unset("channelId");
+    } else {
+      this.set("channelId", Value.fromString(<string>value));
+    }
+  }
+
+  get proofInit(): Bytes | null {
+    let value = this.get("proofInit");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set proofInit(value: Bytes | null) {
+    if (!value) {
+      this.unset("proofInit");
+    } else {
+      this.set("proofInit", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get proofHeight(): string | null {
+    let value = this.get("proofHeight");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set proofHeight(value: string | null) {
+    if (!value) {
+      this.unset("proofHeight");
+    } else {
+      this.set("proofHeight", Value.fromString(<string>value));
+    }
+  }
+
+  get signer(): string | null {
+    let value = this.get("signer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set signer(value: string | null) {
+    if (!value) {
+      this.unset("signer");
+    } else {
+      this.set("signer", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgRecvPacket extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgRecvPacket entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgRecvPacket entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgRecvPacket", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgRecvPacket | null {
+    return changetype<MsgRecvPacket | null>(store.get("MsgRecvPacket", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get packet(): string | null {
+    let value = this.get("packet");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set packet(value: string | null) {
+    if (!value) {
+      this.unset("packet");
+    } else {
+      this.set("packet", Value.fromString(<string>value));
+    }
+  }
+
+  get proofCommitment(): Bytes | null {
+    let value = this.get("proofCommitment");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set proofCommitment(value: Bytes | null) {
+    if (!value) {
+      this.unset("proofCommitment");
+    } else {
+      this.set("proofCommitment", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get proofHeight(): string | null {
+    let value = this.get("proofHeight");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set proofHeight(value: string | null) {
+    if (!value) {
+      this.unset("proofHeight");
+    } else {
+      this.set("proofHeight", Value.fromString(<string>value));
+    }
+  }
+
+  get signer(): string | null {
+    let value = this.get("signer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set signer(value: string | null) {
+    if (!value) {
+      this.unset("signer");
+    } else {
+      this.set("signer", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgTimeout extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgTimeout entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgTimeout entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgTimeout", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgTimeout | null {
+    return changetype<MsgTimeout | null>(store.get("MsgTimeout", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get packet(): string | null {
+    let value = this.get("packet");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set packet(value: string | null) {
+    if (!value) {
+      this.unset("packet");
+    } else {
+      this.set("packet", Value.fromString(<string>value));
+    }
+  }
+
+  get proofUnreceived(): Bytes | null {
+    let value = this.get("proofUnreceived");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set proofUnreceived(value: Bytes | null) {
+    if (!value) {
+      this.unset("proofUnreceived");
+    } else {
+      this.set("proofUnreceived", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get proofHeight(): string | null {
+    let value = this.get("proofHeight");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set proofHeight(value: string | null) {
+    if (!value) {
+      this.unset("proofHeight");
+    } else {
+      this.set("proofHeight", Value.fromString(<string>value));
+    }
+  }
+
+  get nextSequenceRecv(): BigInt | null {
+    let value = this.get("nextSequenceRecv");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set nextSequenceRecv(value: BigInt | null) {
+    if (!value) {
+      this.unset("nextSequenceRecv");
+    } else {
+      this.set("nextSequenceRecv", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get signer(): string | null {
+    let value = this.get("signer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set signer(value: string | null) {
+    if (!value) {
+      this.unset("signer");
+    } else {
+      this.set("signer", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgTimeoutOnClose extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgTimeoutOnClose entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgTimeoutOnClose entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgTimeoutOnClose", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgTimeoutOnClose | null {
+    return changetype<MsgTimeoutOnClose | null>(
+      store.get("MsgTimeoutOnClose", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get packet(): string | null {
+    let value = this.get("packet");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set packet(value: string | null) {
+    if (!value) {
+      this.unset("packet");
+    } else {
+      this.set("packet", Value.fromString(<string>value));
+    }
+  }
+
+  get proofUnreceived(): Bytes | null {
+    let value = this.get("proofUnreceived");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set proofUnreceived(value: Bytes | null) {
+    if (!value) {
+      this.unset("proofUnreceived");
+    } else {
+      this.set("proofUnreceived", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get proofClose(): Bytes | null {
+    let value = this.get("proofClose");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set proofClose(value: Bytes | null) {
+    if (!value) {
+      this.unset("proofClose");
+    } else {
+      this.set("proofClose", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get proofHeight(): string | null {
+    let value = this.get("proofHeight");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set proofHeight(value: string | null) {
+    if (!value) {
+      this.unset("proofHeight");
+    } else {
+      this.set("proofHeight", Value.fromString(<string>value));
+    }
+  }
+
+  get nextSequenceRecv(): BigInt | null {
+    let value = this.get("nextSequenceRecv");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set nextSequenceRecv(value: BigInt | null) {
+    if (!value) {
+      this.unset("nextSequenceRecv");
+    } else {
+      this.set("nextSequenceRecv", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get signer(): string | null {
+    let value = this.get("signer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set signer(value: string | null) {
+    if (!value) {
+      this.unset("signer");
+    } else {
+      this.set("signer", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgAcknowledgement extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgAcknowledgement entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgAcknowledgement entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgAcknowledgement", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgAcknowledgement | null {
+    return changetype<MsgAcknowledgement | null>(
+      store.get("MsgAcknowledgement", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get packet(): string | null {
+    let value = this.get("packet");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set packet(value: string | null) {
+    if (!value) {
+      this.unset("packet");
+    } else {
+      this.set("packet", Value.fromString(<string>value));
+    }
+  }
+
+  get acknowledgement(): Bytes | null {
+    let value = this.get("acknowledgement");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set acknowledgement(value: Bytes | null) {
+    if (!value) {
+      this.unset("acknowledgement");
+    } else {
+      this.set("acknowledgement", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get proofAcked(): Bytes | null {
+    let value = this.get("proofAcked");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set proofAcked(value: Bytes | null) {
+    if (!value) {
+      this.unset("proofAcked");
+    } else {
+      this.set("proofAcked", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get proofHeight(): string | null {
+    let value = this.get("proofHeight");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set proofHeight(value: string | null) {
+    if (!value) {
+      this.unset("proofHeight");
+    } else {
+      this.set("proofHeight", Value.fromString(<string>value));
+    }
+  }
+
+  get signer(): string | null {
+    let value = this.get("signer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set signer(value: string | null) {
+    if (!value) {
+      this.unset("signer");
+    } else {
+      this.set("signer", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgCreateClient extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgCreateClient entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgCreateClient entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgCreateClient", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgCreateClient | null {
+    return changetype<MsgCreateClient | null>(store.get("MsgCreateClient", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get clientState(): string | null {
+    let value = this.get("clientState");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set clientState(value: string | null) {
+    if (!value) {
+      this.unset("clientState");
+    } else {
+      this.set("clientState", Value.fromString(<string>value));
+    }
+  }
+
+  get consensusState(): string | null {
+    let value = this.get("consensusState");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set consensusState(value: string | null) {
+    if (!value) {
+      this.unset("consensusState");
+    } else {
+      this.set("consensusState", Value.fromString(<string>value));
+    }
+  }
+
+  get signer(): string | null {
+    let value = this.get("signer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set signer(value: string | null) {
+    if (!value) {
+      this.unset("signer");
+    } else {
+      this.set("signer", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgUpdateClient extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgUpdateClient entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgUpdateClient entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgUpdateClient", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgUpdateClient | null {
+    return changetype<MsgUpdateClient | null>(store.get("MsgUpdateClient", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get clientId(): string | null {
+    let value = this.get("clientId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set clientId(value: string | null) {
+    if (!value) {
+      this.unset("clientId");
+    } else {
+      this.set("clientId", Value.fromString(<string>value));
+    }
+  }
+
+  get header(): string | null {
+    let value = this.get("header");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set header(value: string | null) {
+    if (!value) {
+      this.unset("header");
+    } else {
+      this.set("header", Value.fromString(<string>value));
+    }
+  }
+
+  get signer(): string | null {
+    let value = this.get("signer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set signer(value: string | null) {
+    if (!value) {
+      this.unset("signer");
+    } else {
+      this.set("signer", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgUpgradeClient extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgUpgradeClient entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgUpgradeClient entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgUpgradeClient", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgUpgradeClient | null {
+    return changetype<MsgUpgradeClient | null>(
+      store.get("MsgUpgradeClient", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get clientId(): string | null {
+    let value = this.get("clientId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set clientId(value: string | null) {
+    if (!value) {
+      this.unset("clientId");
+    } else {
+      this.set("clientId", Value.fromString(<string>value));
+    }
+  }
+
+  get clientState(): string | null {
+    let value = this.get("clientState");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set clientState(value: string | null) {
+    if (!value) {
+      this.unset("clientState");
+    } else {
+      this.set("clientState", Value.fromString(<string>value));
+    }
+  }
+
+  get consensusState(): string | null {
+    let value = this.get("consensusState");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set consensusState(value: string | null) {
+    if (!value) {
+      this.unset("consensusState");
+    } else {
+      this.set("consensusState", Value.fromString(<string>value));
+    }
+  }
+
+  get proofUpgradeClient(): Bytes | null {
+    let value = this.get("proofUpgradeClient");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set proofUpgradeClient(value: Bytes | null) {
+    if (!value) {
+      this.unset("proofUpgradeClient");
+    } else {
+      this.set("proofUpgradeClient", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get proofUpgradeConsensusState(): Bytes | null {
+    let value = this.get("proofUpgradeConsensusState");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set proofUpgradeConsensusState(value: Bytes | null) {
+    if (!value) {
+      this.unset("proofUpgradeConsensusState");
+    } else {
+      this.set("proofUpgradeConsensusState", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get signer(): string | null {
+    let value = this.get("signer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set signer(value: string | null) {
+    if (!value) {
+      this.unset("signer");
+    } else {
+      this.set("signer", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgSubmitMisbehaviour extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save MsgSubmitMisbehaviour entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgSubmitMisbehaviour entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgSubmitMisbehaviour", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgSubmitMisbehaviour | null {
+    return changetype<MsgSubmitMisbehaviour | null>(
+      store.get("MsgSubmitMisbehaviour", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get clientId(): string | null {
+    let value = this.get("clientId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set clientId(value: string | null) {
+    if (!value) {
+      this.unset("clientId");
+    } else {
+      this.set("clientId", Value.fromString(<string>value));
+    }
+  }
+
+  get misbehaviour(): string | null {
+    let value = this.get("misbehaviour");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set misbehaviour(value: string | null) {
+    if (!value) {
+      this.unset("misbehaviour");
+    } else {
+      this.set("misbehaviour", Value.fromString(<string>value));
+    }
+  }
+
+  get signer(): string | null {
+    let value = this.get("signer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set signer(value: string | null) {
+    if (!value) {
+      this.unset("signer");
+    } else {
+      this.set("signer", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgConnectionOpenInit extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save MsgConnectionOpenInit entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgConnectionOpenInit entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgConnectionOpenInit", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgConnectionOpenInit | null {
+    return changetype<MsgConnectionOpenInit | null>(
+      store.get("MsgConnectionOpenInit", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get clientId(): string | null {
+    let value = this.get("clientId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set clientId(value: string | null) {
+    if (!value) {
+      this.unset("clientId");
+    } else {
+      this.set("clientId", Value.fromString(<string>value));
+    }
+  }
+
+  get counterparty(): string | null {
+    let value = this.get("counterparty");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set counterparty(value: string | null) {
+    if (!value) {
+      this.unset("counterparty");
+    } else {
+      this.set("counterparty", Value.fromString(<string>value));
+    }
+  }
+
+  get version(): string | null {
+    let value = this.get("version");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set version(value: string | null) {
+    if (!value) {
+      this.unset("version");
+    } else {
+      this.set("version", Value.fromString(<string>value));
+    }
+  }
+
+  get delayPeriod(): BigInt | null {
+    let value = this.get("delayPeriod");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set delayPeriod(value: BigInt | null) {
+    if (!value) {
+      this.unset("delayPeriod");
+    } else {
+      this.set("delayPeriod", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get signer(): string | null {
+    let value = this.get("signer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set signer(value: string | null) {
+    if (!value) {
+      this.unset("signer");
+    } else {
+      this.set("signer", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgConnectionOpenTry extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgConnectionOpenTry entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgConnectionOpenTry entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgConnectionOpenTry", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgConnectionOpenTry | null {
+    return changetype<MsgConnectionOpenTry | null>(
+      store.get("MsgConnectionOpenTry", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get clientId(): string | null {
+    let value = this.get("clientId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set clientId(value: string | null) {
+    if (!value) {
+      this.unset("clientId");
+    } else {
+      this.set("clientId", Value.fromString(<string>value));
+    }
+  }
+
+  get previousConnectionId(): string | null {
+    let value = this.get("previousConnectionId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set previousConnectionId(value: string | null) {
+    if (!value) {
+      this.unset("previousConnectionId");
+    } else {
+      this.set("previousConnectionId", Value.fromString(<string>value));
+    }
+  }
+
+  get clientState(): string | null {
+    let value = this.get("clientState");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set clientState(value: string | null) {
+    if (!value) {
+      this.unset("clientState");
+    } else {
+      this.set("clientState", Value.fromString(<string>value));
+    }
+  }
+
+  get counterparty(): string | null {
+    let value = this.get("counterparty");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set counterparty(value: string | null) {
+    if (!value) {
+      this.unset("counterparty");
+    } else {
+      this.set("counterparty", Value.fromString(<string>value));
+    }
+  }
+
+  get delayPeriod(): BigInt | null {
+    let value = this.get("delayPeriod");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set delayPeriod(value: BigInt | null) {
+    if (!value) {
+      this.unset("delayPeriod");
+    } else {
+      this.set("delayPeriod", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get counterpartyVersions(): Array<string> | null {
+    let value = this.get("counterpartyVersions");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set counterpartyVersions(value: Array<string> | null) {
+    if (!value) {
+      this.unset("counterpartyVersions");
+    } else {
+      this.set(
+        "counterpartyVersions",
+        Value.fromStringArray(<Array<string>>value)
+      );
+    }
+  }
+
+  get proofHeight(): string | null {
+    let value = this.get("proofHeight");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set proofHeight(value: string | null) {
+    if (!value) {
+      this.unset("proofHeight");
+    } else {
+      this.set("proofHeight", Value.fromString(<string>value));
+    }
+  }
+
+  get proofInit(): Bytes | null {
+    let value = this.get("proofInit");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set proofInit(value: Bytes | null) {
+    if (!value) {
+      this.unset("proofInit");
+    } else {
+      this.set("proofInit", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get proofClient(): Bytes | null {
+    let value = this.get("proofClient");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set proofClient(value: Bytes | null) {
+    if (!value) {
+      this.unset("proofClient");
+    } else {
+      this.set("proofClient", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get proofConsensus(): Bytes | null {
+    let value = this.get("proofConsensus");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set proofConsensus(value: Bytes | null) {
+    if (!value) {
+      this.unset("proofConsensus");
+    } else {
+      this.set("proofConsensus", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get consensusHeight(): string | null {
+    let value = this.get("consensusHeight");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set consensusHeight(value: string | null) {
+    if (!value) {
+      this.unset("consensusHeight");
+    } else {
+      this.set("consensusHeight", Value.fromString(<string>value));
+    }
+  }
+
+  get signer(): string | null {
+    let value = this.get("signer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set signer(value: string | null) {
+    if (!value) {
+      this.unset("signer");
+    } else {
+      this.set("signer", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgConnectionOpenAck extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MsgConnectionOpenAck entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgConnectionOpenAck entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgConnectionOpenAck", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgConnectionOpenAck | null {
+    return changetype<MsgConnectionOpenAck | null>(
+      store.get("MsgConnectionOpenAck", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get connectionId(): string | null {
+    let value = this.get("connectionId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set connectionId(value: string | null) {
+    if (!value) {
+      this.unset("connectionId");
+    } else {
+      this.set("connectionId", Value.fromString(<string>value));
+    }
+  }
+
+  get counterpartyConnectionId(): string | null {
+    let value = this.get("counterpartyConnectionId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set counterpartyConnectionId(value: string | null) {
+    if (!value) {
+      this.unset("counterpartyConnectionId");
+    } else {
+      this.set("counterpartyConnectionId", Value.fromString(<string>value));
+    }
+  }
+
+  get version(): string | null {
+    let value = this.get("version");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set version(value: string | null) {
+    if (!value) {
+      this.unset("version");
+    } else {
+      this.set("version", Value.fromString(<string>value));
+    }
+  }
+
+  get clientState(): string | null {
+    let value = this.get("clientState");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set clientState(value: string | null) {
+    if (!value) {
+      this.unset("clientState");
+    } else {
+      this.set("clientState", Value.fromString(<string>value));
+    }
+  }
+
+  get proofHeight(): string | null {
+    let value = this.get("proofHeight");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set proofHeight(value: string | null) {
+    if (!value) {
+      this.unset("proofHeight");
+    } else {
+      this.set("proofHeight", Value.fromString(<string>value));
+    }
+  }
+
+  get proofTry(): Bytes | null {
+    let value = this.get("proofTry");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set proofTry(value: Bytes | null) {
+    if (!value) {
+      this.unset("proofTry");
+    } else {
+      this.set("proofTry", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get proofClient(): Bytes | null {
+    let value = this.get("proofClient");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set proofClient(value: Bytes | null) {
+    if (!value) {
+      this.unset("proofClient");
+    } else {
+      this.set("proofClient", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get proofConsensus(): Bytes | null {
+    let value = this.get("proofConsensus");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set proofConsensus(value: Bytes | null) {
+    if (!value) {
+      this.unset("proofConsensus");
+    } else {
+      this.set("proofConsensus", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get consensusHeight(): string | null {
+    let value = this.get("consensusHeight");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set consensusHeight(value: string | null) {
+    if (!value) {
+      this.unset("consensusHeight");
+    } else {
+      this.set("consensusHeight", Value.fromString(<string>value));
+    }
+  }
+
+  get signer(): string | null {
+    let value = this.get("signer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set signer(value: string | null) {
+    if (!value) {
+      this.unset("signer");
+    } else {
+      this.set("signer", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class MsgConnectionOpenConfirm extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save MsgConnectionOpenConfirm entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MsgConnectionOpenConfirm entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MsgConnectionOpenConfirm", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MsgConnectionOpenConfirm | null {
+    return changetype<MsgConnectionOpenConfirm | null>(
+      store.get("MsgConnectionOpenConfirm", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get connectionId(): string | null {
+    let value = this.get("connectionId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set connectionId(value: string | null) {
+    if (!value) {
+      this.unset("connectionId");
+    } else {
+      this.set("connectionId", Value.fromString(<string>value));
+    }
+  }
+
+  get proofAck(): Bytes | null {
+    let value = this.get("proofAck");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set proofAck(value: Bytes | null) {
+    if (!value) {
+      this.unset("proofAck");
+    } else {
+      this.set("proofAck", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get proofHeight(): string | null {
+    let value = this.get("proofHeight");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set proofHeight(value: string | null) {
+    if (!value) {
+      this.unset("proofHeight");
+    } else {
+      this.set("proofHeight", Value.fromString(<string>value));
+    }
+  }
+
+  get signer(): string | null {
+    let value = this.get("signer");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set signer(value: string | null) {
+    if (!value) {
+      this.unset("signer");
+    } else {
+      this.set("signer", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class Channel extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Channel entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Channel entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Channel", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Channel | null {
+    return changetype<Channel | null>(store.get("Channel", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get state(): string | null {
+    let value = this.get("state");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set state(value: string | null) {
+    if (!value) {
+      this.unset("state");
+    } else {
+      this.set("state", Value.fromString(<string>value));
+    }
+  }
+
+  get ordering(): string | null {
+    let value = this.get("ordering");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set ordering(value: string | null) {
+    if (!value) {
+      this.unset("ordering");
+    } else {
+      this.set("ordering", Value.fromString(<string>value));
+    }
+  }
+
+  get counterparty(): string | null {
+    let value = this.get("counterparty");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set counterparty(value: string | null) {
+    if (!value) {
+      this.unset("counterparty");
+    } else {
+      this.set("counterparty", Value.fromString(<string>value));
+    }
+  }
+
+  get connectionHops(): Array<string> | null {
+    let value = this.get("connectionHops");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set connectionHops(value: Array<string> | null) {
+    if (!value) {
+      this.unset("connectionHops");
+    } else {
+      this.set("connectionHops", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+
+  get version(): string | null {
+    let value = this.get("version");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set version(value: string | null) {
+    if (!value) {
+      this.unset("version");
+    } else {
+      this.set("version", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class ChannelCounterparty extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save ChannelCounterparty entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save ChannelCounterparty entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("ChannelCounterparty", id.toString(), this);
+    }
+  }
+
+  static load(id: string): ChannelCounterparty | null {
+    return changetype<ChannelCounterparty | null>(
+      store.get("ChannelCounterparty", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get portId(): string | null {
+    let value = this.get("portId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set portId(value: string | null) {
+    if (!value) {
+      this.unset("portId");
+    } else {
+      this.set("portId", Value.fromString(<string>value));
+    }
+  }
+
+  get channelId(): string | null {
+    let value = this.get("channelId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set channelId(value: string | null) {
+    if (!value) {
+      this.unset("channelId");
+    } else {
+      this.set("channelId", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class CommissionRates extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save CommissionRates entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save CommissionRates entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("CommissionRates", id.toString(), this);
+    }
+  }
+
+  static load(id: string): CommissionRates | null {
+    return changetype<CommissionRates | null>(store.get("CommissionRates", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get rate(): string | null {
+    let value = this.get("rate");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set rate(value: string | null) {
+    if (!value) {
+      this.unset("rate");
+    } else {
+      this.set("rate", Value.fromString(<string>value));
+    }
+  }
+
+  get maxRate(): string | null {
+    let value = this.get("maxRate");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set maxRate(value: string | null) {
+    if (!value) {
+      this.unset("maxRate");
+    } else {
+      this.set("maxRate", Value.fromString(<string>value));
+    }
+  }
+
+  get maxChangeRate(): string | null {
+    let value = this.get("maxChangeRate");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set maxChangeRate(value: string | null) {
+    if (!value) {
+      this.unset("maxChangeRate");
+    } else {
+      this.set("maxChangeRate", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class ConnectionCounterparty extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save ConnectionCounterparty entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save ConnectionCounterparty entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("ConnectionCounterparty", id.toString(), this);
+    }
+  }
+
+  static load(id: string): ConnectionCounterparty | null {
+    return changetype<ConnectionCounterparty | null>(
+      store.get("ConnectionCounterparty", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get clientId(): string | null {
+    let value = this.get("clientId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set clientId(value: string | null) {
+    if (!value) {
+      this.unset("clientId");
+    } else {
+      this.set("clientId", Value.fromString(<string>value));
+    }
+  }
+
+  get connectionId(): string | null {
+    let value = this.get("connectionId");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set connectionId(value: string | null) {
+    if (!value) {
+      this.unset("connectionId");
+    } else {
+      this.set("connectionId", Value.fromString(<string>value));
+    }
+  }
+
+  get prefix(): string | null {
+    let value = this.get("prefix");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set prefix(value: string | null) {
+    if (!value) {
+      this.unset("prefix");
+    } else {
+      this.set("prefix", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class ConnectionVersion extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save ConnectionVersion entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save ConnectionVersion entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("ConnectionVersion", id.toString(), this);
+    }
+  }
+
+  static load(id: string): ConnectionVersion | null {
+    return changetype<ConnectionVersion | null>(
+      store.get("ConnectionVersion", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get identifier(): string | null {
+    let value = this.get("identifier");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set identifier(value: string | null) {
+    if (!value) {
+      this.unset("identifier");
+    } else {
+      this.set("identifier", Value.fromString(<string>value));
+    }
+  }
+
+  get features(): Array<string> | null {
+    let value = this.get("features");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set features(value: Array<string> | null) {
+    if (!value) {
+      this.unset("features");
+    } else {
+      this.set("features", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+}
+
+export class Description extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Description entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Description entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Description", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Description | null {
+    return changetype<Description | null>(store.get("Description", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get moniker(): string | null {
+    let value = this.get("moniker");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set moniker(value: string | null) {
+    if (!value) {
+      this.unset("moniker");
+    } else {
+      this.set("moniker", Value.fromString(<string>value));
+    }
+  }
+
+  get identity(): string | null {
+    let value = this.get("identity");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set identity(value: string | null) {
+    if (!value) {
+      this.unset("identity");
+    } else {
+      this.set("identity", Value.fromString(<string>value));
+    }
+  }
+
+  get website(): string | null {
+    let value = this.get("website");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set website(value: string | null) {
+    if (!value) {
+      this.unset("website");
+    } else {
+      this.set("website", Value.fromString(<string>value));
+    }
+  }
+
+  get securityContact(): string | null {
+    let value = this.get("securityContact");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set securityContact(value: string | null) {
+    if (!value) {
+      this.unset("securityContact");
+    } else {
+      this.set("securityContact", Value.fromString(<string>value));
+    }
+  }
+
+  get details(): string | null {
+    let value = this.get("details");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set details(value: string | null) {
+    if (!value) {
+      this.unset("details");
+    } else {
+      this.set("details", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class Height extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Height entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Height entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Height", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Height | null {
+    return changetype<Height | null>(store.get("Height", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get revisionNumber(): BigInt | null {
+    let value = this.get("revisionNumber");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set revisionNumber(value: BigInt | null) {
+    if (!value) {
+      this.unset("revisionNumber");
+    } else {
+      this.set("revisionNumber", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get revisionHeight(): BigInt | null {
+    let value = this.get("revisionHeight");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set revisionHeight(value: BigInt | null) {
+    if (!value) {
+      this.unset("revisionHeight");
+    } else {
+      this.set("revisionHeight", Value.fromBigInt(<BigInt>value));
+    }
+  }
+}
+
+export class Input extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Input entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Input entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Input", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Input | null {
+    return changetype<Input | null>(store.get("Input", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get address(): string | null {
+    let value = this.get("address");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set address(value: string | null) {
+    if (!value) {
+      this.unset("address");
+    } else {
+      this.set("address", Value.fromString(<string>value));
+    }
+  }
+
+  get coins(): Array<string> | null {
+    let value = this.get("coins");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set coins(value: Array<string> | null) {
+    if (!value) {
+      this.unset("coins");
+    } else {
+      this.set("coins", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+}
+
+export class Output extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Output entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Output entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Output", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Output | null {
+    return changetype<Output | null>(store.get("Output", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get address(): string | null {
+    let value = this.get("address");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set address(value: string | null) {
+    if (!value) {
+      this.unset("address");
+    } else {
+      this.set("address", Value.fromString(<string>value));
+    }
+  }
+
+  get coins(): Array<string> | null {
+    let value = this.get("coins");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set coins(value: Array<string> | null) {
+    if (!value) {
+      this.unset("coins");
+    } else {
+      this.set("coins", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+}
+
+export class MerklePrefix extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save MerklePrefix entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MerklePrefix entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MerklePrefix", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MerklePrefix | null {
+    return changetype<MerklePrefix | null>(store.get("MerklePrefix", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get keyPrefix(): Bytes | null {
+    let value = this.get("keyPrefix");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set keyPrefix(value: Bytes | null) {
+    if (!value) {
+      this.unset("keyPrefix");
+    } else {
+      this.set("keyPrefix", Value.fromBytes(<Bytes>value));
+    }
+  }
+}
+
+export class Packet extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Packet entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Packet entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Packet", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Packet | null {
+    return changetype<Packet | null>(store.get("Packet", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get sequence(): BigInt | null {
+    let value = this.get("sequence");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set sequence(value: BigInt | null) {
+    if (!value) {
+      this.unset("sequence");
+    } else {
+      this.set("sequence", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get sourcePort(): string | null {
+    let value = this.get("sourcePort");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set sourcePort(value: string | null) {
+    if (!value) {
+      this.unset("sourcePort");
+    } else {
+      this.set("sourcePort", Value.fromString(<string>value));
+    }
+  }
+
+  get sourceChannel(): string | null {
+    let value = this.get("sourceChannel");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set sourceChannel(value: string | null) {
+    if (!value) {
+      this.unset("sourceChannel");
+    } else {
+      this.set("sourceChannel", Value.fromString(<string>value));
+    }
+  }
+
+  get destinationPort(): string | null {
+    let value = this.get("destinationPort");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set destinationPort(value: string | null) {
+    if (!value) {
+      this.unset("destinationPort");
+    } else {
+      this.set("destinationPort", Value.fromString(<string>value));
+    }
+  }
+
+  get destinationChannel(): string | null {
+    let value = this.get("destinationChannel");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set destinationChannel(value: string | null) {
+    if (!value) {
+      this.unset("destinationChannel");
+    } else {
+      this.set("destinationChannel", Value.fromString(<string>value));
+    }
+  }
+
+  get data(): Bytes | null {
+    let value = this.get("data");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set data(value: Bytes | null) {
+    if (!value) {
+      this.unset("data");
+    } else {
+      this.set("data", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get timeoutHeight(): string | null {
+    let value = this.get("timeoutHeight");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set timeoutHeight(value: string | null) {
+    if (!value) {
+      this.unset("timeoutHeight");
+    } else {
+      this.set("timeoutHeight", Value.fromString(<string>value));
+    }
+  }
+
+  get timeoutTimestamp(): BigInt | null {
+    let value = this.get("timeoutTimestamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set timeoutTimestamp(value: BigInt | null) {
+    if (!value) {
+      this.unset("timeoutTimestamp");
+    } else {
+      this.set("timeoutTimestamp", Value.fromBigInt(<BigInt>value));
     }
   }
 }

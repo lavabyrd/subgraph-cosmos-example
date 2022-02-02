@@ -24,7 +24,7 @@ export function decodeTxs(id: string, txs: Array<Bytes>): void {
 
 function saveTx(id: string, tx: cosmos.v1.Tx): void {
   const cTx = new Tx(id);
-  cTx.auth_info = saveAuthInfo(id, tx.auth_info as cosmos.v1.AuthInfo);
+  cTx.authInfo = saveAuthInfo(id, tx.auth_info as cosmos.v1.AuthInfo);
   cTx.body = saveBody(id, tx.body as cosmos.v1.TxBody);
   cTx.save();
 }
@@ -32,7 +32,7 @@ function saveTx(id: string, tx: cosmos.v1.Tx): void {
 function saveAuthInfo(id: string, ai: cosmos.v1.AuthInfo): string {
   const authInfo = new AuthInfo(id);
   authInfo.fee = saveFee(`${id}-fee`, ai.fee as cosmos.v1.Fee);
-  authInfo.signer_infos = saveSignerInfos(id, ai.signer_infos);
+  authInfo.signerInfos = saveSignerInfos(id, ai.signer_infos);
   if (ai.tip) {
     authInfo.tip = saveTip(`${id}-tip`, ai.tip as cosmos.v1.Tip);
   }
@@ -43,7 +43,7 @@ function saveAuthInfo(id: string, ai: cosmos.v1.AuthInfo): string {
 function saveFee(id: string, f: cosmos.v1.Fee): string {
   const fee = new Fee(id);
   fee.amount = saveCoins(id, f.amount);
-  fee.gas_limit = BigInt.fromString(f.gas_limit.toString());
+  fee.gasLimit = BigInt.fromString(f.gas_limit.toString());
   fee.payer = f.payer;
   fee.granter = f.granter;
   fee.save();
@@ -88,8 +88,8 @@ function saveSignerInfos(
 
 function saveSignerInfo(id: string, si: cosmos.v1.SignerInfo): string {
   const signerInfo = new SignerInfo(id);
-  signerInfo.public_key = savePublicKey(id, si.public_key as cosmos.v1.Any);
-  signerInfo.mode_info = saveModeInfo(id, si.mode_info as cosmos.v1.ModeInfo);
+  signerInfo.publicKey = savePublicKey(id, si.public_key as cosmos.v1.Any);
+  signerInfo.modeInfo = saveModeInfo(id, si.mode_info as cosmos.v1.ModeInfo);
   signerInfo.sequence = BigInt.fromString(si.sequence.toString());
   signerInfo.save();
   return id;
@@ -150,7 +150,7 @@ function saveMulti(id: string, m: cosmos.v1.Multi): string {
     id,
     m.bitarray as cosmos.v1.CompactBitArray
   );
-  multi.mode_infos = saveModeInfos(id, m.mode_infos);
+  multi.modeInfos = saveModeInfos(id, m.mode_infos);
   multi.save();
   return id;
 }
@@ -175,7 +175,7 @@ function getSignMode(sm: cosmos.v1.SignMode): string {
 
 function saveCompactBitArray(id: string, c: cosmos.v1.CompactBitArray): string {
   const compactBitArray = new CompactBitArray(id);
-  compactBitArray.extra_bits_stored = BigInt.fromString(
+  compactBitArray.extraBitsStored = BigInt.fromString(
     c.extra_bits_stored.toString()
   );
   compactBitArray.elems = Bytes.fromUint8Array(c.elems as Uint8Array);
@@ -187,7 +187,7 @@ function saveBody(id: string, b: cosmos.v1.TxBody): string {
   const txBody = new TxBody(id);
   txBody.messages = saveMessages(id, b.messages);
   txBody.memo = b.memo;
-  txBody.timeout_height = BigInt.fromString(b.timeout_height.toString());
+  txBody.timeoutHeight = BigInt.fromString(b.timeout_height.toString());
   txBody.save();
   return id;
 }
@@ -219,8 +219,8 @@ function saveMessage(id: string, msg: cosmos.v1.Any): string {
 
 function saveMsgDelegate(id: string, m: cosmos.v1.MsgDelegate): string {
   const msg = new MsgDelegate(id);
-  msg.delegator_address = m.delegator_address;
-  msg.validator_address = m.validator_address;
+  msg.delegatorAddress = m.delegator_address;
+  msg.validatorAddress = m.validator_address;
   msg.amount = saveCoin(id, m.amount as cosmos.v1.Coin);
   msg.save();
   return id;
@@ -231,8 +231,8 @@ function saveMsgWithdrawDelegatorReward(
   m: cosmos.v1.MsgWithdrawDelegatorReward
 ): string {
   const msg = new MsgWithdrawDelegatorReward(id);
-  msg.delegator_address = m.delegator_address;
-  msg.validator_address = m.validator_address;
+  msg.delegatorAddress = m.delegator_address;
+  msg.validatorAddress = m.validator_address;
   msg.save();
   return id;
 }
