@@ -10,7 +10,10 @@
     "deploy-local": "graph deploy cosmos-example -l v0.1.0 --ipfs http://localhost:5001 --node http://localhost:8020",
     "remove-local": "graph remove cosmos-example --node http://localhost:8020"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@graphprotocol/graph-cli": "file:../graph-cli",
+    "@graphprotocol/graph-ts": "file:../graph-ts"
+  },
   "dependencies": {
     "as-proto": "^0.2.0",
     "babel-polyfill": "^6.26.0",

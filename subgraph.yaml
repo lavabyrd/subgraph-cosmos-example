@@ -22,7 +22,6 @@ dataSources:
         - Commit
         - CommitSig
         - Consensus
-        - Data
         - DuplicateVoteEvidence
         - EventVote
         - Evidence
