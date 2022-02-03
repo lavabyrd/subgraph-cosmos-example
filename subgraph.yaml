@@ -17,32 +17,8 @@ dataSources:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - Block
-        - BlockID
-        - Commit
         - CommitSig
-        - Consensus
-        - DuplicateVoteEvidence
-        - EventVote
-        - Evidence
-        - Header
-        - LightBlock
-        - LightClientAttackEvidence
-        - PartSetHeader
-        - PublicKey
-        - ResponseDeliverTx
-        - ResponseEndBlock
-        - Reward
-        - SignedHeader
-        - Timestamp
-        - TxResult
-        - Validator
-        - ValidatorSet
-        - ValidatorUpdate
       abis: []
       blockHandlers:
         - handler: handleBlock
-      eventHandlers:
-        - event: rewards
-          handler: handleReward
       file: ./src/mapping.ts
