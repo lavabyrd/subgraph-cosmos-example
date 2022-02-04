@@ -335,7 +335,9 @@ function saveValidatorUpdates(
   let validatorIDs = new Array<string>(validators.length);
   for (let i = 0; i < validators.length; i++) {
     const v = validators[i];
-    validatorIDs[i] = saveValidatorUpdate(`${id}-${v.address}`, v);
+    const address = v.address.toHexString();
+
+    validatorIDs[i] = saveValidatorUpdate(`${id}-${address}`, v);
   }
   return validatorIDs;
 }
