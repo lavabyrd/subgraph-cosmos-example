@@ -37,8 +37,8 @@ export function handleBlock(el: tendermint.EventList): void {
   saveBlock(blockHash, block);
 
   for (let index = 0; index < txLen; index++) {
+    const txID = `${blockHash}-${index.toString()}`;
     const txResult = el.transaction[index].txResult;
-    const txID = `${header.dataHash.toHexString()}-${index.toString()}`;
 
     saveResponseDeliverTx(txID, txResult);
     saveTxResult(txID, height, BigInt.fromI32(index), txResult);
