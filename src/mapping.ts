@@ -293,7 +293,6 @@ function saveResponseDeliverTx(
 ): void {
   const responseDeliverTx = new ResponseDeliverTx(id);
   responseDeliverTx.code = new BigInt(txResult.result.code);
-  responseDeliverTx.data = txResult.tx;
   responseDeliverTx.log = txResult.result.log;
   responseDeliverTx.info = txResult.result.info;
   responseDeliverTx.gasWanted = BigInt.fromString(
@@ -315,7 +314,6 @@ function saveTxResult(
   const txResult = new TxResult(id);
   txResult.height = height;
   txResult.index = index;
-  txResult.tx = txRes.tx;
   txResult.result = id;
   txResult.save();
 }
