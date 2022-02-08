@@ -38,8 +38,8 @@ export function handleBlock(el: tendermint.EventList): void {
   saveBlock(blockHash, block);
 
   for (let index = 0; index < txLen; index++) {
+    const txID = `${blockHash}-${index.toString()}`;
     const txResult = el.transaction[index].txResult;
-    const txID = `${header.dataHash.toHexString()}-${index.toString()}`;
 
     saveResponseDeliverTx(txID, txResult);
     saveTxResult(txID, height, BigInt.fromI32(index), txResult);
@@ -296,7 +296,6 @@ function saveResponseDeliverTx(
 ): void {
   const responseDeliverTx = new ResponseDeliverTx(id);
   responseDeliverTx.code = new BigInt(txResult.result.code);
-  responseDeliverTx.data = txResult.tx;
   responseDeliverTx.log = txResult.result.log;
   responseDeliverTx.info = txResult.result.info;
   responseDeliverTx.gasWanted = BigInt.fromString(
@@ -318,7 +317,6 @@ function saveTxResult(
   const txResult = new TxResult(id);
   txResult.height = height;
   txResult.index = index;
-  txResult.tx = txRes.tx;
   txResult.result = id;
   txResult.save();
 }
@@ -340,7 +338,9 @@ function saveValidatorUpdates(
   let validatorIDs = new Array<string>(validators.length);
   for (let i = 0; i < validators.length; i++) {
     const v = validators[i];
-    validatorIDs[i] = saveValidatorUpdate(`${id}-${v.address}`, v);
+    const address = v.address.toHexString();
+
+    validatorIDs[i] = saveValidatorUpdate(`${id}-${address}`, v);
   }
   return validatorIDs;
 }
