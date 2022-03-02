@@ -15,7 +15,7 @@
     "@graphprotocol/graph-ts": "file:../graph-ts"
   },
   "dependencies": {
-    "as-proto": "^0.2.0",
+    "as-proto": "file:../as-proto/packages/as-proto",
     "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
     "pretty-error": "^4.0.0"

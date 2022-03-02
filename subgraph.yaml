@@ -44,7 +44,7 @@ dataSources:
       abis: []
       blockHandlers:
         - handler: handleBlock
-      eventHandlers:
-        - event: rewards
-          handler: handleReward
+      # eventHandlers:
+      #   - event: rewards
+      #     handler: handleReward
       file: ./src/mapping.ts

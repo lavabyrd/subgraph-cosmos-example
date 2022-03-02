@@ -11,73 +11,6 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class EventData extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save EventData entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save EventData entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("EventData", id.toString(), this);
-    }
-  }
-
-  static load(id: string): EventData | null {
-    return changetype<EventData | null>(store.get("EventData", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get event(): string | null {
-    let value = this.get("event");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set event(value: string | null) {
-    if (!value) {
-      this.unset("event");
-    } else {
-      this.set("event", Value.fromString(<string>value));
-    }
-  }
-
-  get block(): string | null {
-    let value = this.get("block");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set block(value: string | null) {
-    if (!value) {
-      this.unset("block");
-    } else {
-      this.set("block", Value.fromString(<string>value));
-    }
-  }
-}
-
 export class EventList extends Entity {
   constructor(id: string) {
     super();
@@ -158,6 +91,73 @@ export class EventList extends Entity {
       this.unset("validatorSetUpdates");
     } else {
       this.set("validatorSetUpdates", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class EventData extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save EventData entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save EventData entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("EventData", id.toString(), this);
+    }
+  }
+
+  static load(id: string): EventData | null {
+    return changetype<EventData | null>(store.get("EventData", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get event(): string | null {
+    let value = this.get("event");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set event(value: string | null) {
+    if (!value) {
+      this.unset("event");
+    } else {
+      this.set("event", Value.fromString(<string>value));
+    }
+  }
+
+  get block(): string | null {
+    let value = this.get("block");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set block(value: string | null) {
+    if (!value) {
+      this.unset("block");
+    } else {
+      this.set("block", Value.fromString(<string>value));
     }
   }
 }
