@@ -11,11 +11,11 @@
     "remove-local": "graph remove cosmos-example --node http://localhost:8020"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "file:../graph-cli",
-    "@graphprotocol/graph-ts": "file:../graph-ts"
+    "@graphprotocol/graph-cli": "https://github.com/figment-networks/graph-cli.git#tendermint",
+    "@graphprotocol/graph-ts": "https://github.com/figment-networks/graph-ts.git#patiee/cosmos-txs"
   },
   "dependencies": {
-    "as-proto": "file:../as-proto/packages/as-proto",
+    "as-proto": "https://github.com/figment-networks/as-proto.git",
     "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
     "pretty-error": "^4.0.0"

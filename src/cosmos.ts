@@ -1,4 +1,4 @@
-import { BigInt, ByteArray, Bytes, log, cosmos, liquidity } from "@graphprotocol/graph-ts";
+import { BigInt, Bytes, log, cosmos, liquidity } from "@graphprotocol/graph-ts";
 import {
   AuthInfo,
   Coin,

@@ -206,8 +206,9 @@
     "@ethersproject/properties" "^5.6.0"
     "@ethersproject/strings" "^5.6.0"
 
-"@graphprotocol/graph-cli@file:../graph-cli":
+"@graphprotocol/graph-cli@https://github.com/figment-networks/graph-cli.git#tendermint":
   version "0.27.0"
+  resolved "https://github.com/figment-networks/graph-cli.git#12934065829011b5d4a509c29fe0f76ec9e5fc70"
   dependencies:
     assemblyscript "0.19.10"
     binary-install-raw "0.0.13"
@@ -235,8 +236,9 @@
     which "2.0.2"
     yaml "1.9.2"
 
-"@graphprotocol/graph-ts@file:../graph-ts":
-  version "0.24.1"
+"@graphprotocol/graph-ts@https://github.com/figment-networks/graph-ts.git#patiee/cosmos-txs":
+  version "0.26.0"
+  resolved "https://github.com/figment-networks/graph-ts.git#5614e4ca0967c774ccbc2596bea864f41187dde8"
   dependencies:
     as-proto "^v0.2.0"
     assemblyscript "0.19.10"
@@ -437,8 +439,9 @@ as-proto@^v0.2.0:
   resolved "https://registry.yarnpkg.com/as-proto/-/as-proto-0.2.2.tgz#4ee703908e589a50166ac3d506305ae918c2ed4f"
   integrity sha512-C55p+T8eohhotByAFkhvpCWKgsfFv0U+XEQOyZk7fyzBcMauOYC0YKh0wxazr7efIbjyoRO9gSrI7TvEHKNE8g==
 
-"as-proto@file:../as-proto/packages/as-proto":
-  version "0.2.0"
+"as-proto@https://github.com/figment-networks/as-proto.git":
+  version "1.0.0"
+  resolved "https://github.com/figment-networks/as-proto.git#384e98f93a2e09a38a607809a7baedb3a4782f99"
 
 asap@~2.0.6:
   version "2.0.6"
