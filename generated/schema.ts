@@ -3329,6 +3329,23 @@ export class Tx extends Entity {
       this.set("authInfo", Value.fromString(<string>value));
     }
   }
+
+  get signatures(): Array<Bytes> | null {
+    let value = this.get("signatures");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytesArray();
+    }
+  }
+
+  set signatures(value: Array<Bytes> | null) {
+    if (!value) {
+      this.unset("signatures");
+    } else {
+      this.set("signatures", Value.fromBytesArray(<Array<Bytes>>value));
+    }
+  }
 }
 
 export class TxBody extends Entity {
@@ -9131,6 +9148,107 @@ export class Packet extends Entity {
       this.unset("timeoutTimestamp");
     } else {
       this.set("timeoutTimestamp", Value.fromBigInt(<BigInt>value));
+    }
+  }
+}
+
+export class CosmosHeader extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save CosmosHeader entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save CosmosHeader entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("CosmosHeader", id.toString(), this);
+    }
+  }
+
+  static load(id: string): CosmosHeader | null {
+    return changetype<CosmosHeader | null>(store.get("CosmosHeader", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get signedHeader(): string | null {
+    let value = this.get("signedHeader");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set signedHeader(value: string | null) {
+    if (!value) {
+      this.unset("signedHeader");
+    } else {
+      this.set("signedHeader", Value.fromString(<string>value));
+    }
+  }
+
+  get validatorSet(): string | null {
+    let value = this.get("validatorSet");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set validatorSet(value: string | null) {
+    if (!value) {
+      this.unset("validatorSet");
+    } else {
+      this.set("validatorSet", Value.fromString(<string>value));
+    }
+  }
+
+  get trustedHeight(): string | null {
+    let value = this.get("trustedHeight");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set trustedHeight(value: string | null) {
+    if (!value) {
+      this.unset("trustedHeight");
+    } else {
+      this.set("trustedHeight", Value.fromString(<string>value));
+    }
+  }
+
+  get trustedValidators(): string | null {
+    let value = this.get("trustedValidators");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set trustedValidators(value: string | null) {
+    if (!value) {
+      this.unset("trustedValidators");
+    } else {
+      this.set("trustedValidators", Value.fromString(<string>value));
     }
   }
 }

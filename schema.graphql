@@ -331,6 +331,7 @@ type Tx @entity {
   id: ID!
   body: TxBody
   authInfo: AuthInfo
+  signatures: [Bytes!]
 }
 
 type TxBody @entity {
@@ -814,4 +815,12 @@ type Packet @entity {
   data: Bytes
   timeoutHeight: Height
   timeoutTimestamp: BigInt
+}
+
+type CosmosHeader @entity {
+  id: ID!
+  signedHeader: SignedHeader
+  validatorSet: ValidatorSet
+  trustedHeight: Height
+  trustedValidators: ValidatorSet
 }

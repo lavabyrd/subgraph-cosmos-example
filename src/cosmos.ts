@@ -1,13 +1,30 @@
-import { BigInt, Bytes, log, cosmos } from "@graphprotocol/graph-ts";
+import { BigInt, ByteArray, Bytes, log, cosmos, liquidity } from "@graphprotocol/graph-ts";
 import {
   AuthInfo,
   Coin,
   CompactBitArray,
+  CosmosHeader,
   Fee,
+  Height,
+  Input,
   ModeInfo,
+  MsgAcknowledgement,
+  MsgBeginRedelegate,
   MsgDelegate,
+  MsgFundCommunityPool,
+  MsgMultiSend,
+  MsgRecvPacket,
+  MsgSend,
+  MsgSetWithdrawAddress,
+  MsgTimeout,
+  MsgTransfer,
+  MsgUndelegate,
+  MsgUpdateClient,
   MsgWithdrawDelegatorReward,
+  MsgWithdrawValidatorCommission,
   Multi,
+  Output,
+  Packet,
   PubKey,
   SignerInfo,
   Single,
@@ -15,6 +32,8 @@ import {
   Tx,
   TxBody,
 } from "../generated/schema";
+
+const pubKey = "/cosmos.crypto.secp256k1.PubKey"
 
 export function decodeTxs(id: string, txs: Array<Bytes>): void {
   for (let i = 0; i < txs.length; i++) {
@@ -26,6 +45,7 @@ function saveTx(id: string, tx: cosmos.v1.Tx): void {
   const cTx = new Tx(id);
   cTx.authInfo = saveAuthInfo(id, tx.auth_info as cosmos.v1.AuthInfo);
   cTx.body = saveBody(id, tx.body as cosmos.v1.TxBody);
+  cTx.signatures = uInt8ArrayToStringArray(id, tx.signatures as Array<Uint8Array>);
   cTx.save();
 }
 
@@ -99,7 +119,7 @@ function savePublicKey(id: string, pk: cosmos.v1.Any): string {
   let pkURL = pk.type_url as string;
   let pv = pk.value as Uint8Array;
 
-  if (pkURL == "/cosmos.crypto.secp256k1.PubKey") {
+  if (pkURL == pubKey) {
     return saveSecp256k1PublicKey(id, cosmos.v1.decodePubKey(pv));
   }
 
@@ -211,6 +231,34 @@ function saveMessage(id: string, msg: cosmos.v1.Any): string {
     );
   } else if (msgType == "/cosmos.staking.v1beta1.MsgDelegate") {
     return saveMsgDelegate(id, cosmos.v1.decodeMsgDelegate(value));
+  } else if (msgType == "/cosmos.distribution.v1beta1.MsgFundCommunityPool") {
+    return saveMsgFundCommunityPool(id, cosmos.v1.decodeMsgFundCommunityPool(value));
+  } else if (msgType == "/cosmos.distribution.v1beta1.MsgSetWithdrawAddress") {
+    return saveMsgSetWithdrawAddress(id, cosmos.v1.decodeMsgSetWithdrawAddress(value));
+  } else if (msgType == "/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission") {
+    return saveMsgWithdrawValidatorCommission(id, cosmos.v1.decodeMsgWithdrawValidatorCommission(value));
+  } else if (msgType == "/ibc.core.client.v1.MsgUpdateClient") {
+    return saveIbcMsgUpdateClient(id, cosmos.v1.decodeMsgUpdateClient(value));
+  } else if (msgType == "/ibc.core.channel.v1.MsgRecvPacket") {
+    return saveIbcMsgRecvPacket(id, cosmos.v1.decodeMsgRecvPacket(value));
+  } else if (msgType == "/ibc.core.channel.v1.MsgAcknowledgement") {
+    return saveIbcMsgAcknowledgement(id, cosmos.v1.decodeMsgAcknowledgement(value));
+  } else if (msgType == "/cosmos.bank.v1beta1.MsgSend") {
+    return saveMsgSend(id, cosmos.v1.decodeMsgSend(value));
+  } else if (msgType == "/ibc.lightclients.tendermint.v1.Header") {
+    return saveIbcHeader(id, cosmos.v1.decodeCosmosHeader(value));
+  }  else if (msgType == "/ibc.applications.transfer.v1.MsgTransfer") {
+    return saveMsgTransfer(id, cosmos.v1.decodeMsgTransfer(value));
+  }  else if (msgType == "/ibc.core.channel.v1.MsgTimeout") {
+    return saveMsgTimeout(id, cosmos.v1.decodeMsgTimeout(value));
+  } else if (msgType == "/cosmos.staking.v1beta1.MsgUndelegate") {
+    return saveMsgUndelegate(id, cosmos.v1.decodeMsgUndelegate(value));
+  } else if (msgType == "/cosmos.staking.v1beta1.MsgBeginRedelegate") {
+    return saveMsgBeginRedelegate(id, cosmos.v1.decodeMsgBeginRedelegate(value));
+  } else if (msgType == "/tendermint.liquidity.v1beta1.MsgSwapWithinBatch") {
+    return saveMsgSwapWithinBatch(id, liquidity.v1.decodeMsgSwapWithinBatch(value));
+  } else if (msgType == "/cosmos.bank.v1beta1.MsgMultiSend") {
+    return saveMsgMultisend(id, cosmos.v1.decodeMsgMultiSend(value));
   }
 
   log.info("Unknown msg type: {}", [msgType]);
@@ -235,4 +283,192 @@ function saveMsgWithdrawDelegatorReward(
   msg.validatorAddress = m.validator_address;
   msg.save();
   return id;
+}
+
+function saveMsgFundCommunityPool(id: string, m: cosmos.v1.MsgFundCommunityPool): string {
+  const msg = new MsgFundCommunityPool(id);
+  msg.amount = saveCoins(id, m.amount);
+  msg.depositor = m.depositor;
+  return id;
+}
+
+function saveMsgSetWithdrawAddress(id: string, m: cosmos.v1.MsgSetWithdrawAddress): string {
+  const msg = new MsgSetWithdrawAddress(id);
+  msg.delegatorAddress = m.delegator_address;
+  msg.withdrawAddress = m.withdraw_address;
+  msg.save();
+  return id;
+}
+
+function saveMsgWithdrawValidatorCommission(id: string, m: cosmos.v1.MsgWithdrawValidatorCommission): string {
+  const msg = new MsgWithdrawValidatorCommission(id);
+  msg.validatorAddress = m.validator_address;
+  msg.save();
+  return id;
+}
+
+function saveIbcMsgUpdateClient(id: string, m: cosmos.v1.MsgUpdateClient): string {
+  const msg = new MsgUpdateClient(id);
+  msg.clientId = m.client_id;
+  msg.header = saveMessage(id, m.header as cosmos.v1.Any);
+  msg.signer = m.signer;
+  msg.save();
+  return id;
+}
+
+function saveIbcMsgRecvPacket(id: string, m: cosmos.v1.MsgRecvPacket): string {
+  const msg = new MsgRecvPacket(id);
+  msg.packet = msg.packet;
+  msg.proofCommitment = Bytes.fromUint8Array(m.proof_commitment as Uint8Array);
+  msg.proofHeight = saveHeight(id, m.proof_height as cosmos.v1.Height);
+  msg.signer = m.signer;
+  msg.save();
+  return id;
+}
+
+function saveHeight(id: string, m: cosmos.v1.Height): string {
+  const msg = new Height(id);
+  msg.revisionNumber = BigInt.fromU64(m.revision_height);
+  msg.revisionHeight = BigInt.fromU64(m.revision_height);
+  msg.save();
+  return id;
+}
+
+function saveIbcMsgAcknowledgement(id: string, m: cosmos.v1.MsgAcknowledgement): string {
+  const msg = new MsgAcknowledgement(id);
+  msg.packet = savePacket(id, m.packet as cosmos.v1.Packet);
+  msg.acknowledgement = Bytes.fromUint8Array(m.acknowledgement as Uint8Array);
+  msg.proofAcked = Bytes.fromUint8Array(m.proof_acked as Uint8Array);
+  msg.proofHeight = saveHeight(id, m.proof_height as cosmos.v1.Height);
+  msg.signer = m.signer;
+  msg.save();
+  return id;
+}
+
+function savePacket(id: string, m: cosmos.v1.Packet): string {
+  const msg = new Packet(id);
+  msg.sequence = BigInt.fromU64(m.sequence);
+  msg.sourcePort = m.source_port;
+  msg.sourceChannel = m.source_port;
+  msg.destinationPort = m.destination_port;
+  msg.destinationChannel = m.destination_channel;
+  msg.data = Bytes.fromUint8Array(m.data as Uint8Array);
+  msg.timeoutHeight = saveHeight(id, m.timeout_height as cosmos.v1.Height);
+  msg.timeoutTimestamp = BigInt.fromU64(m.timeout_timestamp);
+  msg.save();
+  return id;
+}
+
+function saveMsgSend(id: string, m: cosmos.v1.MsgSend): string {
+  const msg = new MsgSend(id);
+  msg.fromAddress = m.from_address;
+  msg.toAddress = m.to_address;
+  msg.amount = saveCoins(id, m.amount);
+  msg.save();
+  return id;
+}
+
+function saveIbcHeader(id: string, h: cosmos.v1.CosmosHeader): string {
+  const msg = new CosmosHeader(id);
+  msg.trustedHeight = saveHeight(id, h.trusted_height as cosmos.v1.Height);
+  msg.save();
+  return id;
+}
+
+function saveMsgTransfer(id: string, m: cosmos.v1.MsgTransfer): string {
+  const msg = new MsgTransfer(id);
+  msg.sourcePort = m.source_port;
+  msg.sourceChannel = m.source_channel;
+  msg.token = saveCoin(id, m.token as cosmos.v1.Coin);
+  msg.sender = m.sender;
+  msg.receiver = m.receiver;
+  if (m.timeout_height) {
+    msg.timeoutHeight = saveHeight(id, m.timeout_height as cosmos.v1.Height);
+  }
+  msg.timeoutTimestamp = BigInt.fromU64(m.timeout_timestamp);
+  msg.save();
+  return id;
+}
+
+function saveMsgTimeout(id: string, m: cosmos.v1.MsgTimeout): string {
+  const msg = new MsgTimeout(id);
+  msg.packet = savePacket(id, m.packet as cosmos.v1.Packet);
+  msg.proofUnreceived = Bytes.fromUint8Array(m.proof_unreceived as Uint8Array);
+  msg.proofHeight = saveHeight(id, m.proof_height as cosmos.v1.Height);
+  msg.nextSequenceRecv = BigInt.fromU64(m.next_sequence_recv); 
+  msg.signer = m.signer;
+  msg.save();
+  return id;
+}
+
+function saveMsgUndelegate(id: string, m: cosmos.v1.MsgUndelegate): string {
+  const msg = new MsgUndelegate(id);
+  msg.delegatorAddress = m.delegator_address;
+  msg.validatorAddress = m.validator_address;
+  msg.amount = saveCoin(id, m.amount as cosmos.v1.Coin);
+  msg.save()
+  return id;
+}
+
+function saveMsgBeginRedelegate(id: string, m: cosmos.v1.MsgBeginRedelegate): string {
+  const msg = new MsgBeginRedelegate(id);
+  msg.delegatorAddress = m.delegator_address;
+  msg.validatorSrcAddress = m.validator_src_address;
+  msg.validatorDstAddress = m.validator_dst_address
+  msg.amount = saveCoin(id, m.amount as cosmos.v1.Coin);
+  msg.save()
+  return id;
+}
+
+function saveMsgSwapWithinBatch(id: string, m: liquidity.v1.MsgSwapWithinBatch): string {
+  return id;
+}
+
+function saveMsgMultisend(id: string, m: cosmos.v1.MsgMultiSend): string {
+  const msg = new MsgMultiSend(id);
+  msg.inputs = saveInputs(id, m.inputs);
+  msg.outputs = saveOutputs(id, m.outputs);
+  msg.save()
+  return id;
+}
+
+function saveInputs(id: string, inputs: Array<cosmos.v1.Input>): Array<string> {
+  const len = inputs.length;
+  let inputIDs = new Array<string>(len);
+  for (let i = 0; i < len; i++) {
+    inputIDs[i] = saveInput(`${id}-${i}`, inputs[i]);
+  }
+  return inputIDs;
+}
+
+function saveInput(id: string, i: cosmos.v1.Input): string {
+  const msg = new Input(id);
+  msg.address = i.address;
+  msg.coins = saveCoins(id, i.coins);
+  msg.save();
+  return id;
+}
+
+function saveOutputs(id: string, outputs: Array<cosmos.v1.Output>): Array<string> {
+  const len = outputs.length;
+  let outputIDs = new Array<string>(len);
+  for (let i = 0; i < len; i++) {
+    outputIDs[i] = saveOutput(`${id}-${i}`, outputs[i]);
+  }
+  return outputIDs;
+}
+
+function saveOutput(id: string, o: cosmos.v1.Output): string {
+  const msg = new Output(id);
+  msg.address = o.address;
+  msg.coins = saveCoins(id, o.coins);
+  msg.save();
+  return id;
+}
+function uInt8ArrayToStringArray(is: string, uInt8Array: Array<Uint8Array>): Array<Bytes> {
+  let array = new Array<Bytes>(uInt8Array.length);
+  for (let i = 0; i < uInt8Array.length; i++) {
+    array[i] = Bytes.fromUint8Array(uInt8Array[i]);
+  }
+  return array;
 }

@@ -8,12 +8,12 @@ dataSources:
     name: GetBlockAndRewards
     network: cosmoshub-4
     source:
-      # Address and abi is required only for manifest validation at this moment
-      address: '0x0000000000000000000000000000000000000000'
-      abi: ''
-      startBlock: 5201351
+      # # Address and abi is required only for manifest validation at this moment
+      # address: '0x0000000000000000000000000000000000000000'
+      # abi: ''
+      startBlock: 9200001
     mapping:
-      kind: tendermint
+      # kind: tendermint
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
@@ -41,7 +41,8 @@ dataSources:
         - ValidatorUpdate
         - MsgDelegate
         - MsgWithdrawDelegatorReward
-      abis: []
+        - CosmosHeader
+      # abis: []
       blockHandlers:
         - handler: handleBlock
       # eventHandlers:
