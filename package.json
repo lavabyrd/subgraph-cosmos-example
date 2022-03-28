@@ -15,7 +15,7 @@
     "@graphprotocol/graph-ts": "https://github.com/figment-networks/graph-ts.git#patiee/cosmos-txs"
   },
   "dependencies": {
-    "as-proto": "https://github.com/figment-networks/as-proto.git",
+    "as-proto": "^0.2.2",
     "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
     "pretty-error": "^4.0.0"
