@@ -434,14 +434,10 @@ argparse@^1.0.7:
   dependencies:
     sprintf-js "~1.0.2"
 
-as-proto@^v0.2.0:
+as-proto@^0.2.2, as-proto@^v0.2.0:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/as-proto/-/as-proto-0.2.2.tgz#4ee703908e589a50166ac3d506305ae918c2ed4f"
   integrity sha512-C55p+T8eohhotByAFkhvpCWKgsfFv0U+XEQOyZk7fyzBcMauOYC0YKh0wxazr7efIbjyoRO9gSrI7TvEHKNE8g==
-
-"as-proto@https://github.com/figment-networks/as-proto.git":
-  version "1.0.0"
-  resolved "https://github.com/figment-networks/as-proto.git#384e98f93a2e09a38a607809a7baedb3a4782f99"
 
 asap@~2.0.6:
   version "2.0.6"
