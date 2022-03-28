@@ -434,6 +434,7 @@ argparse@^1.0.7:
   dependencies:
     sprintf-js "~1.0.2"
 
+<<<<<<< HEAD
 as-proto@^v0.2.0:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/as-proto/-/as-proto-0.2.2.tgz#4ee703908e589a50166ac3d506305ae918c2ed4f"
@@ -443,6 +444,8 @@ as-proto@^v0.2.0:
   version "1.0.0"
   resolved "https://github.com/figment-networks/as-proto.git#384e98f93a2e09a38a607809a7baedb3a4782f99"
 
+=======
+>>>>>>> 1196895b8cbb7ec3349fc75967a639e927e31b88
 asap@~2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
