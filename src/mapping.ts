@@ -370,18 +370,3 @@ function savePublicKey(id: string, publicKey: tendermint.PublicKey): string {
   pk.save();
   return id;
 }
-
-export function handleReward(eventData: tendermint.EventData): void {
-  const height = eventData.block.block.header.height;
-  const amount = eventData.event.attributes[0].value;
-  const validator = eventData.event.attributes[1].value;
-
-  log.info("REWARD amount = {}, validator = {}", [amount, validator]);
-
-  let reward = new Reward(`${height}-${validator}`);
-
-  reward.amount = amount;
-  reward.validator = validator;
-
-  reward.save();
-}

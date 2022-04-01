@@ -12,12 +12,13 @@
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "https://github.com/figment-networks/graph-cli.git#tendermint",
-    "@graphprotocol/graph-ts": "https://github.com/figment-networks/graph-ts.git#patiee/cosmos-txs"
+    "@graphprotocol/graph-ts": "https://github.com/figment-networks/graph-ts.git#cosmos"
   },
   "dependencies": {
     "as-proto": "^0.2.2",
     "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
+    "lerna": "^4.0.0",
     "pretty-error": "^4.0.0"
   }
 }

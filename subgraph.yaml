@@ -71,7 +71,4 @@ dataSources:
         - Output
       blockHandlers:
         - handler: handleBlock
-      eventHandlers:
-        - event: rewards
-          handler: handleReward
       file: ./src/mapping.ts

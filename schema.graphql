@@ -29,14 +29,6 @@ type EventData @entity {
   block: EventBlock
 }
 
-
-"Reward"
-type Reward @entity {
-  id: ID!
-  amount: String
-  validator: String
-}
-
 type Block @entity {
   id: ID!
   header: Header
